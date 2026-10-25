@@ -8,25 +8,25 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>FORMA</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000'/%3E%3Cpath fill='%23FFD400' d='M18 12h38l-2.5 11H15.6zM18 12h12l-9 40H9zM14.3 29H44l-2.2 10H12.2z'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23000'/%3E%3Cpath fill='%23F2F2F0' d='M32 10C33.4 25.4 38.6 30.6 54 32 38.6 33.4 33.4 38.6 32 54 30.6 38.6 25.4 33.4 10 32 25.4 30.6 30.6 25.4 32 10Z'/%3E%3C/svg%3E">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;0,900;1,700;1,800;1,900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#FFFFFF;--surface:#F0F0F0;--surface2:#E2E2E2;--text:#000000;--muted:#5A5A5A;--line:#D4D4D4;--navbg:rgba(255,255,255,.9);
-  --accent:#FFD400;--on-accent:#000000;--warn:#C8261B;
-  --disp:'Barlow Condensed','Roboto Condensed','Arial Narrow',sans-serif;
-  --body:'Barlow','Roboto','Helvetica Neue',Arial,sans-serif;
+  --bg:#EFEDE8;--surface:#F8F7F4;--surface2:#E3E0D9;--text:#0A0A0A;--muted:#6B6B66;--line:#CFCBC2;--navbg:rgba(239,237,232,.92);
+  --accent:#0A0A0A;--on-accent:#F8F7F4;--warn:#B3261E;
+  --disp:'Archivo','Helvetica Neue',Arial,sans-serif;
+  --body:'Archivo','Helvetica Neue',Arial,sans-serif;
   color-scheme:light;box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){--bg:#000000;--surface:#141414;--surface2:#232323;--text:#FFFFFF;--muted:#9A9A9A;--line:#2C2C2C;--navbg:rgba(22,22,22,.88);--warn:#FF5A4E;color-scheme:dark}
+  :root:not([data-theme="light"]){--bg:#000000;--surface:#0C0C0C;--surface2:#171717;--text:#F2F2F0;--muted:#8C8C88;--line:#262626;--navbg:rgba(0,0,0,.9);--accent:#F2F2F0;--on-accent:#000000;--warn:#FF5A4E;color-scheme:dark}
 }
-:root[data-theme="dark"]{--bg:#000000;--surface:#141414;--surface2:#232323;--text:#FFFFFF;--muted:#9A9A9A;--line:#2C2C2C;--navbg:rgba(22,22,22,.88);--warn:#FF5A4E;color-scheme:dark}
+:root[data-theme="dark"]{--bg:#000000;--surface:#0C0C0C;--surface2:#171717;--text:#F2F2F0;--muted:#8C8C88;--line:#262626;--navbg:rgba(0,0,0,.9);--accent:#F2F2F0;--on-accent:#000000;--warn:#FF5A4E;color-scheme:dark}
 html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg);overflow-x:hidden}
 *,*::before,*::after{box-sizing:inherit}
 [hidden]{display:none!important}
@@ -250,6 +250,99 @@ a.btn{text-decoration:none}
 .mb .bar-p{margin:0}
 .mb em{font-style:normal;color:var(--muted);text-align:right}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- monochrome, wide-type theme ---------- */
+body{font-weight:450;letter-spacing:.005em}
+.disp,.brand,.heroGhost,.hero,h2,h3,.wkd b,.big,.ring text,.stats b,.stats3 b,.btn,.chip,.prog-head b,.ex-no,.ex-name,.ex-prog,.sn,.rc-k b,.stepper b,.big-n,.rest-t,.rec b,.mp-row b,.pr-row b{font-style:normal;font-stretch:125%}
+.brand{font-weight:800;font-size:17px;letter-spacing:.32em;gap:10px}
+.brand svg{width:18px;height:18px}
+.icon-btn{border-radius:0;background:transparent;border:1px solid var(--line)}
+.heroGhost{font-weight:200;-webkit-text-stroke:1px var(--line);right:-10px;top:-10px;font-size:clamp(120px,40vw,210px)}
+.hero{font-weight:800;font-size:clamp(34px,11vw,62px);line-height:.95;letter-spacing:.02em;margin:10px 0 12px}
+.hero.sm{font-size:clamp(26px,8vw,40px);line-height:1}
+.sub{font-weight:500;font-size:12px;letter-spacing:.18em;text-transform:uppercase}
+h2{font-weight:800;font-size:17px;letter-spacing:.24em;margin:40px 0 12px}
+h3{font-weight:700;font-size:13px;letter-spacing:.22em;margin:28px 0 10px}
+.sec-head{border-bottom:1px solid var(--text);padding-bottom:8px;margin-bottom:6px}
+.sec-head h2{margin-bottom:0}
+.wk{gap:4px}
+.wkd{border-radius:0;background:transparent;border:1px solid var(--line);font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.wkd b{font-weight:600;font-size:17px}
+.wkd i{border-radius:0;width:5px;height:5px}
+.wkd.train i{background:var(--muted)}
+.wkd.done i{width:7px;height:7px;background:var(--text)}
+.wkd.today{background:var(--text);border-color:var(--text)}
+.wkd.today.done i,.wkd.today.train i{background:var(--bg)}
+.card,.ex,.rc,.inv-item{border-radius:0;border:1px solid var(--line);background:var(--surface)}
+.hero-card{border-radius:0;background:var(--text);color:var(--bg)}
+.hero-card.is-done{background:var(--surface);color:var(--text);border:1px solid var(--text)}
+.hero-card .k{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;opacity:.6}
+.big{font-weight:800;font-size:clamp(28px,9vw,40px);line-height:1;letter-spacing:.02em}
+.ring .bgc{stroke:currentColor;opacity:.18}
+.ring .fgc{stroke:currentColor;stroke-linecap:butt}
+.hero-card.is-done .ring .bgc{stroke:currentColor}
+.hero-card.is-done .ring .fgc{stroke:currentColor}
+.ring text{font-weight:700;font-size:17px}
+.hero-card .btn{background:var(--bg);color:var(--text)}
+.hero-card.is-done .btn{background:var(--text);color:var(--bg)}
+.stats b,.stats3 b{font-weight:700;font-size:22px}
+.stats span,.stats3 span{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase}
+.row-title,.rc-n{font-weight:600}
+.bar-p{height:3px;border-radius:0;background:var(--line)}
+.bar-p i{background:var(--text)}
+.btn{border-radius:0;font-weight:700;font-size:12.5px;letter-spacing:.16em;min-height:52px;padding:12px 18px}
+.btn.acc{background:var(--accent);color:var(--on-accent)}
+.btn.ghost{border:1px solid var(--text)}
+.btn.sm{font-size:12px;min-height:42px}
+.btn-row .btn,.inv-act .btn{font-size:11px;letter-spacing:.18em}
+.link{font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--text);padding:4px 0}
+.round,.chk,.wd{border-radius:0;border-width:1px}
+.chk.on,.wd.on,.done-dot{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.done-dot{border-radius:0}
+.task-t{font-weight:500}
+.tag{border-radius:0;font-size:10px;letter-spacing:.14em;text-transform:uppercase;padding:3px 7px}
+.tag.acc,.star,.acc-note{background:var(--accent);color:var(--on-accent);border-radius:0}
+.in{border-radius:0;background:transparent;border:1px solid var(--line);font-weight:500}
+.in:focus{border-color:var(--text)}
+.lbl{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+.lbl .in{text-transform:none;letter-spacing:normal}
+.seg{border-radius:0;background:transparent;border:1px solid var(--line);padding:3px}
+.seg button{border-radius:0;font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+.seg button.on{background:var(--accent);color:var(--on-accent)}
+.chip{border-radius:0;border-width:1px;font-weight:700;font-size:15px;letter-spacing:.06em}
+.chip span{letter-spacing:.14em;text-transform:uppercase;font-size:10px}
+.chip.on{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.chip.on span{color:var(--on-accent)}
+.prog-head b{font-weight:700;font-size:20px}
+.ex.done{box-shadow:inset 0 0 0 1px var(--text)}
+.ex-no{font-weight:300;color:var(--text);font-size:24px}
+.pose{border-radius:0}
+.pose .pa{stroke:var(--text)}
+.pose .pra{fill:var(--text)}
+.ex-name{font-weight:700;font-size:16px;letter-spacing:.06em;line-height:1.15}
+.ex-prog,.sn{font-weight:600;font-size:16px}
+.rc-k b,.stepper b{font-weight:700;font-size:22px}
+.big-n{font-weight:700;font-size:32px}
+.last{border-radius:0}
+.sheet-wrap{background:rgba(0,0,0,.72)}
+.sheet{border-radius:0;border-top:1px solid var(--text)}
+.sheet-top h2{font-size:15px}
+nav{padding:0 0 env(safe-area-inset-bottom,0px);background:var(--navbg);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border-top:1px solid var(--line);pointer-events:auto}
+.in-nav{background:transparent;border:0;border-radius:0;backdrop-filter:none;-webkit-backdrop-filter:none;padding:4px 6px;max-width:640px}
+nav button{font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;min-height:56px;gap:5px}
+nav .ic{border-radius:0;width:auto;height:26px;padding:0 14px;position:relative}
+nav button.on .ic{background:transparent;color:var(--text)}
+nav button.on .ic::after{content:"";position:absolute;left:50%;bottom:-3px;width:4px;height:4px;margin-left:-2px;background:var(--text)}
+.rest{border-radius:0;background:var(--accent);color:var(--on-accent);bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+.rest .lab{letter-spacing:.18em;text-transform:uppercase;font-size:10px}
+.rest-t{font-weight:700;font-size:32px}
+.rest button{border-radius:0;background:var(--on-accent);color:var(--accent);font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+.toast{border-radius:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+.sp-ic{border-radius:0;background:var(--accent);color:var(--on-accent)}
+.rec{grid-template-columns:112px 1fr}
+.rec b{font-weight:700;font-size:10.5px;letter-spacing:.12em;overflow-wrap:anywhere}
+.mp-row b,.pr-row b{font-weight:700;font-size:16px}
+:focus-visible{outline:1px solid var(--text);outline-offset:3px}
 </style>
 </head>
 <body>
@@ -274,7 +367,7 @@ const num=n=>{if(n==null||n==='')return '';const r=Math.round(Number(n)*100)/100
 const pnum=v=>{if(v==null)return null;const s=String(v).replace(',','.').trim();if(s==='')return null;const n=parseFloat(s);return isNaN(n)?null:n};
 const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4);
 const shortDate=s=>{const d=typeof s==='number'?new Date(s):parseDk(s);return MS[d.getMonth()]+' '+d.getDate()+'.'};
-const LOGO='<svg viewBox="0 0 64 64" aria-hidden="true"><path fill="var(--accent)" d="M18 12h38l-2.5 11H15.6zM18 12h12l-9 40H9zM14.3 29H44l-2.2 10H12.2z"/></svg>';
+const LOGO='<svg viewBox="0 0 64 64" aria-hidden="true"><path fill="currentColor" d="M32 0C34 22 42 30 64 32 42 34 34 42 32 64 30 42 22 34 0 32 22 30 30 22 32 0Z"/></svg>';
 
 const ICON={
 music:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>',
@@ -476,7 +569,7 @@ let toastT;function toast(m){const el=$('#toast');el.textContent=m;el.classList.
 function seg(key,opts){return `<div class="seg" role="tablist">${opts.map(([v,l])=>`<button role="tab" class="${ui[key]===v?'on':''}" data-a="seg" data-k="${key}" data-v="${v}" aria-selected="${ui[key]===v}">${l}</button>`).join('')}</div>`}
 function stepper(a,v,id){return `<div class="stepper"><button class="round" data-a="${a}" data-v="-1" ${id?`data-id="${id}"`:''} aria-label="Kevesebb">${ICON.minus}</button><b>${v}</b><button class="round" data-a="${a}" data-v="1" ${id?`data-id="${id}"`:''} aria-label="Több">${ICON.plus}</button></div>`}
 function bar(){return `<header class="bar"><div class="brand">${LOGO}<span>FORMA</span></div><button class="icon-btn" data-a="settings" aria-label="Beállítások">${ICON.gear}</button></header>`}
-function heroBlock(big,sub,ghost){const L=String(big).length,fs=L>5?`style="font-size:min(${(92/(L*0.72)).toFixed(1)}vw,${Math.round(600/(L*0.72))}px)"`:'';return `<div class="heroWrap"><div class="heroGhost" aria-hidden="true">${esc(ghost)}</div><div class="hero" ${fs}>${big}</div>${sub?`<div class="sub">${sub}</div>`:''}</div>`}
+function heroBlock(big,sub,ghost){const L=String(big).length,fs=L>5?`style="font-size:min(${(92/(L*1.02)).toFixed(1)}vw,${Math.round(600/(L*1.02))}px)"`:'';return `<div class="heroWrap"><div class="heroGhost" aria-hidden="true">${esc(ghost)}</div><div class="hero" ${fs}>${big}</div>${sub?`<div class="sub">${sub}</div>`:''}</div>`}
 function ring(done,total){const r=30,c=2*Math.PI*r,p=total?done/total:0;return `<svg class="ring" viewBox="0 0 76 76" aria-label="${done} / ${total} gyakorlat kész"><circle class="bgc" cx="38" cy="38" r="${r}"/><circle class="fgc" cx="38" cy="38" r="${r}" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${(c*(1-p)).toFixed(1)}" transform="rotate(-90 38 38)"/><text x="38" y="46" text-anchor="middle">${done}/${total}</text></svg>`}
 function chart(points){if(points.length<2)return `<p class="meta" style="margin-top:12px">Legalább két mérés kell a grafikonhoz.</p>`;
   const W=320,H=150,L=34,Rr=10,T=12,B=24;const vals=points.map(p=>p[1]);let mn=Math.min(...vals),mx=Math.max(...vals);if(mx-mn<1){mn-=0.5;mx+=0.5}const padv=(mx-mn)*0.12;mn-=padv;mx+=padv;
