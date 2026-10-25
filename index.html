@@ -407,6 +407,7 @@ const KEY='forma_state_v1';
 function defaults(){return{v:3,updatedAt:0,settings:{age:21,sex:'m',height:180,weight:60,activity:1.55,surplus:400,creatine:5,days:[1,2,4,5],theme:'dark',water:true,waterGoal:3000,sleep:true,planStart:dk(monday(new Date())),name:'Balázs',goalWeight:null,supps:{},started:dk(),spClientId:''},logs:{},sessions:{},creatine:{},tasks:[],taskDone:{},water:{},sleep:{},weights:[],fav:[],hidden:[],reroll:{},plan:{},supTaken:{},playlists:{},inventory:[],shop:[]}}
 function migrate(s){const d=defaults();const o=Object.assign(d,s||{});o.settings=Object.assign(defaults().settings,(s&&s.settings)||{});if(!o.v||o.v<2){o.v=2;o.settings.planStart=dk(monday(new Date()));o.hidden=o.hidden.filter(x=>RI[x]);o.fav=o.fav.filter(x=>RI[x])}o.inventory=o.inventory.filter(x=>RI[x.r]);if(o.v<3){o.v=3;const ds=Object.keys(o.sessions).concat(Object.keys(o.logs)).sort();o.settings.started=ds[0]||dk()}return o}
 let S;try{S=migrate(JSON.parse(localStorage.getItem(KEY)||'null'))}catch(e){S=defaults()}
+if(!S.settings.spClientId)S.settings.spClientId='593a6265a62a48298451321d0a1f0e69';
 let dbRef=null,sync='local',pushT=null;
 function save(){S.updatedAt=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}schedulePush()}
 function schedulePush(){if(!dbRef)return;clearTimeout(pushT);pushT=setTimeout(push,1500)}
