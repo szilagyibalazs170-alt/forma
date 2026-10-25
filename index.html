@@ -47,7 +47,7 @@ button{font:inherit;cursor:pointer;color:inherit}
 
 /* hero */
 .heroWrap{position:relative;padding:6px 0 4px;isolation:isolate}
-.ghost{position:absolute;right:-24px;top:-18px;z-index:-1;font-family:var(--disp);font-style:italic;font-weight:900;font-size:clamp(130px,44vw,230px);line-height:.8;color:transparent;-webkit-text-stroke:1.5px var(--line);white-space:nowrap;pointer-events:none;user-select:none}
+.heroGhost{position:absolute;right:-24px;top:-18px;z-index:-1;font-family:var(--disp);font-style:italic;font-weight:900;font-size:clamp(130px,44vw,230px);line-height:.8;color:transparent;-webkit-text-stroke:1.5px var(--line);white-space:nowrap;pointer-events:none;user-select:none}
 .hero{font-family:var(--disp);font-style:italic;font-weight:900;font-size:clamp(58px,18vw,100px);line-height:.84;text-transform:uppercase;letter-spacing:-.005em;margin:4px 0 10px;white-space:nowrap}
 .hero.sm{white-space:normal}
 .hero.sm{font-size:clamp(36px,10vw,54px);line-height:.9;margin:0 0 6px}
@@ -476,7 +476,7 @@ let toastT;function toast(m){const el=$('#toast');el.textContent=m;el.classList.
 function seg(key,opts){return `<div class="seg" role="tablist">${opts.map(([v,l])=>`<button role="tab" class="${ui[key]===v?'on':''}" data-a="seg" data-k="${key}" data-v="${v}" aria-selected="${ui[key]===v}">${l}</button>`).join('')}</div>`}
 function stepper(a,v,id){return `<div class="stepper"><button class="round" data-a="${a}" data-v="-1" ${id?`data-id="${id}"`:''} aria-label="Kevesebb">${ICON.minus}</button><b>${v}</b><button class="round" data-a="${a}" data-v="1" ${id?`data-id="${id}"`:''} aria-label="Több">${ICON.plus}</button></div>`}
 function bar(){return `<header class="bar"><div class="brand">${LOGO}<span>FORMA</span></div><button class="icon-btn" data-a="settings" aria-label="Beállítások">${ICON.gear}</button></header>`}
-function heroBlock(big,sub,ghost){const L=String(big).length,fs=L>5?`style="font-size:min(${(92/(L*0.72)).toFixed(1)}vw,${Math.round(600/(L*0.72))}px)"`:'';return `<div class="heroWrap"><div class="ghost" aria-hidden="true">${esc(ghost)}</div><div class="hero" ${fs}>${big}</div>${sub?`<div class="sub">${sub}</div>`:''}</div>`}
+function heroBlock(big,sub,ghost){const L=String(big).length,fs=L>5?`style="font-size:min(${(92/(L*0.72)).toFixed(1)}vw,${Math.round(600/(L*0.72))}px)"`:'';return `<div class="heroWrap"><div class="heroGhost" aria-hidden="true">${esc(ghost)}</div><div class="hero" ${fs}>${big}</div>${sub?`<div class="sub">${sub}</div>`:''}</div>`}
 function ring(done,total){const r=30,c=2*Math.PI*r,p=total?done/total:0;return `<svg class="ring" viewBox="0 0 76 76" aria-label="${done} / ${total} gyakorlat kész"><circle class="bgc" cx="38" cy="38" r="${r}"/><circle class="fgc" cx="38" cy="38" r="${r}" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${(c*(1-p)).toFixed(1)}" transform="rotate(-90 38 38)"/><text x="38" y="46" text-anchor="middle">${done}/${total}</text></svg>`}
 function chart(points){if(points.length<2)return `<p class="meta" style="margin-top:12px">Legalább két mérés kell a grafikonhoz.</p>`;
   const W=320,H=150,L=34,Rr=10,T=12,B=24;const vals=points.map(p=>p[1]);let mn=Math.min(...vals),mx=Math.max(...vals);if(mx-mn<1){mn-=0.5;mx+=0.5}const padv=(mx-mn)*0.12;mn-=padv;mx+=padv;
