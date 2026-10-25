@@ -1,0 +1,17 @@
+FORMA telepítése a kezdőképernyőre
+
+1. Hozz létre egy új, nyilvános repót a GitHubon, például "forma" néven.
+2. Töltsd fel a mappa összes fájlját a repó gyökerébe (Add file, Upload files).
+3. A repóban: Settings, Pages, Source: Deploy from a branch, Branch: main, mappa: / (root), Save.
+4. 1-2 perc múlva megkapod a címet, például https://felhasznalonev.github.io/forma/
+5. Nyisd meg a telefonon Chrome-ban, majd a jobb felső menüben válaszd az "Alkalmazás telepítése" lehetőséget.
+
+Spotify napi playlist (egyszer kell beállítani)
+1. Nyisd meg a developer.spotify.com/dashboard oldalt, és lépj be a Spotify fiókoddal.
+2. Create app: név tetszőleges, a Redirect URI legyen pontosan az app címe (az appban a Beállítások, Spotify részben látod és kimásolhatod), API: Web API.
+3. Az app Settings oldalán, a User Management részben add hozzá a saját Spotify e-mail címedet.
+4. Másold ki a Client ID-t, és illeszd be a FORMA Beállítások, Spotify mezőjébe.
+5. Koppints a "Spotify összekötése" gombra, és engedélyezd.
+
+Adatok átvitele a claude.ai-os verzióból
+A claude.ai-os appban: Beállítások, Mentés fájlba. A telepített appban: Beállítások, Visszatöltés, és válaszd ki a fájlt.
