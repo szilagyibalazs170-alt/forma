@@ -407,6 +407,11 @@ nav button.on .ic::after{content:"";position:absolute;left:50%;bottom:-3px;width
 .qk{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0}
 .qk button{border:1px solid var(--line);background:var(--surface);color:var(--text);padding:8px 10px;font-size:13px;font-weight:600;text-align:left;max-width:100%}
 .qk button span{display:block;font-size:11px;color:var(--muted);font-weight:500}
+.photo{display:flex;cursor:pointer}
+.photo svg{width:20px;height:20px}
+.bc{gap:8px;margin:4px 0 6px}
+.bc .btn{flex:none;margin:0}
+.scan{border-left:3px solid var(--text);padding:4px 0 4px 10px;font-size:14px;margin:10px 0}
 .hero-card .ups{margin-top:6px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
 </style>
 </head>
@@ -434,6 +439,7 @@ const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slic
 const shortDate=s=>{const d=typeof s==='number'?new Date(s):parseDk(s);return MS[d.getMonth()]+' '+d.getDate()+'.'};
 const MARK='<svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">'+[[50,88.5,0,67.5],[42.7,99,-22.8,67.7],[57.3,99,22.8,67.7]].map(([x,y,a,L])=>`<path transform="translate(${x} ${y}) rotate(${a}) translate(0 ${-L})" d="M0-19Q1.6-2.4 12 0Q2.6 1.6 2 7L0 ${L}L-2 7Q-2.6 1.6-12 0Q-1.6-2.4 0-19Z"/>`).join('')+'</svg>';
 const LOGO=MARK;
+const CAM_ICON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>';
 const SLOGAN='Sometimes you. Sometimes me. Always us.';
 
 const ICON={
@@ -680,7 +686,46 @@ function foodCard(t){const L=(S.food&&S.food[t])||[],tg=targets(),s=foodSum(t),s
     h+=L.map(x=>`<button class="fd" data-a="foodEdit" data-id="${x.id}"><span class="meta">${esc(x.tm||'')}</span><span class="grow"><span class="row-title">${esc(x.n)}</span><span class="meta" style="display:block">${num(x.p||0)} g fehérje, ${num(x.c||0)} g szénhidrát${x.s!=null?', '+num(x.s)+' g cukor':''}</span></span><b>${Math.round(x.kcal)}</b></button>`).join('')}
   else h+=`<p class="meta" style="margin:8px 0 0">Írd be, mit ettél, és itt látod, mennyi hiányzik még a célodból.</p>`;
   return h+`<button class="btn acc full" data-a="foodNew">Étkezés hozzáadása</button></div>`}
-function readFE(){const e=ui.fe,g=id=>$('#'+id);if(!e||!g('feN'))return;e.n=g('feN').value;e.kcal=pnum(g('feK').value);e.p=pnum(g('feP').value);e.c=pnum(g('feC').value);e.s=pnum(g('feS').value)}
+function readFE(){const e=ui.fe,g=id=>$('#'+id);if(!e||!g('feN'))return;e.n=g('feN').value;e.kcal=pnum(g('feK').value);e.p=pnum(g('feP').value);e.c=pnum(g('feC').value);e.s=pnum(g('feS').value);if(g('feG'))e.g=pnum(g('feG').value)}
+
+/* ---------- packaging photo: barcode -> Open Food Facts, else on-device OCR of the nutrition table ---------- */
+const libs={};
+function loadScript(src){return libs[src]=libs[src]||new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=()=>{delete libs[src];no(new Error('load'))};document.head.appendChild(s)})}
+async function fileCanvas(f,max){const url=URL.createObjectURL(f);try{const img=await new Promise((ok,no)=>{const i=new Image();i.onload=()=>ok(i);i.onerror=no;i.src=url});
+  const k=Math.min(1,max/Math.max(img.naturalWidth,img.naturalHeight)),c=document.createElement('canvas');c.width=Math.round(img.naturalWidth*k);c.height=Math.round(img.naturalHeight*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);return c}finally{URL.revokeObjectURL(url)}}
+async function findBarcode(cv){
+  if('BarcodeDetector' in window){try{const r=await new BarcodeDetector({formats:['ean_13','ean_8','upc_a','upc_e']}).detect(cv);if(r[0])return r[0].rawValue}catch(e){}}
+  try{await loadScript('https://unpkg.com/@zxing/library@0.21.3/umd/index.min.js');const Z=window.ZXing,h=new Map();
+    h.set(Z.DecodeHintType.POSSIBLE_FORMATS,[Z.BarcodeFormat.EAN_13,Z.BarcodeFormat.EAN_8,Z.BarcodeFormat.UPC_A,Z.BarcodeFormat.UPC_E]);h.set(Z.DecodeHintType.TRY_HARDER,true);
+    const bm=new Z.BinaryBitmap(new Z.HybridBinarizer(new Z.HTMLCanvasElementLuminanceSource(cv)));return new Z.MultiFormatReader().decode(bm,h).getText()}catch(e){return null}}
+async function offLookup(code){const r=await fetch('https://world.openfoodfacts.org/api/v2/product/'+encodeURIComponent(code)+'.json?fields=product_name,product_name_hu,brands,nutriments,serving_quantity');if(!r.ok)return null;
+  const j=await r.json();if(j.status!==1||!j.product)return null;const P=j.product,n=P.nutriments||{},v=k=>n[k]==null?null:Number(n[k]);
+  const kcal=v('energy-kcal_100g')??(v('energy_100g')!=null?v('energy_100g')/4.184:null);if(kcal==null)return null;
+  const pn=(P.product_name_hu||P.product_name||'').trim(),br=(P.brands||'').split(',')[0].trim();
+  return{name:!br||pn.toLowerCase().includes(br.toLowerCase())?pn:(br+' '+pn).trim(),kcal,p:v('proteins_100g'),c:v('carbohydrates_100g'),s:v('sugars_100g'),srv:Number(P.serving_quantity)||null,src:'Open Food Facts'}}
+async function ocrText(cv){await loadScript('https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js');const w=await Tesseract.createWorker(['hun','eng']);try{return(await w.recognize(cv)).data.text}finally{w.terminate()}}
+// Nutrition tables list the per-100 g column first, so the first number after each label is taken.
+// OCR often reads "28 g" as "289" (the g becomes a 9), so a trailing 9 with no unit and nothing after it on the line is treated as the unit.
+function parseLabel(txt){const t=txt.toLowerCase().replace(/(\d),(\d)/g,'$1.$2').replace(/[|]/g,' '),N='(\\d{1,4}(?:\\.\\d+)?)',lines=t.split('\n');
+  const after=w=>{const re=new RegExp(w);for(const l of lines){const i=l.search(re);if(i<0)continue;const rest=l.slice(i).replace(/^[^0-9]*/,''),m=rest.match(/^(\d{1,4}(?:\.\d+)?)(\s*[gq](?![a-z]))?/);if(!m)continue;
+    let v=m[1];if(!m[2]&&v.length>1&&/9$/.test(v)&&!/\d/.test(rest.slice(m[0].length)))v=v.slice(0,-1).replace(/\.$/,'');return parseFloat(v)}return null};
+  let kcal=(t.match(new RegExp(N+'\\s*kcal'))||[])[1];kcal=kcal!=null?parseFloat(kcal):null;if(kcal==null){const kj=(t.match(new RegExp(N+'\\s*kj'))||[])[1];if(kj!=null)kcal=parseFloat(kj)/4.184}
+  const p=after('feh.?rje|protein|eiwei'),c=after('sz.?nhidr|carbohydrate|kohlenhydrat'),s=after('cukor|cukr|sugar|zucker');
+  return kcal==null&&p==null?null:{name:'',kcal,p,c,s,srv:null,src:'a fotón lévő táblázat'}}
+function applyPer(e,per){e.per=per;if(!(e.n||'').trim()&&per.name)e.n=per.name;e.g=e.g||per.srv||100;feCalc(e)}
+function feCalc(e){const g=e.g,m=(v,d)=>v==null||g==null?null:Math.round(v*g/100*d)/d;e.kcal=m(e.per.kcal,1);e.p=m(e.per.p,10);e.c=m(e.per.c,10);e.s=m(e.per.s,10)}
+async function scanFood(f){readFE();const e=ui.fe,show=st=>{e.st=st;if(ui.sheet==='food'&&ui.fe===e)renderSheet(true)};
+  show('Kép elemzése...');
+  try{const cv=await fileCanvas(f,1600),code=await findBarcode(cv);
+    if(code){show('Vonalkód: '+code+'. Termék keresése...');const p=await offLookup(code).catch(()=>null);if(p){applyPer(e,p);return show('Megtaláltam: '+p.name+'. Ellenőrizd az értékeket, és írd be, mennyit ettél.')}}
+    show((code?'Ez a termék nincs az adatbázisban. ':'')+'A tápérték-táblázat leolvasása... Az első alkalommal ez 10-30 másodpercig is tarthat.');
+    const p=parseLabel(await ocrText(cv));
+    if(p){applyPer(e,p);show('Leolvastam a táblázatot. Ellenőrizd az értékeket, mert a szövegfelismerés tévedhet.')}
+    else show('Nem találtam tápérték-táblázatot vagy vonalkódot a képen. Fotózd le közelebbről, egyenesen és jó fényben a táblázatot vagy a vonalkódot.')}
+  catch(err){show('A kép elemzése nem sikerült. Nézd meg, hogy van-e internet, és próbáld újra.')}}
+async function barcodeLookup(code){readFE();const e=ui.fe,show=st=>{e.st=st;if(ui.sheet==='food'&&ui.fe===e)renderSheet(true)};
+  if(!/^\d{8,14}$/.test(code))return show('A vonalkód 8-14 számjegyből áll.');show('Termék keresése...');
+  const p=await offLookup(code).catch(()=>null);if(p){applyPer(e,p);show('Megtaláltam: '+p.name+'.')}else show('Ezt a vonalkódot nem találtam az Open Food Facts adatbázisban. Fotózd le a tápérték-táblázatot, vagy írd be kézzel.')}
 let toastT;function toast(m){const el=$('#toast');el.textContent=m;el.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),2200)}
 function seg(key,opts){return `<div class="seg" role="tablist">${opts.map(([v,l])=>`<button role="tab" class="${ui[key]===v?'on':''}" data-a="seg" data-k="${key}" data-v="${v}" aria-selected="${ui[key]===v}">${l}</button>`).join('')}</div>`}
 function stepper(a,v,id){return `<div class="stepper"><button class="round" data-a="${a}" data-v="-1" ${id?`data-id="${id}"`:''} aria-label="Kevesebb">${ICON.minus}</button><b>${v}</b><button class="round" data-a="${a}" data-v="1" ${id?`data-id="${id}"`:''} aria-label="Több">${ICON.plus}</button></div>`}
@@ -793,7 +838,7 @@ function barChart(labels,values,fmt){const W=320,H=140,B=22,T=14,n=values.length
 /* ---------- Spotify ---------- */
 const SEED_PL={'2026-10-25':{name:'Mai Rap Mix: Új és Régi Gyöngyszemek',url:'https://open.spotify.com/playlist/5IX2QDZilZIXTtdXfCEK9v?utm_source=anthropic&utm_medium=claude&go=1&nap_web=1&request_id=cb239e7e-4f9d-4342-b84b-14b7eefd5ea2'}};
 let mcpNs=null,spBusy=false,spMsg='';
-const ARTISTS='Travis Scott, Gunna, Future, Kanye West, J. Cole, Juice WRLD, Migos, SAINt JHN és Russ';
+const ARTISTS='Drake, Tory Lanez, Juice WRLD, The Kid LAROI, Khalid, The Weeknd, Russ, Bazzi, SAINt JHN, Ollie, Dzsúdló, Bruno x Spacc, Ufo361 és Jazeek, plusz hozzájuk hasonló új előadók, például Don Toliver, PARTYNEXTDOOR, Bryson Tiller, Pogány Induló és Luciano';
 function plPrompt(now){const day=dayForWeekday(now.getDay());
   const base=`új rap ${ARTISTS} számokkal, pár kevésbé ismert hidden gem rappel, pár régi, jó basszusos klasszikussal 50 Cent, Tupac és The Notorious B.I.G. számokkal, és német rappel Ufo361, Jazeek és Shindy számokkal`;
   if(day&&!S.sessions[dk(now)])return `Készíts nekem egy pörgős, energikus edzős rap playlistet mára a ${day.name.toLowerCase()} edzéshez, kb. 75 percben: ${base}.`;
@@ -822,7 +867,7 @@ async function makePlaylist(){if(spBusy)return;if(STANDALONE){spBusy=true;spMsg=
 function spotifyCard(){if(!STANDALONE&&!mcpNs&&!todayPl())return '';const pl=todayPl(),day=dayForWeekday(new Date().getDay());
   let h=`<div class="sec-head"><h2>Mai zene</h2></div><div class="card sp">`;
   if(pl)h+=`<div class="row"><div class="sp-ic">${ICON.music}</div><div class="grow"><div class="row-title">${esc(pl.name)}</div><div class="meta">Spotify playlist, ${day&&!S.sessions[dk()]?'edzéshez':'chill'}</div></div></div><a class="btn acc full" href="${esc(pl.url)}" target="_blank" rel="noopener">Megnyitás a Spotify-ban</a>`;
-  else h+=`<div class="meta">${day&&!S.sessions[dk()]?'Edzésnap van: pörgős rap mix a '+day.name.toLowerCase()+' naphoz.':'Pihenősebb nap: chilles rap mix.'} A kedvenc előadóid, hidden gemek, old school és német rap.</div>`;
+  else h+=`<div class="meta">${day&&!S.sessions[dk()]?'Edzésnap van: pörgős rap mix a '+day.name.toLowerCase()+' naphoz.':'Pihenősebb nap: chilles rap mix.'} Fele a mostani kedvenceidből (Drake, Tory Lanez, Dzsúdló, Ufo361...), fele hozzájuk hasonló új előadókból.</div>`;
   const canGen=mcpNs||(STANDALONE&&spLinked());
   if(canGen)h+=`<button class="btn ${pl?'ghost':'acc'} full" data-a="playlist" ${spBusy?'disabled':''}>${spBusy?'Készül a playlist...':pl?'Másik playlist mára':'Mai playlist elkészítése'}</button>`;
   else if(STANDALONE)h+=(S.settings.spClientId?`<button class="btn acc full" data-a="spLogin">Spotify összekötése</button>`:`<button class="btn ghost full" data-a="settings">Spotify beállítása</button>`);
@@ -841,7 +886,7 @@ function spLinked(){return !!spGet().rt}
 async function spLogin(){const cid=(S.settings.spClientId||'').trim();if(!cid){openSheet('settings');toast('Add meg a Spotify Client ID-t');return}
   const ver=b64u(crypto.getRandomValues(new Uint8Array(48))),ch=b64u(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(ver))),st=b64u(crypto.getRandomValues(new Uint8Array(12)));
   spSet({ver,state:st});
-  location.href='https://accounts.spotify.com/authorize?'+new URLSearchParams({client_id:cid,response_type:'code',redirect_uri:redirectUri(),code_challenge_method:'S256',code_challenge:ch,state:st,scope:'playlist-modify-private playlist-modify-public user-read-private'})}
+  location.href='https://accounts.spotify.com/authorize?'+new URLSearchParams({client_id:cid,response_type:'code',redirect_uri:redirectUri(),code_challenge_method:'S256',code_challenge:ch,state:st,scope:'playlist-modify-private playlist-modify-public user-read-private user-top-read'})}
 async function spHandleRedirect(){if(!STANDALONE)return;const u=new URL(location.href),code=u.searchParams.get('code'),st=u.searchParams.get('state'),err=u.searchParams.get('error');if(!code&&!err)return;
   history.replaceState(null,'',redirectUri());
   if(err){spMsg='A Spotify összekötés megszakadt ('+err+').';render(true);return}
@@ -857,13 +902,21 @@ async function spToken(){const sp=spGet();if(sp.at&&sp.exp>Date.now())return sp.
 async function spApi(path,opt={}){const tk=await spToken();if(!tk)throw{sp:'auth'};
   const r=await fetch('https://api.spotify.com/v1'+path,{...opt,headers:{Authorization:'Bearer '+tk,'Content-Type':'application/json'}});
   if(r.status===401){spSet({});throw{sp:'auth'}}if(!r.ok){const j=await r.json().catch(()=>null);throw{sp:'http',status:r.status,msg:j&&j.error&&(j.error.message||String(j.error))}}return r.status===204?null:r.json().catch(()=>null)}
-const HYPE=['Travis Scott','Future','Gunna','Migos','Kanye West','Juice WRLD','50 Cent','Ufo361','SAINt JHN'];
-const CHILL=['J. Cole','Russ','Juice WRLD','Kanye West','2Pac','The Notorious B.I.G.','Jazeek','Shindy','SAINt JHN'];
+// Built from the user's Spotify listening (Oct 2026): melodic rap/R&B, Hungarian and German rap, a bit of country rap.
+// MY_* = artists they already play, SIM_* = similar artists for discovery.
+const MY_HYPE=['Drake','Tory Lanez','Juice WRLD','The Kid LAROI','SAINt JHN','Future','Travis Scott','Gunna','Post Malone','Ufo361','Dzsúdló','Bruno x Spacc','T. Danny','KKevin','50 Cent'];
+const MY_CHILL=['Khalid','The Weeknd','Russ','Bazzi','Ollie','mike.','Fresco Trey','Alleh','The Neighbourhood','Jazeek','Drake','Post Malone','Shaboozey','Morgan Wallen','J. Cole'];
+const SIM_HYPE=['Don Toliver','Lil Tecca','Trippie Redd','Roddy Ricch','Lil Tjay','A Boogie Wit da Hoodie','Swae Lee','NAV','Pogány Induló','Desh','Beton.Hofi','Luciano','Bonez MC','Pashanim','Central Cee'];
+const SIM_CHILL=['PARTYNEXTDOOR','Bryson Tiller','6LACK','Brent Faiyaz','Giveon','Jeremih','Rod Wave','Lund','Powfu','Jutes','iann dior','Azahriah','Krúbi','Apache 207','RIN'];
+const HYPE=MY_HYPE,CHILL=MY_CHILL;
+async function spTopArtists(){try{const j=await spApi('/me/top/artists?'+new URLSearchParams({limit:'15',time_range:'short_term'}));return((j&&j.items)||[]).map(a=>a.name)}catch(e){if(e&&e.sp==='auth')throw e;return[]}}
 async function spGenerate(){const now=new Date(),day=dayForWeekday(now.getDay()),hype=!!(day&&!S.sessions[dk(now)]),r=rng(hash(dk(now)+'|'+Date.now()));
   const norm=s=>String(s).toLowerCase().replace(/[^a-z0-9]/g,'');
   // Since Feb 2026 dev-mode search returns max 10 results and no popularity, so variety comes from random offsets and skipping recently used tracks.
-  const recent=new Set(S.plHist||[]),base=hype?HYPE:CHILL,other=(hype?CHILL:HYPE).filter(a=>!base.includes(a));
-  const list=[...base,...other.sort(()=>r()-.5).slice(0,3)];let tracks=[];
+  // About half the artists come from what the user plays (live top artists when the token allows it), half are similar new names.
+  const recent=new Set(S.plHist||[]),shuf=a=>[...a].sort(()=>r()-.5),top=await spTopArtists();
+  const mine=[...new Set([...shuf(top).slice(0,3),...shuf(hype?MY_HYPE:MY_CHILL)])].slice(0,7),sim=shuf(hype?SIM_HYPE:SIM_CHILL).filter(a=>!mine.includes(a)).slice(0,7);
+  const list=[...mine,...sim];let tracks=[];
   const pick=(arr,n)=>{const fresh=arr.filter(x=>!recent.has(x.uri)),c=[...(fresh.length>=n?fresh:arr)],out=[];for(let i=0;i<n&&c.length;i++)out.push(c.splice(Math.floor(r()*c.length),1)[0]);return out};
   const search=async(q,off)=>{const j=await spApi('/search?'+new URLSearchParams({q,type:'track',limit:'10',offset:String(off)}));return((j&&j.tracks&&j.tracks.items)||[]).filter(x=>x&&x.uri)};
   for(const a of list){const mine=x=>x.artists&&x.artists.some(y=>norm(y.name)===norm(a)),off=Math.floor(r()*4)*10;let items=(await search('artist:"'+a+'"',off)).filter(mine);
@@ -1046,6 +1099,11 @@ task(){const t=ui.te;return `${sheetTop(t.id?'Teendő szerkesztése':'Új teend�
   <button class="btn acc full" data-a="teSave">Mentés</button>${t.id?'<button class="btn ghost full danger" data-a="teDel">Törlés</button>':''}`},
 food(){const e=ui.fe,mp=mealPlan(new Date()),rec=recentFoods();
   return `${sheetTop(e.id?'Étkezés szerkesztése':'Mit ettél?')}
+  ${!e.id?`<label class="btn acc full photo">${CAM_ICON}Csomagolás fotózása<input type="file" accept="image/*" capture="environment" id="feImg" hidden></label>
+  <p class="meta">Fotózd le a vonalkódot vagy a tápérték-táblázatot, és kitöltöm az értékeket. Főtt ételnél válassz a receptek közül, vagy írd be kézzel.</p>
+  <div class="row bc"><input class="in" id="feBc" inputmode="numeric" placeholder="vagy írd be a vonalkódot" aria-label="Vonalkód"><button class="btn ghost sm" data-a="feBc">Keresés</button></div>`:''}
+  ${e.st?`<p class="scan">${esc(e.st)}</p>`:''}
+  ${e.per?`<div class="card"><div class="meta">100 g-ban, forrás: ${esc(e.per.src)}: ${Math.round(e.per.kcal)} kcal${e.per.p!=null?', '+num(e.per.p)+' g fehérje':''}${e.per.c!=null?', '+num(e.per.c)+' g szénhidrát':''}${e.per.s!=null?', '+num(e.per.s)+' g cukor':''}</div><label class="lbl">Mennyit ettél? (g vagy ml)<input class="in" id="feG" inputmode="decimal" value="${num(e.g)}"></label>${e.per.srv?`<button class="link" data-a="feSrv">1 adag: ${num(e.per.srv)} g</button>`:''}</div>`:''}
   ${!e.id&&rec.length?`<div class="lbl">Gyakori</div><div class="qk">${rec.map((x,i)=>`<button data-a="feQuick" data-i="${i}">${esc(x.n)}<span>${Math.round(x.kcal)} kcal, ${num(x.p||0)} g fehérje</span></button>`).join('')}</div>`:''}
   ${!e.id&&mp.length?`<div class="lbl">A mai étrendből, 1 adag</div><div class="qk">${mp.map(([l,r])=>`<button data-a="feRecipe" data-id="${r.id}">${r.n}<span>${r.kcal} kcal, ${r.p} g fehérje</span></button>`).join('')}</div>`:''}
   <label class="lbl">Mit ettél?<input class="in" id="feN" value="${esc(e.n)}" placeholder="pl. 3 tojás és 2 pirítós" maxlength="60"></label>
@@ -1125,6 +1183,8 @@ case 'day':ui.day=d.d;render();break;
 case 'guide':ui.guide[d.ex]=!ui.guide[d.ex];render(true);break;
 case 'swap':ui.sw={o:d.o,id:d.id};openSheet('swap');break;
 case 'foodNew':ui.fe={id:null,n:'',kcal:null,p:null,c:null,s:null};openSheet('food');break;
+case 'feBc':{const v=($('#feBc').value||'').replace(/\D/g,'');barcodeLookup(v);break}
+case 'feSrv':readFE();ui.fe.g=ui.fe.per.srv;feCalc(ui.fe);renderSheet(true);break;
 case 'foodEdit':{const x=((S.food||{})[t]||[]).find(y=>y.id===d.id);if(!x)break;ui.fe={...x};openSheet('food');break}
 case 'feQuick':{const x=recentFoods()[Number(d.i)];if(x){readFE();Object.assign(ui.fe,{n:x.n,kcal:x.kcal,p:x.p,c:x.c,s:x.s});renderSheet(true)}break}
 case 'feRecipe':{const r=RI[d.id];if(r){readFE();Object.assign(ui.fe,{n:r.n,kcal:r.kcal,p:r.p,c:r.ch});renderSheet(true)}break}
@@ -1187,7 +1247,9 @@ document.addEventListener('change',e=>{const el=e.target,t=dk();
     else if(k==='goalWeight')s[k]=pnum(el.value);
     else{const v=pnum(el.value);if(v!=null)s[k]=v}
     save();applyTheme();ui.day=null;render(true);if(k==='spClientId'&&ui.sheet)renderSheet(true)}
-  if(el.id==='impFile'&&el.files&&el.files[0])importData(el.files[0]);});
+  if(el.id==='impFile'&&el.files&&el.files[0])importData(el.files[0]);
+  if(el.id==='feImg'&&el.files&&el.files[0])scanFood(el.files[0]);});
+document.addEventListener('input',e=>{if(e.target.id!=='feG'||!ui.fe||!ui.fe.per)return;readFE();feCalc(ui.fe);const f=(id,v)=>{const x=$('#'+id);if(x)x.value=num(v)};f('feK',ui.fe.kcal);f('feP',ui.fe.p);f('feC',ui.fe.c);f('feS',ui.fe.s)});
 $('#sheetWrap').addEventListener('click',e=>{if(e.target.id==='sheetWrap')closeSheet()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&ui.sheet)closeSheet()});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&!ui.sheet&&!(document.activeElement&&document.activeElement.matches('input,select')))render(true)});
