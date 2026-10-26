@@ -407,6 +407,29 @@ nav button.on .ic::after{content:"";position:absolute;left:50%;bottom:-3px;width
 .qk{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0}
 .qk button{border:1px solid var(--line);background:var(--surface);color:var(--text);padding:8px 10px;font-size:13px;font-weight:600;text-align:left;max-width:100%}
 .qk button span{display:block;font-size:11px;color:var(--muted);font-weight:500}
+.wo{position:fixed;inset:0;z-index:60;background:var(--bg);overflow:auto;overscroll-behavior:contain;padding:calc(env(safe-area-inset-top,0px) + 12px) 18px calc(env(safe-area-inset-bottom,0px) + 110px)}
+.wo-in-wrap{max-width:640px;margin:0 auto}
+.wo-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.wo-dots{flex:1;display:flex;gap:4px}
+.wo-dots i{flex:1;height:4px;background:var(--line)}
+.wo-dots i.d{background:var(--text)}
+.wo-dots i.c{outline:2px solid var(--text);outline-offset:1px}
+.wo-pos{font-weight:700;font-stretch:125%}
+.wo-name{font-size:26px;font-weight:800;font-stretch:125%;line-height:1.05;text-transform:uppercase;letter-spacing:.03em;margin:4px 0}
+.wo-set{font-size:44px;font-weight:800;font-stretch:125%;margin:16px 0 10px;line-height:1}
+.wo-set span{font-size:20px;color:var(--muted)}
+.wo-in{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wo-in .in{font-size:28px;min-height:64px;font-weight:700}
+.wo-go{min-height:72px;font-size:16px}
+.wo-sets{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.wo-sets span{border:1px solid var(--line);padding:4px 8px;font-size:13px;color:var(--muted)}
+.wo-sets span.d{border-color:var(--text);color:var(--text);font-weight:700}
+.rest{z-index:70}
+.toast{z-index:80}
+.lift+.lift{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.lift .bar-p{margin-top:8px}
+.price .big-n{font-size:24px}
+.wk-img{display:block;width:100%;max-width:360px;margin:8px auto;border:1px solid var(--line)}
 .photo{display:flex;cursor:pointer}
 .photo svg{width:20px;height:20px}
 .bc{gap:8px;margin:4px 0 6px}
@@ -628,7 +651,7 @@ const ui={tab:'ma',day:null,guide:{},foodSeg:'het',prepSeg:'plan',prep:{r:null,d
 function applyTheme(){const t=S.settings.theme,h=document.documentElement;if(t==='system')h.removeAttribute('data-theme');else h.setAttribute('data-theme',t);
   const dark=t==='dark'||(t==='system'&&matchMedia('(prefers-color-scheme: dark)').matches),m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',t==='blue'?'#AED8FD':dark?'#000000':'#EFEDE8')}
 function curWeight(){const w=S.weights;return w.length?w[w.length-1][1]:S.settings.weight}
-function targets(){const st=S.settings,w=curWeight();const bmr=10*w+6.25*st.height-5*st.age+(st.sex==='m'?5:-161);const kcal=Math.round((bmr*Number(st.activity)+Number(st.surplus))/10)*10;const p=Math.round(w*2);const f=Math.round(kcal*0.25/9);const c=Math.max(0,Math.round((kcal-p*4-f*9)/4));return{kcal,p,f,c}}
+function targets(){const st=S.settings,w=curWeight();const bmr=10*w+6.25*st.height-5*st.age+(st.sex==='m'?5:-161);const kcal=Math.round((bmr*Number(st.activity)+Number(st.surplus)+Number(st.calAdj||0))/10)*10;const p=Math.round(w*2);const f=Math.round(kcal*0.25/9);const c=Math.max(0,Math.round((kcal-p*4-f*9)/4));return{kcal,p,f,c}}
 function cycleInfo(d=new Date()){const start=parseDk(S.settings.planStart);let weeks=Math.round((monday(d)-start)/(7*DAY));if(weeks<0)weeks=0;const cycle=Math.floor(weeks/6)+1,week=weeks%6+1;return{cycle,week,deload:week===6,variant:(cycle-1)%2?'B':'A'}}
 function dayForWeekday(wd){const i=S.settings.days.indexOf(wd);return i>=0?DAYS[i]:null}
 function nextTraining(from){for(let i=1;i<=7;i++){const d=new Date(from);d.setDate(d.getDate()+i);const day=dayForWeekday(d.getDay());if(day)return{wd:d.getDay(),day}}return null}
@@ -675,6 +698,39 @@ function prepCalc(r,days,per){let total=days*per,fridge,freezer=0,warn='',plan='
   if(r.st==='fridge'){const cap=r.fd*per;if(total>cap){warn='Ez az étel csak hűtőben tárolható, legfeljebb '+r.fd+' napig. Ezért '+r.fd+' napra számoltam ('+cap+' adag). Hosszabb időre válassz fagyasztható receptet.';total=cap}fridge=total;plan='Minden adag a hűtőbe megy, '+r.fd+' napon belül fogyaszd el.'}
   else{const fdays=Math.min(days,r.fd);fridge=fdays*per;freezer=total-fridge;plan=(fdays===1?'Az 1. napon':'Az 1-'+fdays+'. napon')+' a hűtőből eszel.'+(freezer?' A többit fagyaszd le ('+r.fm+' hónapig jó), és mindig előző este tedd át a hűtőbe kiolvadni.':'')}
   return{total,fridge,freezer,warn,plan}}
+/* ---------- smart calorie target: needs 2+ weeks of weigh-ins, asks at most every 2 weeks ---------- */
+function calAdvice(){const w=S.weights,t=dk();if(w.length<2||(parseDk(w[w.length-1][0])-parseDk(w[0][0]))/DAY<13)return null;
+  if(S.calAsk&&(parseDk(t)-parseDk(S.calAsk))/DAY<14)return null;const tr=weightTrend();if(tr==null)return null;const tg=targets(),trs=num(Math.round(tr*100)/100);
+  const days=[];for(let i=1;i<=7;i++){const x=new Date();x.setDate(x.getDate()-i);const s=foodSum(dk(x));if(s.n)days.push(s.kcal)}const avg=days.length>=4?Math.round(days.reduce((a,b)=>a+b,0)/days.length):null;
+  if(tr<0.1){if(avg!=null&&avg<tg.kcal-250)return{amt:0,why:`Az elmúlt hetekben nem nőtt a súlyod (heti ${trs} kg), de a napló szerint átlagosan csak ${avg} kcal-t eszel a ${tg.kcal} kcal célból. Nem a cél kevés, hanem az evés: egy plusz shake (600-800 kcal) a legegyszerűbb megoldás.`};
+    return{amt:150,why:`Az elmúlt hetekben nem nőtt a súlyod (heti ${trs} kg). Emeljük a napi célt 150 kcal-lal, ${tg.kcal} kcal-ról ${tg.kcal+150} kcal-ra?`}}
+  if(tr>0.6)return{amt:-150,why:`Heti ${trs} kg-ot hízol, ez gyorsabb az ideálisnál, így több lesz a zsír. Csökkentsük a napi célt 150 kcal-lal, ${tg.kcal-150} kcal-ra?`};
+  return null}
+function calCard(){const a=calAdvice();if(!a)return '';return `<div class="card warn-card cal"><div class="row-title">Kalóriacél-igazítás</div><p class="meta" style="margin:6px 0 0">${a.why}</p>${a.amt?`<div class="btn-row"><button class="btn acc" data-a="calYes" data-v="${a.amt}">${a.amt>0?'Emeld':'Csökkentsd'}</button><button class="btn ghost" data-a="calNo">Most nem</button></div>`:`<button class="btn ghost full" data-a="calNo">Értem</button>`}</div>`}
+
+/* ---------- strength levels from estimated 1RM (Epley), thresholds as bodyweight multiples ---------- */
+const LIFTS=[['squat','Guggolás',[0.75,1.25,1.5,2]],['bench','Fekvenyomás',[0.5,0.75,1,1.5]],['deadlift','Felhúzás',[1,1.5,2,2.5]],['ohp','Vállból nyomás',[0.4,0.55,0.7,1]]];
+const LVN=['Kezdő','Alap','Középhaladó','Haladó','Profi'];
+function e1rm(id){let b=0;for(const d in S.logs){const l=S.logs[d][id];if(l)for(const s of l)if(s[2]&&s[0]&&s[1]&&s[1]<=12)b=Math.max(b,s[0]*(1+s[1]/30))}return b}
+function strengthCard(){const bw=curWeight();return `<div class="card">${LIFTS.map(([id,n,th])=>{const e=e1rm(id);if(!e)return `<div class="lift"><div class="row"><div class="grow"><div class="row-title">${n}</div><div class="meta">Még nincs adat, az első edzés után jelenik meg.</div></div></div></div>`;
+  const ratio=e/bw,lv=th.filter(x=>ratio>=x).length,lo=lv?th[lv-1]:0,hi=th[lv],pct=hi?Math.min(100,(ratio-lo)/(hi-lo)*100):100;
+  return `<div class="lift"><div class="row"><div class="grow"><div class="row-title">${n}</div><div class="meta">Becsült max. kb. ${Math.round(e)} kg, ${num(Math.round(ratio*100)/100)}× testsúly</div></div><span class="tag acc">${LVN[lv]}</span></div><div class="bar-p"><i style="width:${pct}%"></i></div><div class="meta" style="margin-top:4px">${hi?`Következő szint (${LVN[lv+1]}): kb. ${Math.round(hi*bw)} kg`:'A legfelső szinten vagy.'}</div></div>`}).join('')}<div class="meta" style="margin-top:10px">A becsült maximum (1RM) a legjobb szettedből számolódik: súly × (1 + ismétlés / 30). Nem kell kipróbálnod élesben.</div></div>`}
+
+/* ---------- ingredient prices (rough Hungarian supermarket prices, 2026; Ft per kg or l = k, per piece = d) ---------- */
+const PRICES=[['só|bors|víz|jégkocka',{k:0,d:0}],['olívaolaj',{k:4000}],['szezámolaj',{k:6000}],['olaj',{k:900}],['fokhagymapor|pirospaprika|fűszerpaprika|chili|kömény|oregánó|kakukkfű|fahéj|szerecsendió|gyömbér|sütőpor|keményítő',{k:4000}],
+  ['csirkemell',{k:3200}],['pulykamell',{k:3800}],['darált marha',{k:4500}],['marhalábszár',{k:5200}],['lazac',{k:9500}],['tonhal',{k:6200}],['sonka',{k:4500}],['kolbász|bacon|szalonna',{k:4500}],
+  ['tojásos tészta|metélt|penne|spagetti|fusilli|tészta',{k:1100}],['lasagne',{k:1800}],['tojás',{d:90}],['tejföl',{k:1500}],['tejszín',{k:1800}],['görög joghurt|joghurt',{k:1800}],['túró',{k:2200}],['parmezán',{k:9000}],['cheddar|trappista|mozzarella|sajt',{k:4500}],['vaj',{k:4500}],['tej',{k:450}],
+  ['rizs',{k:900}],['zabpehely',{k:700}],['liszt',{k:350}],['kenyér',{k:1000,w:35}],['nagy tortilla',{d:250}],['tortilla',{d:200}],['édesburgonya',{k:1500}],['burgonya',{k:450}],
+  ['lilahagyma',{d:100}],['vöröshagyma',{d:80}],['fokhagyma',{d:25}],['kaliforniai paprika',{d:350}],['sárgarépa',{d:50}],['brokkoli',{k:1800}],['spenót',{k:4000}],['gomba',{k:1800}],['zöldbab',{k:1500}],['zöldborsó',{k:1200}],['wok zöldség',{k:1400}],['edamame',{k:3000}],['kukorica',{k:1300}],['vörösbab|bab',{k:1000}],['passata',{k:900}],
+  ['méz',{k:4000}],['mogyoróvaj',{k:3500}],['fehérjepor',{k:12000}],['kakaó',{k:6000}],['csokoládé',{k:6000}],['dió',{k:6000}],['szezámmag',{k:4000}],['szójaszósz',{k:2500}],['sriracha',{k:5000}],['majonéz',{k:2500}],['mustár',{k:1500}],['banán',{k:700,w:120}]].map(([w,p])=>[new RegExp(w),p]);
+// d = price per piece, w = grams per piece or slice; spoons and pinches are converted to grams.
+function priceOf(n,q,u){if(q==null)return 0;const e=PRICES.find(([re])=>re.test(n.toLowerCase()));if(!e)return null;const p=e[1];
+  if(u==='db'||u==='gerezd')return p.d!=null?q*p.d:p.k!=null&&p.w?q*p.w/1000*p.k:null;
+  const g=u==='g'||u==='ml'?q:u==='ek'?q*15:u==='tk'?q*5:u==='csipet'?q*0.5:u==='szelet'?q*(p.w||35):null;return g==null||p.k==null?null:g/1000*p.k}
+function costOf(items){let sum=0,miss=0;for(const x of items){const v=priceOf(x.n,x.q,x.u);if(v==null)miss++;else sum+=v}return{sum,miss}}
+function recipeCost(r,sv){return costOf(r.ing.map(([n,q,u])=>({n,q:q==null?null:q*sv/r.base,u})))}
+const ft=v=>(Math.round(v/10)*10).toLocaleString('hu-HU')+' Ft';
+
 /* ---------- food log ---------- */
 const sugarMax=()=>Math.round(targets().kcal*0.1/4);
 function foodSum(d){const L=(S.food&&S.food[d])||[],s=k=>Math.round(L.reduce((a,x)=>a+(x[k]||0),0));return{n:L.length,kcal:s('kcal'),p:s('p'),c:s('c'),s:s('s')}}
@@ -756,18 +812,21 @@ const rankOf=l=>RANKS[Math.min(RANKS.length-1,Math.floor((l-1)/5))];
 const BADGES=[['w1','Első edzés','Az első teljesített edzés',s=>s.workouts,1],['w10','10 edzés','',s=>s.workouts,10],['w25','25 edzés','',s=>s.workouts,25],['w50','50 edzés','',s=>s.workouts,50],['w100','100 edzés','',s=>s.workouts,100],
   ['fw1','Teljes hét','Mind a 4 edzés egy héten',s=>s.fullWeeks,1],['fw4','Kihagyás nélkül','4 teljes hét',s=>s.fullWeeks,4],['s100','100 szett','',s=>s.sets,100],['s1000','1000 szett','',s=>s.sets,1000],
   ['pr1','Első rekord','Többet emeltél, mint valaha',s=>s.prs,1],['pr10','10 rekord','',s=>s.prs,10],['pr50','50 rekord','',s=>s.prs,50],['t10','10 tonna','Összes megmozgatott súly',s=>Math.floor(s.vol/1000),10],['t100','100 tonna','',s=>Math.floor(s.vol/1000),100],
-  ['c7','Kreatin hét','7 nap egymás után',s=>s.maxCre,7],['c30','Kreatin hónap','30 nap egymás után',s=>s.maxCre,30],['h7','Hidratált','7 nap teljes vízcél',s=>s.waterDays,7],['ch10','Kihívó','10 napi kihívás',s=>s.ch,10],['m4','Mérlegen','4 súlymérés',s=>s.weighs,4],['f7','Naplóíró','7 nap kajanapló',s=>s.foodDays,7],['f30','Könyvelő','30 nap kajanapló',s=>s.foodDays,30],['p7','Fehérjegép','7 nap meglett a fehérjecél',s=>s.proteinDays,7],['l10','Certified','10. szint',s=>s.lvl,10]];
+  ['c7','Kreatin hét','7 nap egymás után',s=>s.maxCre,7],['c30','Kreatin hónap','30 nap egymás után',s=>s.maxCre,30],['h7','Hidratált','7 nap teljes vízcél',s=>s.waterDays,7],['ch10','Kihívó','10 napi kihívás',s=>s.ch,10],['m4','Mérlegen','4 súlymérés',s=>s.weighs,4],['f7','Naplóíró','7 nap kajanapló',s=>s.foodDays,7],['f30','Könyvelő','30 nap kajanapló',s=>s.foodDays,30],['p7','Fehérjegép','7 nap meglett a fehérjecél',s=>s.proteinDays,7],['night','Night Shift','Edzés 21:00 után',s=>s.night,1],['early','Early Bird','Edzés reggel 8 előtt',s=>s.early,1],['glacier','Glacier','Edzés fagyos napon',s=>s.glacier,1],['hot','Hot Step','Edzés 27 fok feletti napon',s=>s.hot,1],['fs3','Nonstop','3 teljes hét egymás után',s=>s.fullStreak,3],['l10','Certified','10. szint',s=>s.lvl,10]];
 function rwStats(){const t=dk(),g=S.settings.waterGoal||3000,best={},prDays={};let prs=0,sets=0,vol=0;const prList=[];
   for(const d of Object.keys(S.logs).sort())for(const id in S.logs[d]){const ex=EX[id];if(!ex)continue;const done=S.logs[d][id].filter(s=>s[2]);sets+=done.length;for(const s of done)vol+=setVol(id,s);
     if(!done.length||ex.u==='mp'||ex.u==='testsúly')continue;const m=Math.max(...done.map(s=>s[0]||0));if(best[id]!=null&&m>best[id]){prs++;prDays[d]=(prDays[d]||0)+1;prList.push({d,id,kg:m})}if(best[id]==null||m>best[id])best[id]=m}
   const fd=S.food||{},tp=targets().p,fDays=Object.keys(fd).filter(d=>fd[d].length),pDays=fDays.filter(d=>foodSum(d).p>=tp);
   const ch=S.chDone||{},days=new Set([...fDays,...Object.keys(S.logs),...Object.keys(S.sessions),...Object.keys(S.creatine),...Object.keys(S.water),...Object.keys(S.sleep),...Object.keys(S.taskDone),...Object.keys(ch),...S.weights.map(w=>w[0])]);
   const dayXp=d=>{let x=0;const l=S.logs[d];if(l)for(const id in l)x+=l[id].filter(s=>s[2]).length*5;if(S.sessions[d])x+=100;if(S.creatine[d])x+=10;if((S.water[d]||0)>=g)x+=20;if(S.sleep[d]!=null&&S.sleep[d]>=7)x+=10;x+=(S.taskDone[d]||[]).length*10;if(S.weights.some(w=>w[0]===d))x+=15;if(ch[d])x+=30;if(fd[d])x+=Math.min(4,fd[d].length)*5;if(pDays.includes(d))x+=20;return x+(prDays[d]||0)*50};
-  let xp=0,today=0;for(const d of days){const x=dayXp(d);xp+=x;if(d===t)today=x}
+  let xp=0,today=0;const byDay={};for(const d of days){const x=dayXp(d);xp+=x;byDay[d]=x;if(d===t)today=x}
+  const st=S.sessT||{},wl=S.wxLog||{},sd=Object.keys(S.sessions),cnt=f=>sd.filter(f).length;
+  const night=cnt(d=>st[d]>=21),early=cnt(d=>st[d]!=null&&st[d]<8),glacier=cnt(d=>wl[d]&&wl[d].mn<=0),hot=cnt(d=>wl[d]&&wl[d].mx>=27);
   let maxCre=0,run=0,prev=null;for(const d of Object.keys(S.creatine).sort()){run=prev&&(parseDk(d)-parseDk(prev))/DAY<1.5?run+1:1;maxCre=Math.max(maxCre,run);prev=d}
   const wk={};for(const d of Object.keys(S.sessions)){const m=dk(monday(parseDk(d)));wk[m]=(wk[m]||0)+1}
+  let fullStreak=0,fr=0,pw=null;for(const m of Object.keys(wk).filter(m=>wk[m]>=4).sort()){fr=pw&&Math.round((parseDk(m)-parseDk(pw))/DAY)===7?fr+1:1;fullStreak=Math.max(fullStreak,fr);pw=m}
   const lvl=Math.floor((50+Math.sqrt(2500+200*xp))/100);
-  return{xp,today,lvl,cur:50*lvl*(lvl-1),nxt:50*(lvl+1)*lvl,prs,prList,sets,vol,workouts:Object.keys(S.sessions).length,maxCre,waterDays:Object.keys(S.water).filter(d=>S.water[d]>=g).length,ch:Object.keys(ch).length,weighs:S.weights.length,fullWeeks:Object.values(wk).filter(n=>n>=4).length,foodDays:fDays.length,proteinDays:pDays.length}}
+  return{xp,today,lvl,cur:50*lvl*(lvl-1),nxt:50*(lvl+1)*lvl,prs,prList,sets,vol,workouts:Object.keys(S.sessions).length,maxCre,waterDays:Object.keys(S.water).filter(d=>S.water[d]>=g).length,ch:Object.keys(ch).length,weighs:S.weights.length,fullWeeks:Object.values(wk).filter(n=>n>=4).length,foodDays:fDays.length,proteinDays:pDays.length,byDay,night,early,glacier,hot,fullStreak}}
 function badgesOf(s){return BADGES.map(([id,n,d,f,goal])=>({id,n,d:d||n,v:Math.min(goal,f(s)),goal,on:f(s)>=goal}))}
 function lvlCard(s){const pct=Math.round((s.xp-s.cur)/(s.nxt-s.cur)*100);return `<div class="card lvl" data-a="tab" data-t="halad"><div class="row"><div class="lvl-n"><span>Szint</span><b>${s.lvl}</b></div><div class="grow"><div class="row-title">${rankOf(s.lvl)}</div><div class="meta">${s.xp} XP, még ${s.nxt-s.xp} a következő szintig</div></div><div class="lvl-today"><b>+${s.today}</b><span>XP ma</span></div></div><div class="bar-p"><i style="width:${pct}%"></i></div></div>`}
 function checkRewards(){const s=rwStats(),got=badgesOf(s).filter(b=>b.on).map(b=>b.id);
@@ -793,7 +852,8 @@ const WX_URL='https://api.open-meteo.com/v1/forecast?latitude=47.5417&longitude=
 let wx={d:null,err:false,t:0};
 try{const c=JSON.parse(localStorage.getItem('forma_wx')||'null');if(c&&c.day===dk())wx={d:c.d,err:false,t:c.t}}catch(e){}
 async function loadWx(force){if(!force&&wx.d&&Date.now()-wx.t<30*60e3)return;
-  try{const r=await fetch(WX_URL);if(!r.ok)throw 0;const d=await r.json();if(!d.current||!d.daily)throw 0;wx={d,err:false,t:Date.now()};try{localStorage.setItem('forma_wx',JSON.stringify({day:dk(),d,t:wx.t}))}catch(e){}}catch(e){wx.err=true}
+  try{const r=await fetch(WX_URL);if(!r.ok)throw 0;const d=await r.json();if(!d.current||!d.daily)throw 0;wx={d,err:false,t:Date.now()};
+    {const k=dk(),v={mn:d.daily.temperature_2m_min[0],mx:d.daily.temperature_2m_max[0]},o=(S.wxLog=S.wxLog||{})[k];if(!o||o.mn!==v.mn||o.mx!==v.mx){S.wxLog[k]=v;save()}}try{localStorage.setItem('forma_wx',JSON.stringify({day:dk(),d,t:wx.t}))}catch(e){}}catch(e){wx.err=true}
   const busy=ui.sheet||(document.activeElement&&document.activeElement.matches('input,select,textarea'));if(ui.tab==='ma'&&!busy)render(true)}
 function wxTip(w,day){const dd=w.daily,p=dd.precipitation_probability_max[0]??0,mx=dd.temperature_2m_max[0],mn=dd.temperature_2m_min[0],out=[];
   if(p>=60)out.push(`Nagy eséllyel esik (${p}%), vigyél esernyőt vagy esőkabátot.`);else if(p>=30)out.push(`Lehet eső (${p}%), nem árt egy esernyő.`);
@@ -944,7 +1004,8 @@ function importData(file){const fr=new FileReader();fr.onload=()=>{try{const o=J
 function weekStrip(){const m=monday(new Date()),t=dk();let h='<div class="wk">';for(let i=0;i<7;i++){const d=new Date(m);d.setDate(m.getDate()+i);const k=dk(d),day=dayForWeekday(d.getDay());h+=`<div class="wkd ${k===t?'today':''} ${day?'train':''} ${S.sessions[k]?'done':''}" title="${day?day.name:'Pihenő'}"><span>${WDS[d.getDay()]}</span><b>${d.getDate()}</b><i></i></div>`}return h+'</div>'}
 function rMa(){const now=new Date(),t=dk(now),wd=now.getDay(),ci=cycleInfo(),day=dayForWeekday(wd),tg=targets();
   let h=bar()+heroBlock(WD[wd],greet(now.getHours())+(S.settings.name?', '+esc(S.settings.name):'')+'. '+MON[now.getMonth()]+' '+now.getDate()+'.',null,true)+weekStrip();
-  h+=lvlCard(rwStats());
+  h+=lvlCard(rwStats())+calCard();
+  if(wd===0||wd===1)h+=`<button class="btn ghost full" data-a="weekOpen" data-v="${wd===1?-1:0}">Heti NOCTA összefoglaló kép</button>`;
   if(day){const done=S.sessions[t],pr=dayProgress(day,ci),ups=exList(day,ci).filter(id=>suggest(id,ci).up).length;h+=`<div class="hero-card ${done?'is-done':''}"><div class="hc-row"><div class="grow"><div class="k">Mai edzés${ci.deload?', deload hét':''}</div><div class="big">${day.name}</div></div>${ring(pr.done,pr.total)}</div><div class="meta">${pr.total} gyakorlat, kb. 60 perc.</div>${ups&&!done?`<div class="ups">▲ ${ups} gyakorlatnál ma emelj súlyt</div>`:''}<button class="btn full" data-a="goday" data-d="${day.id}">${done?'Kész, megnézem':pr.done?'Folytatás':'Indítás'}</button></div>`}
   h+=wxCard(day);
   h+=dailyCard(t,mealPlan(now));
@@ -994,22 +1055,25 @@ function rEdzes(){const ci=cycleInfo();if(!ui.day||!DAYS.find(d=>d.id===ui.day))
   h+=`<div class="prog-head"><span class="meta">Mai haladás</span><b>${pr.done}/${pr.total}</b></div><div class="bar-p" style="margin-top:4px"><i style="width:${pr.total?pr.done/pr.total*100:0}%"></i></div>`;
   const sl=slotList(day,ci),ups=sl.filter(x=>suggest(x.id,ci).up).length;
   if(ups&&!done)h+=`<div class="pbn up"><b>▲ Ma ${ups} gyakorlatnál emelünk</b><span>Múltkor ott minden szettben megvolt a felső ismétlésszám.</span></div>`;
+  if(!done)h+=`<button class="btn acc full" data-a="woOpen" data-d="${day.id}">${pr.done?'Workout mód folytatása':'Workout mód indítása'}</button><p class="meta" style="margin:6px 0 0">Teljes képernyő, egyszerre egy gyakorlat, nagy gombok, és a kijelző nem alszik el.</p>`;
   h+=sl.map((x,i)=>exCard(x.id,ci,i,x.o)).join('');
   h+=`<button class="btn ${done?'ghost':'acc'} full" data-a="finish" data-d="${day.id}">${done?'Kész edzés visszavonása':'Edzés befejezése'}</button>`;
   h+=`<p class="fine">Az alapgyakorlatok 6 hetes ciklusonként, a kiegészítők hetente cserélődnek, így mindig jön valami új. Ha nincs meg egy gép vagy foglalt, nyomd meg a Csere gombot, és az app megjegyzi. Minden szettet úgy fejezz be, hogy még 1-2 ismétlés benned maradjon. Ha az összes szettben eléred a felső ismétlésszámot, legközelebb az app súlyemelést kér.</p>`;
   return h}
 
-function rCard(r){const fav=S.fav.includes(r.id),hid=S.hidden.includes(r.id);return `<button class="rc ${hid?'hid':''}" data-a="recipe" data-id="${r.id}"><div class="grow"><div class="rc-n">${r.n}${fav?'<span class="star">Kedvenc</span>':''}</div><div class="meta">${r.t} perc, ${r.p} g fehérje, ${storeLabel(r)}${hid?', nem ajánlott':''}</div></div><div class="rc-k"><b>${r.kcal}</b><span>kcal/adag</span></div></button>`}
+function rCard(r){const fav=S.fav.includes(r.id),hid=S.hidden.includes(r.id);return `<button class="rc ${hid?'hid':''}" data-a="recipe" data-id="${r.id}"><div class="grow"><div class="rc-n">${r.n}${fav?'<span class="star">Kedvenc</span>':''}</div><div class="meta">${r.t} perc, ${r.p} g fehérje, kb. ${ft(recipeCost(r,1).sum)}/adag, ${storeLabel(r)}${hid?', nem ajánlott':''}</div></div><div class="rc-k"><b>${r.kcal}</b><span>kcal/adag</span></div></button>`}
 function ingGroups(items){let h='';for(const[g,lab]of GROUPS.slice(1).concat([GROUPS[0]])){const list=items.filter(x=>groupOf(x.n)===g).sort((a,b)=>a.n.localeCompare(b.n,'hu'));if(!list.length)continue;h+=`<h3>${lab}</h3><ul class="ing">${list.map(x=>`<li><span>${esc(x.n)}</span><b>${x.q==null?'ízlés szerint':fq(x.q,x.u)}</b></li>`).join('')}</ul>`}return h}
 function rList(){const{picks,p}=weekPlan();const total=picks.reduce((a,r)=>a+(p[r.id]||0),0);
   let h=`<p class="meta">Állítsd be, hány adagot főzöl az e heti receptekből, és itt látod egyben, miből mennyi kell.</p>`;
   h+=`<div class="card">${picks.map(r=>`<div class="pl-row"><div class="grow">${r.n}<div class="meta">${r.kcal} kcal/adag</div></div>${stepper('pl',p[r.id],r.id)}</div>`).join('')}<div class="meta" style="margin-top:10px">Összesen ${total} adag</div></div>`;
   const items=aggregate(picks.filter(r=>p[r.id]>0).map(r=>[r,p[r.id]]));
+  if(items.length){const c=costOf(items);h+=`<div class="card price"><div class="row"><div class="grow"><div class="row-title">Becsült ár</div><div class="meta">${total} adag, kb. ${ft(total?c.sum/total:0)} adagonként</div></div><div class="big-n">${ft(c.sum)}</div></div></div>`}
   h+=items.length?ingGroups(items):'<p class="empty">Adj hozzá legalább egy adagot.</p>';
   if(items.length)h+=`<button class="btn acc full" data-a="listToShop">Mindent a bevásárlólistára</button>`;
   return h}
 function rShop(){const open=S.shop.filter(x=>!x.c).length;if(!S.shop.length)return `<p class="empty" style="margin-top:16px">A bevásárlólista üres. Az Alapanyagok fülön vagy egy receptnél add hozzá a hozzávalókat.</p>`;
-  return `<p class="meta">${open} tétel van még hátra.</p>${S.shop.map((x,i)=>`<div class="shop-it ${x.c?'on':''}"><button class="chk ${x.c?'on':''}" data-a="shopItem" data-i="${i}" aria-pressed="${x.c}" aria-label="Megvettem">${ICON.check}</button><div class="grow">${esc(x.n)}</div><b>${x.q==null?'':fq(x.q,x.u)}</b></div>`).join('')}<div class="btn-row"><button class="btn ghost" data-a="shopClearDone">Kipipáltak törlése</button><button class="btn ghost danger" data-a="shopClearAll">Lista ürítése</button></div>`}
+  const c=costOf(S.shop.filter(x=>!x.c));
+  return `<p class="meta">${open} tétel van még hátra${open?`, ezek ára kb. ${ft(c.sum)}`:''}.</p>${S.shop.map((x,i)=>`<div class="shop-it ${x.c?'on':''}"><button class="chk ${x.c?'on':''}" data-a="shopItem" data-i="${i}" aria-pressed="${x.c}" aria-label="Megvettem">${ICON.check}</button><div class="grow">${esc(x.n)}</div><b>${x.q==null?'':fq(x.q,x.u)}</b></div>`).join('')}<div class="btn-row"><button class="btn ghost" data-a="shopClearDone">Kipipáltak törlése</button><button class="btn ghost danger" data-a="shopClearAll">Lista ürítése</button></div>`}
 function rEtel(){const tg=targets();let h=bar()+heroBlock('Étel',`Napi cél: ${tg.kcal} kcal, ${tg.p} g fehérje`,'KCAL');
   const open=S.shop.filter(x=>!x.c).length;
   h+=seg('foodSeg',[['het','E heti'],['lista','Alapanyagok'],['shop','Bevásárlás'+(open?' ('+open+')':'')],['all','Összes']]);
@@ -1017,7 +1081,7 @@ function rEtel(){const tg=targets();let h=bar()+heroBlock('Étel',`Napi cél: ${
   else if(ui.foodSeg==='lista')h+=rList();
   else if(ui.foodSeg==='all'){for(const[c,lab]of CATS)h+=`<h2>${lab}</h2>`+R.filter(r=>r.c===c).map(rCard).join('')}
   else h+=rShop();
-  h+=`<p class="fine">A tápértékek adagonkénti becslések. Nincs a receptekben nyers paradicsom, gyümölcs, csirkecomb és curry, halból csak lazac és tonhal.</p>`;
+  h+=`<p class="fine">Az árak átlagos magyar szupermarket-árakon alapuló becslések (2026), a felhasznált mennyiséggel számolva. Az első bevásárlás drágább lehet, mert egész csomagot veszel, a fűszerekből és az olajból viszont sokáig kitart. A tápértékek adagonkénti becslések. Nincs a receptekben nyers paradicsom, gyümölcs, csirkecomb és curry, halból csak lazac és tonhal.</p>`;
   return h}
 
 function rInv(){if(!S.inventory.length)return `<p class="empty" style="margin-top:16px">A készleted üres. A Tervezőben számold ki, mennyit főzz, és a főzés után tedd ide az adagokat.</p>`;
@@ -1031,7 +1095,7 @@ function rPrep(){const c=invCount();let h=bar()+heroBlock('Meal prep','Főzz el�
   h+=`<label class="lbl">Recept<select class="in" data-in="prepR">${CATS.map(([cc,lab])=>`<optgroup label="${lab}">${opts.filter(o=>o.c===cc).map(o=>`<option value="${o.id}" ${o.id===r.id?'selected':''}>${o.n} (${storeLabel(o)})</option>`).join('')}</optgroup>`).join('')}</select></label>`;
   h+=`<div class="card"><div class="row"><div class="grow"><div class="row-title">Hány napra főzöl?</div></div>${stepper('pd',ui.prep.days)}</div><div class="row"><div class="grow"><div class="row-title">Adag naponta</div></div>${stepper('pp',ui.prep.per)}</div></div>`;
   h+=`<div class="card"><div class="stats3"><div><b>${P.total}</b><span>adag összesen</span></div><div><b>${P.fridge}</b><span>hűtőbe</span></div><div><b>${P.freezer}</b><span>fagyasztóba</span></div></div>${P.warn?`<p class="warn-t">${P.warn}</p>`:''}<p class="meta" style="margin-bottom:0">${P.plan}</p></div>`;
-  h+=`<h3>Ennyi kell hozzá</h3><ul class="ing">${r.ing.map(([n,q,u])=>`<li><span>${n}</span><b>${q==null?'ízlés szerint':fq(q*k,u)}</b></li>`).join('')}</ul>`;
+  h+=`<h3>Ennyi kell hozzá, kb. ${ft(recipeCost(r,P.total).sum)}</h3><ul class="ing">${r.ing.map(([n,q,u])=>`<li><span>${n}</span><b>${q==null?'ízlés szerint':fq(q*k,u)}</b></li>`).join('')}</ul>`;
   h+=`<h3>Tárolás</h3><p class="meta">${storeText(r)} ${r.re}</p><p class="meta">Adagonként kb. ${r.kcal} kcal és ${r.p} g fehérje.</p>`;
   h+=`<button class="btn ghost full" data-a="prepShop">Bevásárlólistára</button><button class="btn acc full" data-a="prepCook">Megfőztem, mehet a készletbe</button><button class="link" data-a="recipe" data-id="${r.id}">Elkészítés lépései</button>`;
   return h}
@@ -1042,6 +1106,7 @@ function rHalad(){const ci=cycleInfo(),w=curWeight();let h=bar()+heroBlock('Hala
   const rs=rwStats(),bg=badgesOf(rs);
   h+=`<h2>Jutalmak</h2>`+lvlCard(rs)+`<div class="xp-legend">Szett +5, edzés +100, új rekord +50, napi kihívás +30, meglett fehérjecél +20, teljes vízcél +20, mérés +15, naplózott étkezés +5 (naponta max. 20), kreatin, teendő és 7+ óra alvás +10 XP. Rangok 5 szintenként: ${RANKS.join(', ')}.</div>`;
   h+=`<h3>Jelvények, ${bg.filter(b=>b.on).length}/${bg.length}</h3><div class="badges">${bg.map(b=>`<div class="bdg ${b.on?'':'off'}">${MARK}<b>${b.n}</b><span>${b.on?b.d:b.v+' / '+b.goal}</span></div>`).join('')}</div>`;
+  h+=`<button class="btn ghost full" data-a="weekOpen" data-v="0">Heti NOCTA összefoglaló kép</button>`;
   h+=`<h2>Összesítés</h2><div class="card"><div class="stats"><div><b>${total}</b><span>edzés</span></div><div><b>${ad.pct==null?'0':ad.pct}%</b><span>betartás</span></div><div><b>${num(Math.round(allVol/100)/10)}</b><span>tonna mozgatva</span></div><div><b>${gain>0?'+':''}${num(gain)}</b><span>kg változás</span></div></div><div class="meta">Kezdés: ${shortDate(S.settings.started||dk())}. ${ad.planned?ad.done+' edzés a '+ad.planned+' tervezettből.':''} Kreatin sorozat: ${streak()} nap.</div></div>`;
   const weeks=[];for(let i=7;i>=0;i--){const m=monday(new Date());m.setDate(m.getDate()-i*7);const e=new Date(m);e.setDate(m.getDate()+7);weeks.push([dk(m),dk(e),(m.getMonth()+1)+'/'+m.getDate()])}
   const wsess=weeks.map(([a,b])=>Object.keys(S.sessions).filter(k=>k>=a&&k<b).length),wvol=weeks.map(([a,b])=>Object.keys(S.logs).filter(k=>k>=a&&k<b).reduce((s,d)=>s+dayVol(d),0));
@@ -1065,11 +1130,54 @@ function rHalad(){const ci=cycleInfo(),w=curWeight();let h=bar()+heroBlock('Hala
   h+=`<h2>Testsúly</h2><div class="card"><div class="row"><div class="grow"><div class="meta">Mérd hetente egyszer, reggel, éhgyomorra. Heti 0,25-0,5 kg növekedés az ideális.</div></div><div class="big-n">${num(w)}<span class="meta"> kg</span></div></div>${S.weights.length?`<div class="meta" style="margin-top:6px">Változás a kezdethez képest: ${diff>0?'+':''}${num(diff)} kg</div>`:''}<div class="row" style="margin-top:12px"><input class="in" id="wIn" inputmode="decimal" placeholder="Mai súly, pl. 60,5" aria-label="Mai testsúly"><button class="btn acc sm" data-a="addW">Mentés</button></div>${chart(S.weights.slice(-20))}</div>`;
   if(S.weights.length)h+=S.weights.slice(-5).reverse().map(x=>`<div class="shop-it"><div class="grow">${shortDate(x[0])}</div><b>${num(x[1])} kg</b><button class="round" data-a="delW" data-d="${x[0]}" aria-label="Törlés">${ICON.x}</button></div>`).join('');
   const logged=Object.keys(EX).filter(id=>Object.values(S.logs).some(l=>l[id]&&l[id].some(s=>s[2])));
+  h+=`<h2>Erőszint</h2>`+strengthCard();
   h+=`<h2>Erő</h2>`;
   if(!logged.length)h+=`<p class="empty">Az első edzés után itt látod, hogyan nőnek a súlyaid gyakorlatonként.</p>`;
   else{if(!ui.exChart||!logged.includes(ui.exChart))ui.exChart=logged[0];const ex=EX[ui.exChart];const pts=Object.keys(S.logs).sort().filter(d=>S.logs[d][ui.exChart]&&S.logs[d][ui.exChart].some(s=>s[2])).map(d=>{const done=S.logs[d][ui.exChart].filter(s=>s[2]);return[d,(ex.u==='mp'||ex.u==='testsúly')?Math.max(...done.map(s=>s[1]||0)):Math.max(...done.map(s=>s[0]||0))]});
     h+=`<div class="card"><select class="in" data-in="exChart" aria-label="Gyakorlat">${logged.map(id=>`<option value="${id}" ${id===ui.exChart?'selected':''}>${EX[id].n}</option>`).join('')}</select><div class="meta" style="margin-top:8px">${(ex.u==='mp'||ex.u==='testsúly')?'Legjobb ismétlésszám':'Legnagyobb súly'} edzésenként</div>${chart(pts.slice(-20))}</div>`}
   return h}
+
+/* ---------- workout mode: one exercise per screen, screen kept awake ---------- */
+let wakeLock=null;
+async function keepAwake(on){try{if(on&&!wakeLock&&navigator.wakeLock){wakeLock=await navigator.wakeLock.request('screen');wakeLock.addEventListener('release',()=>{wakeLock=null})}else if(!on&&wakeLock){await wakeLock.release();wakeLock=null}}catch(e){}}
+function woList(){const day=DAYS.find(d=>d.id===ui.wo.day),ci=cycleInfo();return{day,ci,sl:slotList(day,ci)}}
+function woOpen(dayId){ui.wo={day:dayId,i:0};const{sl}=woList(),k=sl.findIndex(x=>!exDone(x.id));ui.wo.i=k<0?0:k;keepAwake(true);renderWo()}
+function renderWo(){let el=$('#wo');if(!el){document.body.insertAdjacentHTML('beforeend','<div id="wo" class="wo" hidden></div>');el=$('#wo')}
+  if(!ui.wo){el.hidden=true;el.innerHTML='';if(!ui.sheet)document.body.classList.remove('lock');keepAwake(false);return}
+  const{day,ci,sl}=woList(),x=sl[ui.wo.i],ex=EX[x.id],L=todayLog(x.id,ci),si=L.findIndex(s=>!s[2]),sg=suggest(x.id,ci),noKg=ex.u==='mp'||ex.u==='testsúly',allDone=sl.every(y=>exDone(y.id));
+  let h=`<div class="wo-top"><button class="icon-btn" data-a="woClose" aria-label="Bezárás">${ICON.x}</button><div class="wo-dots">${sl.map((y,i)=>`<i class="${exDone(y.id)?'d':''} ${i===ui.wo.i?'c':''}"></i>`).join('')}</div><div class="wo-pos">${ui.wo.i+1}/${sl.length}</div></div>`;
+  h+=exImg(x.id,'big')+`<div class="wo-name">${ex.n}</div><div class="meta">${ex.m}, pihenő ${Math.floor(ex.rest/60)}:${pad(ex.rest%60)}</div>`;
+  if(sg.up)h+=`<div class="pbn up"><b>▲ Emelj súlyt</b><span>Ma ${num(sg.kg)} ${ex.u==='+kg'?'kg plusz súly':ex.u}.</span></div>`;else if(sg.down)h+=`<div class="pbn down"><b>▼ Könnyíts</b><span>Ma ${num(sg.kg)} ${ex.u}.</span></div>`;
+  if(si>=0){const s=L[si];h+=`<div class="wo-set">${si+1}. szett <span>/ ${L.length}</span></div><div class="wo-in">${noKg?'':`<label class="fld"><input class="in" id="woKg" inputmode="decimal" data-in="kg" data-ex="${x.id}" data-i="${si}" value="${num(s[0])}" aria-label="Súly"><span>${ex.u==='+kg'?'+kg':'kg'}</span></label>`}<label class="fld"><input class="in" id="woReps" inputmode="numeric" data-in="reps" data-ex="${x.id}" data-i="${si}" value="${s[1]??''}" placeholder="${ex.r[1]}" aria-label="Ismétlés"><span>${ex.u==='mp'?'mp':'ism.'}</span></label></div><button class="btn acc full wo-go" data-a="woSet">Szett kész</button>`}
+  else h+=`<div class="wo-set">Kész ✓</div>`;
+  h+=`<div class="wo-sets">${L.map((s,i)=>`<span class="${s[2]?'d':''}">${noKg?'':num(s[0])+' × '}${s[1]??'-'}</span>`).join('')}</div>`;
+  if(allDone)h+=`<div class="pbn up"><b>Minden gyakorlat kész</b><span>Szép munka! Az edzés el van mentve.</span></div><button class="btn ghost full" data-a="woClose">Bezárás</button>`;
+  h+=`<div class="btn-row"><button class="btn ghost" data-a="woNav" data-v="-1" ${ui.wo.i?'':'disabled'}>Előző</button><button class="btn ghost" data-a="woNav" data-v="1" ${ui.wo.i<sl.length-1?'':'disabled'}>Következő</button></div>`;
+  el.innerHTML=`<div class="wo-in-wrap">${h}</div>`;el.hidden=false;document.body.classList.add('lock')}
+function finishSession(t,id){S.sessions[t]=id;S.sessT=S.sessT||{};S.sessT[t]=new Date().getHours()}
+
+/* ---------- weekly NOCTA summary image ---------- */
+function weekData(off){const m=monday(new Date());m.setDate(m.getDate()+off*7);const ds=[];for(let i=0;i<7;i++){const x=new Date(m);x.setDate(m.getDate()+i);ds.push(dk(x))}
+  const rs=rwStats(),sess=ds.filter(d=>S.sessions[d]).length,sets=ds.reduce((a,d)=>a+Object.values(S.logs[d]||{}).reduce((b,l)=>b+l.filter(s=>s[2]).length,0),0),vol=ds.reduce((a,d)=>a+dayVol(d),0);
+  const fs=ds.map(foodSum).filter(s=>s.n),avg=k=>fs.length?Math.round(fs.reduce((a,s)=>a+s[k],0)/fs.length):null,ws=S.weights.filter(w=>w[0]>=ds[0]&&w[0]<=ds[6]);
+  return{ds,sess,sets,vol,prs:rs.prList.filter(p=>p.d>=ds[0]&&p.d<=ds[6]).length,xp:ds.reduce((a,d)=>a+(rs.byDay[d]||0),0),lvl:rs.lvl,kcal:avg('kcal'),p:avg('p'),w:ws.length?ws[ws.length-1][1]:null}}
+async function weekImage(off){const W=1080,H=1920,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d'),d=weekData(off);
+  try{await Promise.all([document.fonts.load('800 80px Archivo'),document.fonts.load('500 40px Archivo')])}catch(e){}
+  if('fontStretch' in x)x.fontStretch='expanded';const sp=v=>{if('letterSpacing' in x)x.letterSpacing=v+'px'};
+  x.fillStyle='#AED8FD';x.fillRect(0,0,W,H);
+  x.save();x.translate(470,90);x.scale(6.4,6.4);x.fillStyle='#DDFDFE';for(const[a,b,r,L]of[[50,88.5,0,67.5],[42.7,99,-22.8,67.7],[57.3,99,22.8,67.7]]){x.save();x.translate(a,b);x.rotate(r*Math.PI/180);x.translate(0,-L);x.fill(new Path2D(`M0-19Q1.6-2.4 12 0Q2.6 1.6 2 7L0 ${L}L-2 7Q-2.6 1.6-12 0Q-1.6-2.4 0-19Z`));x.restore()}x.restore();
+  const navy='#03111F',mute='#2C5677';x.fillStyle=navy;x.textBaseline='alphabetic';
+  x.font='800 64px Archivo';sp(4);x.fillText('NOCTA',80,150);x.font='700 26px Archivo';sp(10);x.fillStyle=mute;x.fillText('FORMA',80,196);
+  const a=parseDk(d.ds[0]),b=parseDk(d.ds[6]);x.fillStyle=navy;x.font='700 30px Archivo';sp(8);x.fillText('HETI ÖSSZEFOGLALÓ',80,560);
+  x.font='800 92px Archivo';sp(2);x.fillText((MS[a.getMonth()]+' '+a.getDate()+'.–'+(a.getMonth()!==b.getMonth()?MS[b.getMonth()]+' ':'')+b.getDate()+'.').toUpperCase(),80,670);
+  const cells=[[d.sess+'/4','EDZÉS'],[num(Math.round(d.vol/100)/10),'TONNA'],[String(d.sets),'SZETT'],[String(d.prs),'REKORD'],['+'+d.xp,'XP'],[String(d.lvl),rankOf(d.lvl).toUpperCase()]];
+  cells.forEach(([v,l],i)=>{const cx=80+(i%2)*470,cy=820+Math.floor(i/2)*250;x.strokeStyle=navy;x.lineWidth=3;x.beginPath();x.moveTo(cx,cy-80);x.lineTo(cx+420,cy-80);x.stroke();x.fillStyle=navy;x.font='800 120px Archivo';sp(0);x.fillText(v,cx,cy+60);x.font='700 28px Archivo';sp(8);x.fillStyle=mute;x.fillText(l,cx,cy+110)});
+  let y=1620;x.fillStyle=navy;x.font='600 34px Archivo';sp(2);
+  if(d.kcal!=null){x.fillText(`Átlag ${d.kcal} kcal és ${d.p} g fehérje naponta`,80,y);y+=56}
+  if(d.w!=null){x.fillText(`Testsúly: ${num(d.w)} kg`,80,y)}
+  x.font='700 26px Archivo';sp(8);x.fillText(SLOGAN.toUpperCase(),80,1840);
+  return new Promise(r=>c.toBlob(r,'image/png'))}
+async function weekShow(){const s=ui.wk;s.url&&URL.revokeObjectURL(s.url);s.url=null;s.blob=null;renderSheet(true);const b=await weekImage(s.off);if(ui.wk!==s)return;s.blob=b;s.url=URL.createObjectURL(b);if(ui.sheet==='week')renderSheet(true)}
 
 /* ---------- sheets ---------- */
 function sheetTop(title){return `<div class="sheet-top"><h2>${title}</h2><button class="icon-btn" data-a="close" aria-label="Bezárás">${ICON.x}</button></div>`}
@@ -1078,7 +1186,8 @@ recipe(){const r=RI[ui.rs.id],sv=ui.rs.sv,k=sv/r.base,fav=S.fav.includes(r.id),h
   return `${sheetTop('')}<div class="hero sm">${r.n}</div><div class="tags"><span class="tag">${r.t} perc</span><span class="tag ${r.st==='freezer'?'acc':''}">${storeLabel(r)}</span>${fav?'<span class="tag acc">Kedvenc</span>':''}</div>
   <div class="card"><div class="stats"><div><b>${r.kcal}</b><span>kcal</span></div><div><b>${r.p}</b><span>g fehérje</span></div><div><b>${r.ch}</b><span>g szénhidrát</span></div><div><b>${r.f}</b><span>g zsír</span></div></div><div class="meta">Egy adagra, becslés</div></div>
   <div class="row"><div class="grow"><div class="row-title">Adag</div><div class="meta">Az alaprecept ${r.base} adagos</div></div>${stepper('sv',sv)}</div>
-  <h3>Hozzávalók, ${sv} adag</h3><ul class="ing">${r.ing.map(([n,q,u])=>`<li><span>${n}</span><b>${q==null?'ízlés szerint':fq(q*k,u)}</b></li>`).join('')}</ul>
+  <div class="card price"><div class="row"><div class="grow"><div class="row-title">Becsült ár, ${sv} adag</div><div class="meta">kb. ${ft(recipeCost(r,sv).sum/sv)} adagonként, a felhasznált mennyiséggel számolva</div></div><div class="big-n">${ft(recipeCost(r,sv).sum)}</div></div></div>
+  <h3>Hozzávalók, ${sv} adag</h3><ul class="ing">${r.ing.map(([n,q,u])=>{const pr=priceOf(n,q==null?null:q*k,u);return `<li><span>${n}${pr?`<span class="meta"> · kb. ${ft(pr)}</span>`:''}</span><b>${q==null?'ízlés szerint':fq(q*k,u)}</b></li>`}).join('')}</ul>
   <h3>Elkészítés</h3><ol class="steps">${r.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
   <h3>Tárolás és melegítés</h3><p>${storeText(r)} ${r.re}</p>
   <button class="btn acc full" data-a="ateRecipe">Megettem, 1 adag a mai naplóba</button>
@@ -1097,6 +1206,9 @@ task(){const t=ui.te;return `${sheetTop(t.id?'Teendő szerkesztése':'Új teend�
   <label class="lbl">Időpont (nem kötelező)<input class="in" type="time" id="teTime" value="${t.time||''}"></label>
   <p class="meta">Az időpont után a teendő esedékesként jelenik meg, amíg ki nem pipálod.</p>
   <button class="btn acc full" data-a="teSave">Mentés</button>${t.id?'<button class="btn ghost full danger" data-a="teDel">Törlés</button>':''}`},
+week(){const s=ui.wk;return `${sheetTop('Heti összefoglaló')}<div class="seg" style="margin-top:0"><button class="${s.off===0?'on':''}" data-a="weekOff" data-v="0">Ez a hét</button><button class="${s.off===-1?'on':''}" data-a="weekOff" data-v="-1">Múlt hét</button></div>
+  ${s.url?`<img class="wk-img" src="${s.url}" alt="Heti összefoglaló kép">`:'<p class="meta">Kép készítése...</p>'}
+  <button class="btn acc full" data-a="weekShare" ${s.url?'':'disabled'}>Megosztás vagy mentés</button><p class="meta">Story-méretű kép (1080 × 1920), Instagramra vagy üzenetbe.</p>`},
 food(){const e=ui.fe,mp=mealPlan(new Date()),rec=recentFoods();
   return `${sheetTop(e.id?'Étkezés szerkesztése':'Mit ettél?')}
   ${!e.id?`<label class="btn acc full photo">${CAM_ICON}Csomagolás fotózása<input type="file" accept="image/*" capture="environment" id="feImg" hidden></label>
@@ -1120,6 +1232,7 @@ settings(){const s=S.settings;const sel=(key,opts)=>`<select class="in" data-set
   <h3>Rólad</h3><label class="lbl">Neved<input class="in" data-set="name" value="${esc(s.name||'')}" maxlength="30"></label><div class="grid2"><label class="lbl">Célsúly (kg)<input class="in" inputmode="decimal" data-set="goalWeight" value="${num(s.goalWeight)}" placeholder="pl. 68"></label><label class="lbl">Életkor<input class="in" inputmode="numeric" data-set="age" value="${s.age}"></label><label class="lbl">Nem${sel('sex',[['m','Férfi'],['f','Nő']])}</label><label class="lbl">Magasság (cm)<input class="in" inputmode="numeric" data-set="height" value="${s.height}"></label><label class="lbl">Kezdő súly (kg)<input class="in" inputmode="decimal" data-set="weight" value="${num(s.weight)}"></label></div>
   <label class="lbl">Aktivitás${sel('activity',[[1.375,'Könnyű: ülőmunka, kevés mozgás'],[1.55,'Közepes: heti 4 edzés, napi séta'],[1.725,'Magas: fizikai munka vagy sok sport']])}</label>
   <label class="lbl">Kalóriatöbblet${sel('surplus',[[250,'+250 kcal, lassú és tiszta'],[400,'+400 kcal, ajánlott'],[550,'+550 kcal, gyorsabb']])}</label>
+  ${Number(s.calAdj)?`<p class="meta">Az okos igazítás miatt a napi cél ${s.calAdj>0?'+':''}${s.calAdj} kcal-lal módosítva, most ${targets().kcal} kcal. <button class="link" data-a="calReset">Visszaállítás</button></p>`:`<p class="meta">Ha legalább 2 hétig méred a súlyod, az app magától javasolja, mikor emeld vagy csökkentsd a napi célt.</p>`}
   <h3>Edzésnapok</h3><div class="grid2">${DAYS.map((d,i)=>`<label class="lbl">${d.name}<select class="in" data-set="day${i}">${[1,2,3,4,5,6,0].map(w=>`<option value="${w}" ${s.days[i]===w?'selected':''}>${WD[w]}</option>`).join('')}</select></label>`).join('')}</div>
   <button class="btn ghost full" data-a="newCycle">Új ciklus indítása ettől a héttől</button>
   <h3>Napi követés</h3><label class="lbl">Kreatin adag (g)<input class="in" inputmode="decimal" data-set="creatine" value="${num(s.creatine)}"></label>
@@ -1200,9 +1313,24 @@ case 'set':{const id=d.ex,i=Number(d.i),L=ensureLog(id),s=L[i],ex=EX[id];s[2]=!s
   if(s[2])startRest(ex.rest);
   if(s[2]&&ex.inc&&ex.u!=='mp'&&ex.u!=='testsúly'&&L.every(x=>x[2]&&(x[1]||0)>=ex.r[1]))toast(ex.n+': legközelebb +'+num(ex.inc)+' kg!');
   const ci=cycleInfo(),day=DAYS.find(x=>x.id===ui.day);
-  if(s[2]&&day&&!S.sessions[t]&&exList(day,ci).every(exDone)){S.sessions[t]=day.id;save();stopRest();toast('Edzés kész, szép munka!')}
+  if(s[2]&&day&&!S.sessions[t]&&exList(day,ci).every(exDone)){finishSession(t,day.id);save();stopRest();toast('Edzés kész, szép munka!')}
   render(true);break}
-case 'finish':if(S.sessions[t]===d.d){delete S.sessions[t];toast('Visszavonva')}else{S.sessions[t]=d.d;stopRest();toast('Edzés kész, szép munka!')}save();render(true);break;
+case 'finish':if(S.sessions[t]===d.d){delete S.sessions[t];toast('Visszavonva')}else{finishSession(t,d.d);stopRest();toast('Edzés kész, szép munka!')}save();render(true);break;
+case 'woOpen':woOpen(d.d);break;
+case 'woClose':ui.wo=null;renderWo();render(true);break;
+case 'woNav':{const{sl}=woList();ui.wo.i=Math.max(0,Math.min(sl.length-1,ui.wo.i+Number(d.v)));renderWo();$('#wo').scrollTop=0;break}
+case 'woSet':{const{day,ci,sl}=woList(),x=sl[ui.wo.i],ex=EX[x.id],L=ensureLog(x.id),si=L.findIndex(s=>!s[2]);if(si<0)break;const s=L[si],kg=$('#woKg'),rp=$('#woReps');
+  if(kg){const v=pnum(kg.value);if(v!=null){s[0]=v;for(let j=si+1;j<L.length;j++)if(!L[j][2])L[j][0]=v}}const r=rp?pnum(rp.value):null;s[1]=r!=null?Math.round(r):ex.r[1];s[2]=true;save();startRest(ex.rest);
+  if(ex.inc&&ex.u!=='mp'&&ex.u!=='testsúly'&&L.every(y=>y[2]&&(y[1]||0)>=ex.r[1]))toast(ex.n+': legközelebb +'+num(ex.inc)+' kg!');
+  if(L.every(y=>y[2])){const nx=sl.findIndex((y,j)=>j>ui.wo.i&&!exDone(y.id)),any=sl.findIndex(y=>!exDone(y.id));ui.wo.i=nx>=0?nx:any>=0?any:ui.wo.i}
+  if(!S.sessions[t]&&sl.every(y=>exDone(y.id))){finishSession(t,day.id);save();stopRest();toast('Edzés kész, szép munka!')}
+  renderWo();render(true);$('#wo').scrollTop=0;break}
+case 'calYes':S.settings.calAdj=(Number(S.settings.calAdj)||0)+Number(d.v);S.calAsk=t;save();render(true);toast('Új napi cél: '+targets().kcal+' kcal');break;
+case 'calNo':S.calAsk=t;save();render(true);break;
+case 'calReset':S.settings.calAdj=0;save();renderSheet(true);render(true);toast('Kalóriacél visszaállítva');break;
+case 'weekOpen':ui.wk={off:Number(d.v||0)};openSheet('week');weekShow();break;
+case 'weekOff':ui.wk.off=Number(d.v);weekShow();break;
+case 'weekShare':{const b=ui.wk&&ui.wk.blob;if(!b)break;const f=new File([b],'nocta-het.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:'NOCTA heti összefoglaló'}).catch(()=>{});else{const a=document.createElement('a');a.href=ui.wk.url;a.download='nocta-het.png';a.click()}break}
 case 'rest30':if(timer)timer.end+=30000;tick();break;
 case 'restSkip':stopRest();break;
 case 'reroll':{const wk=weekKey();S.reroll[wk]=(S.reroll[wk]||0)+1;if(S.plan)delete S.plan[wk];save();render(true);break}
@@ -1251,7 +1379,8 @@ document.addEventListener('change',e=>{const el=e.target,t=dk();
   if(el.id==='feImg'&&el.files&&el.files[0])scanFood(el.files[0]);});
 document.addEventListener('input',e=>{if(e.target.id!=='feG'||!ui.fe||!ui.fe.per)return;readFE();feCalc(ui.fe);const f=(id,v)=>{const x=$('#'+id);if(x)x.value=num(v)};f('feK',ui.fe.kcal);f('feP',ui.fe.p);f('feC',ui.fe.c);f('feS',ui.fe.s)});
 $('#sheetWrap').addEventListener('click',e=>{if(e.target.id==='sheetWrap')closeSheet()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&ui.sheet)closeSheet()});
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(ui.sheet)closeSheet();else if(ui.wo){ui.wo=null;renderWo();render(true)}});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&ui.wo)keepAwake(true)});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&!ui.sheet&&!(document.activeElement&&document.activeElement.matches('input,select')))render(true)});
 
 applyTheme();render();initDb();initMcp();spHandleRedirect();loadWx();
