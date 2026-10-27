@@ -495,8 +495,27 @@ nav button.on .ic{animation:pop2 .35s ease both}
 .in-nav{position:relative}
 .nav-btns{display:flex;flex:1;min-width:0}
 .nav-btns button{min-width:0}
-.nav-ind{position:absolute;top:-1px;left:6px;width:calc((100% - 12px)/6);height:2px;background:var(--accent);box-shadow:0 0 12px var(--accent);transition:transform .5s cubic-bezier(.16,1,.3,1)}
-nav button{font-size:8.5px;letter-spacing:.12em}
+.pt-img{display:block;width:100%;max-height:240px;object-fit:cover;margin:10px 0;border:1px solid var(--line)}
+.pt-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.pt-row .stepper b{font-size:14px;min-width:58px}
+textarea.in{resize:vertical;min-height:64px;line-height:1.4}
+.fd-img{width:42px;height:42px;object-fit:cover;flex:none;align-self:center;border:1px solid var(--line)}
+.gear{padding:12px 0;border-bottom:1px solid var(--line)}
+.gear:last-child{border-bottom:0}
+.gear.own .row-title{color:var(--muted)}
+.shops{display:flex;flex-wrap:wrap;gap:6px}
+.shops a,.drop{color:var(--text);text-decoration:none}
+.shops a{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);padding:6px 9px;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.shops a svg,.drop svg,.brand-card .meta svg{width:13px;height:13px}
+.drop{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+.drop:last-child{border-bottom:0}
+.brand-card{display:block;position:relative;overflow:hidden;color:var(--text);text-decoration:none;border:1px solid var(--line);background:linear-gradient(135deg,var(--surface) 55%,var(--surface2));padding:16px;margin:10px 0}
+.brand-card::after{content:"";position:absolute;right:-30px;top:-30px;width:120px;height:120px;background:radial-gradient(circle,var(--accent) 0%,transparent 70%);opacity:.18}
+.bc-n{font-size:26px;font-weight:800;font-stretch:125%;letter-spacing:.04em;text-transform:uppercase}
+.brand-card ul{margin:8px 0 10px;padding-left:18px}
+.brand-card li{margin:3px 0;font-size:14px}
+.nav-ind{position:absolute;top:-1px;left:6px;width:calc((100% - 12px)/7);height:2px;background:var(--accent);box-shadow:0 0 12px var(--accent);transition:transform .5s cubic-bezier(.16,1,.3,1)}
+nav button{font-size:7.5px;letter-spacing:.06em}
 .btn,.chip,.rc,.swp,.qk button,.gchips button,.seg button,.plc .icon-btn{position:relative;overflow:hidden}
 .rip{position:absolute;border-radius:50%;background:currentColor;opacity:.22;transform:scale(0);animation:rip .65s ease-out forwards;pointer-events:none}
 @keyframes rip{to{transform:scale(1);opacity:0}}
@@ -770,7 +789,7 @@ async function initDb(){try{
 }catch(e){dbRef=null;sync='local'}}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&pushT){clearTimeout(pushT);push()}});
 
-const ui={freeSeg:'randi',tab:'ma',day:null,guide:{},foodSeg:'het',prepSeg:'plan',prep:{r:null,days:5,per:1},exChart:null,sheet:null,rs:null,te:null,resetArm:false};
+const ui={gearSeg:'ruha',freeSeg:'randi',tab:'ma',day:null,guide:{},foodSeg:'het',prepSeg:'plan',prep:{r:null,days:5,per:1},exChart:null,sheet:null,rs:null,te:null,resetArm:false};
 
 /* ---------- helpers ---------- */
 function applyTheme(){const t=S.settings.theme,h=document.documentElement;if(t==='system')h.removeAttribute('data-theme');else h.setAttribute('data-theme',t);
@@ -870,16 +889,16 @@ const ft=v=>(Math.round(v/10)*10).toLocaleString('hu-HU')+' Ft';
 
 /* ---------- food log ---------- */
 const sugarMax=()=>Math.round(targets().kcal*0.1/4);
-function foodSum(d){const L=(S.food&&S.food[d])||[],s=k=>Math.round(L.reduce((a,x)=>a+(x[k]||0),0));return{n:L.length,kcal:s('kcal'),p:s('p'),c:s('c'),s:s('s')}}
+function foodSum(d){const L=(S.food&&S.food[d])||[],s=k=>Math.round(L.reduce((a,x)=>a+(x[k]||0),0));return{n:L.length,kcal:s('kcal'),p:s('p'),c:s('c'),s:s('s'),f:s('f')}}
 function recentFoods(){const out=[],seen=new Set();for(const d of Object.keys(S.food||{}).sort().reverse())for(const x of [...S.food[d]].reverse()){const k=x.n.toLowerCase();if(!seen.has(k)){seen.add(k);out.push(x)}if(out.length>=8)return out}return out}
 function macroRow(l,v,goal,u,limit){const over=limit&&v>goal;return `<div class="mt ${over?'over':''}"><span>${l}</span><div class="bar-p"><i style="width:${Math.min(100,goal?v/goal*100:0)}%"></i></div><em>${v} / ${goal} ${u}</em></div>`}
 function foodCard(t){const L=(S.food&&S.food[t])||[],tg=targets(),s=foodSum(t),sm=sugarMax();
-  let h=`<div class="sec-head"><h2>Mit ettem ma</h2></div><div class="card">${macroRow('Kalória',s.kcal,tg.kcal,'kcal')}${macroRow('Fehérje',s.p,tg.p,'g')}${macroRow('Szénhidrát',s.c,tg.c,'g')}${macroRow('Cukor',s.s,sm,'g',true)}`;
+  let h=`<div class="sec-head"><h2>Mit ettem ma</h2></div><div class="card">${macroRow('Kalória',s.kcal,tg.kcal,'kcal')}${macroRow('Fehérje',s.p,tg.p,'g')}${macroRow('Szénhidrát',s.c,tg.c,'g')}${macroRow('Zsír',s.f,tg.f,'g')}${macroRow('Cukor',s.s,sm,'g',true)}`;
   if(L.length){const rk=tg.kcal-s.kcal,rp=tg.p-s.p;h+=`<div class="meta" style="margin:8px 0 4px">${rk>0?`Még kb. ${rk} kcal`+(rp>0?` és ${rp} g fehérje`:'')+' hiányzik a mai célból.':'Megvan a mai kalóriacél.'+(rp>0?` Fehérjéből még ${rp} g hiányzik.`:'')}${s.s>sm?` A cukor ma ${s.s-sm} g-mal a javasolt felső határ fölött van.`:''}</div>`;
-    h+=L.map(x=>`<button class="fd" data-a="foodEdit" data-id="${x.id}"><span class="meta">${esc(x.tm||'')}</span><span class="grow"><span class="row-title">${esc(x.n)}</span><span class="meta" style="display:block">${num(x.p||0)} g fehérje, ${num(x.c||0)} g szénhidrát${x.s!=null?', '+num(x.s)+' g cukor':''}</span></span><b>${Math.round(x.kcal)}</b></button>`).join('')}
+    h+=L.map(x=>`<button class="fd" data-a="foodEdit" data-id="${x.id}">${x.img?`<img class="fd-img" src="${x.img}" alt="">`:`<span class="meta">${esc(x.tm||'')}</span>`}<span class="grow"><span class="row-title">${esc(x.n)}</span><span class="meta" style="display:block">${num(x.p||0)} g fehérje, ${num(x.c||0)} g szénhidrát, ${num(x.f||0)} g zsír${x.s!=null?', '+num(x.s)+' g cukor':''}</span></span><b>${Math.round(x.kcal)}</b></button>`).join('')}
   else h+=`<p class="meta" style="margin:8px 0 0">Írd be, mit ettél, és itt látod, mennyi hiányzik még a célodból.</p>`;
-  return h+`<button class="btn acc full" data-a="foodNew">Étkezés hozzáadása</button></div>`}
-function readFE(){const e=ui.fe,g=id=>$('#'+id);if(!e||!g('feN'))return;e.n=g('feN').value;e.kcal=pnum(g('feK').value);e.p=pnum(g('feP').value);e.c=pnum(g('feC').value);e.s=pnum(g('feS').value);if(g('feG'))e.g=pnum(g('feG').value)}
+  return h+`<div class="btn-row"><button class="btn acc" data-a="foodNew">+ Étkezés</button><button class="btn ghost" data-a="plate">Tányér fotó</button></div></div>`}
+function readFE(){const e=ui.fe,g=id=>$('#'+id);if(!e||!g('feN'))return;e.n=g('feN').value;e.kcal=pnum(g('feK').value);e.p=pnum(g('feP').value);e.c=pnum(g('feC').value);e.s=pnum(g('feS').value);if(g('feF'))e.f=pnum(g('feF').value);if(g('feG'))e.g=pnum(g('feG').value)}
 
 /* ---------- packaging photo: barcode -> Open Food Facts, else on-device OCR of the nutrition table ---------- */
 const libs={};
@@ -895,7 +914,7 @@ async function offLookup(code){const r=await fetch('https://world.openfoodfacts.
   const j=await r.json();if(j.status!==1||!j.product)return null;const P=j.product,n=P.nutriments||{},v=k=>n[k]==null?null:Number(n[k]);
   const kcal=v('energy-kcal_100g')??(v('energy_100g')!=null?v('energy_100g')/4.184:null);if(kcal==null)return null;
   const pn=(P.product_name_hu||P.product_name||'').trim(),br=(P.brands||'').split(',')[0].trim();
-  return{name:!br||pn.toLowerCase().includes(br.toLowerCase())?pn:(br+' '+pn).trim(),kcal,p:v('proteins_100g'),c:v('carbohydrates_100g'),s:v('sugars_100g'),srv:Number(P.serving_quantity)||null,src:'Open Food Facts'}}
+  return{name:!br||pn.toLowerCase().includes(br.toLowerCase())?pn:(br+' '+pn).trim(),kcal,p:v('proteins_100g'),c:v('carbohydrates_100g'),s:v('sugars_100g'),f:v('fat_100g'),srv:Number(P.serving_quantity)||null,src:'Open Food Facts'}}
 async function ocrText(cv){await loadScript('https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js');const w=await Tesseract.createWorker(['hun','eng']);try{return(await w.recognize(cv)).data.text}finally{w.terminate()}}
 // Nutrition tables list the per-100 g column first, so the first number after each label is taken.
 // OCR often reads "28 g" as "289" (the g becomes a 9), so a trailing 9 with no unit and nothing after it on the line is treated as the unit.
@@ -903,10 +922,10 @@ function parseLabel(txt){const t=txt.toLowerCase().replace(/(\d),(\d)/g,'$1.$2')
   const after=w=>{const re=new RegExp(w);for(const l of lines){const i=l.search(re);if(i<0)continue;const rest=l.slice(i).replace(/^[^0-9]*/,''),m=rest.match(/^(\d{1,4}(?:\.\d+)?)(\s*[gq](?![a-z]))?/);if(!m)continue;
     let v=m[1];if(!m[2]&&v.length>1&&/9$/.test(v)&&!/\d/.test(rest.slice(m[0].length)))v=v.slice(0,-1).replace(/\.$/,'');return parseFloat(v)}return null};
   let kcal=(t.match(new RegExp(N+'\\s*kcal'))||[])[1];kcal=kcal!=null?parseFloat(kcal):null;if(kcal==null){const kj=(t.match(new RegExp(N+'\\s*kj'))||[])[1];if(kj!=null)kcal=parseFloat(kj)/4.184}
-  const p=after('feh.?rje|protein|eiwei'),c=after('sz.?nhidr|carbohydrate|kohlenhydrat'),s=after('cukor|cukr|sugar|zucker');
-  return kcal==null&&p==null?null:{name:'',kcal,p,c,s,srv:null,src:'a fotón lévő táblázat'}}
+  const p=after('feh.?rje|protein|eiwei'),c=after('sz.?nhidr|carbohydrate|kohlenhydrat'),s=after('cukor|cukr|sugar|zucker'),f=after('zs.?r|fat|fett');
+  return kcal==null&&p==null?null:{name:'',kcal,p,c,s,f,srv:null,src:'a fotón lévő táblázat'}}
 function applyPer(e,per){e.per=per;if(!(e.n||'').trim()&&per.name)e.n=per.name;e.g=e.g||per.srv||100;feCalc(e)}
-function feCalc(e){const g=e.g,m=(v,d)=>v==null||g==null?null:Math.round(v*g/100*d)/d;e.kcal=m(e.per.kcal,1);e.p=m(e.per.p,10);e.c=m(e.per.c,10);e.s=m(e.per.s,10)}
+function feCalc(e){const g=e.g,m=(v,d)=>v==null||g==null?null:Math.round(v*g/100*d)/d;e.kcal=m(e.per.kcal,1);e.p=m(e.per.p,10);e.c=m(e.per.c,10);e.s=m(e.per.s,10);e.f=m(e.per.f,10)}
 async function scanFood(f){readFE();const e=ui.fe,show=st=>{e.st=st;if(ui.sheet==='food'&&ui.fe===e)renderSheet(true)};
   show('Kép elemzése...');
   try{const cv=await fileCanvas(f,1600),code=await findBarcode(cv);
@@ -1344,6 +1363,7 @@ Object.assign(ICON,{free:'<svg viewBox="0 0 24 24" fill="none" stroke="currentCo
   heartO:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>',
   pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 21s-6.5-6.2-6.5-11.5a6.5 6.5 0 0 1 13 0C18.5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg>',
   ext:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>'});
+ICON.shop='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 8h14l-1 12H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>';
 const CATL={brunch:'Brunch',etterem:'Étterem',bar:'Bár',kave:'Kávézó, desszert',spa:'Spa',elmeny:'Élmény',szallas:'Szállás',balaton:'Balaton',becs:'Bécs'};
 // [name, category, note, flags (o = outdoor, n = new in 2026, f = Fri-Sat only), city for the map search ('' = name only)]
 const PL_RAW=[
@@ -1411,6 +1431,65 @@ function rFree(){let h=bar()+heroBlock('Freetime','Barbival: randik, helyek, fil
     h+=L.length?`<div class="card">${L.map(x=>`<div class="task ${x.done?'on':''}"><button class="chk ${x.done?'on':''}" data-a="ideaDone" data-id="${x.id}" aria-pressed="${!!x.done}" aria-label="Kész">${ICON.check}</button><div class="grow"><div class="task-t">${esc(x.t)}</div>${x.l?`<a class="meta" href="${esc(x.l)}" target="_blank" rel="noopener">${esc(x.l.replace(/^https?:\/\//,'').slice(0,40))}</a>`:''}</div><button class="round" data-a="ideaDel" data-id="${x.id}" aria-label="Törlés">${ICON.x}</button></div>`).join('')}</div>`:'<p class="empty">Még üres. Ide gyűjtheted a közös terveket, filmeket és helyeket.</p>'}
   return h}
 
+/* ---------- plate estimate from a short description (typical Hungarian portions, values per 100 g) ---------- */
+// [id, name, accent-free keyword regex, kcal, protein, carbs, fat, sugar, {sz: g per slice, db: g per piece, adag: g per portion}, default grams]
+const FDB=[
+['csirke','Grillezett csirkemell','csirke|csirkemell|grill csirke',165,31,0,3.6,0,{sz:120,db:150,adag:150},150],['csirkecomb','Csirkecomb','csirkecomb|comb',210,26,0,11,0,{db:150,adag:180},150],['rantott','Rántott hús','rantott|rantotthus|snitzel|schnitzel',260,18,12,15,0.5,{sz:130,db:130,adag:150},150],['pulyka','Pulykamell','pulyka',135,29,0,1.5,0,{sz:120,adag:150},150],['karaj','Sertéskaraj','karaj|sertes|disznohus|tarja',200,27,0,10,0,{sz:130,adag:150},150],['steak','Marhasteak','steak|marha|bifsztek',250,26,0,16,0,{sz:200,adag:200},200],['darthus','Darált hús (bolognai)','bolognai|daralt|fasirt',220,17,6,14,3,{db:80,adag:200},180],['lazac','Lazac','lazac',208,20,0,13,0,{sz:150,adag:150},150],['tonhal','Tonhal','tonhal',116,26,0,1,0,{adag:120,db:120},120],['hal','Sült hal','\\bhal\\b|hekk|harcsa|tokehal',180,20,7,8,0,{sz:120,adag:150},150],['tojas','Tojás','tojas|rantotta|tukortojas|omlett',150,13,1,11,1,{db:55,adag:110},110],['sonka','Sonka','sonka|felvagott|szalami|kolbasz',190,17,2,13,1,{sz:15,adag:60},60],['sajt','Sajt','sajt|trappista|mozzarella|parmezan|cheddar',340,25,2,26,0.5,{sz:20,db:20,adag:40},40],['bacon','Bacon','bacon|szalonna',500,14,1,48,0,{sz:12,adag:40},40],
+['rizs','Rizs','rizs|rizz',130,2.7,28,0.3,0.1,{adag:180},180],['teszta','Tészta','teszta|spagetti|penne|fusilli|makaroni|nokedli|galuska|csusza',155,5.8,30,1.2,0.6,{adag:220},220],['pure','Krumplipüré','pure|krumplipure',110,2,16,4,1.5,{adag:200},200],['sultkrumpli','Sült krumpli','sult krumpli|hasab|fries|steakburgonya|sultkrumpli|petrezselymes',230,3,32,10,0.5,{adag:180},180],['krumpli','Főtt krumpli','krumpli|burgonya',87,2,20,0.1,0.8,{db:120,adag:200},200],['edesb','Édesburgonya','edesburgonya|batata',90,2,21,0.2,4.2,{db:200,adag:200},200],['kenyer','Kenyér, pirítós','kenyer|piritos|zsemle|bagett|toast|buci',250,9,48,3,4,{sz:35,db:60,adag:70},70],['tortilla','Tortilla','tortilla|wrap',300,8,50,7,3,{db:60},60],['zab','Zabkása','zab|zabkasa|zabpehely',90,3.5,15,2,4,{adag:250},250],['bab','Bab, lencse','bab|lencse|csicseri',125,8.5,21,0.5,1,{adag:150},150],['kukorica','Kukorica','kukorica',96,3.4,21,1.5,4.5,{adag:80},80],
+['salata','Zöldsaláta','salata|uborka|paradicsom|paprika|zoldseg|kaposzta|spenot|repa',25,1.2,4,0.2,2.5,{adag:100},100],['brokkoli','Párolt zöldség','brokkoli|karfiol|zoldbab|zoldborso|cukkini|parolt',40,3,7,0.4,2,{adag:150},150],['avokado','Avokádó','avokado',160,2,9,15,0.7,{db:150,adag:75},75],
+['szosz','Szósz, ketchup','ketchup|szossz|szosz|bbq|edes chili',110,1,26,0.2,22,{adag:30},30],['majonez','Majonéz','majonez|tartar|aioli',680,1,1,75,1,{adag:20},20],['tejfol','Tejföl','tejfol',190,3,3,20,3,{adag:30},30],['olaj','Olaj, vaj','olaj|vaj',800,0.5,0,90,0,{adag:10},10],
+['pizza','Pizza','pizza',270,11,33,10,3.6,{sz:110,db:330,adag:330},330],['burger','Hamburger','burger|hamburger',250,13,25,11,5,{db:230,adag:230},230],['gyros','Gyros','gyros|kebab|doner',220,15,15,11,3,{db:350,adag:350},350],['sushi','Sushi','sushi|maki|nigiri',150,6,28,2,5,{db:30,adag:240},240],['leves','Húsleves','husleves|leves',40,3,3,1.5,1,{adag:350},350],['gulyas','Gulyásleves','gulyas',85,7,6,3.5,1.5,{adag:350},350],['porkolt','Pörkölt, paprikás','porkolt|paprikas',160,17,4,8,2,{adag:250},250],['fozelek','Főzelék','fozelek',90,3,12,3.5,3,{adag:350},350],['lecso','Lecsó','lecso',60,1.5,6,3.5,4,{adag:300},300],['palacsinta','Palacsinta','palacsinta',230,7,32,8,10,{db:60},120],['gofri','Gofri, édes péksüti','gofri|kalacs|kifli|croissant|fank|muffin|suti|sutemeny|torta',380,6,48,18,22,{db:70,sz:100,adag:100},100],
+['banan','Banán','banan',89,1.1,23,0.3,12,{db:120},120],['alma','Gyümölcs','alma|korte|narancs|szolo|gyumolcs|eper|afonya',52,0.4,14,0.2,10,{db:180,adag:150},150],['joghurt','Joghurt','joghurt|skyr|gorog',97,9,4,5,4,{db:150,adag:150},150],['turo','Túró','turo',110,17,3,4,3,{adag:150},150],['shake','Fehérje shake','shake|feherje|protein',400,80,10,5,5,{adag:30,db:30},30],['csoki','Csokoládé','csoki|csokolade',540,6,58,31,48,{sz:100,db:25,adag:25},25],['cola','Üdítő','cola|udito|fanta|sprite|ice tea|limonade',42,0,10.6,0,10.6,{db:330,adag:330},330],['sor','Sör','\\bsor\\b|sorozo',43,0.5,3.6,0,0,{db:500,adag:500},500],['bor','Bor','\\bbor\\b|frocs|prosecco',85,0.1,2.6,0,1,{adag:150},150],['mogyvaj','Mogyoróvaj','mogyorovaj',590,25,20,50,9,{adag:16},16],['dio','Dió, mandula','dio|mandula|kesudio|mogyoro|pisztacia',600,20,20,52,4,{adag:30},30],['muzli','Müzli, granola','muzli|granola|cornflakes|gabonapehely',400,9,66,10,20,{adag:60},60]
+].map(([id,n,kw,kcal,p,c,f,s,u,def])=>({id,n,re:new RegExp(kw),kcal,p,c,f,s,u,def}));
+const nrm=x=>String(x).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+const NUMW={egy:1,ket:2,ketto:2,harom:3,negy:4,ot:5,hat:6,het:7,nyolc:8,fel:0.5,masfel:1.5};
+const UNITG={g:1,gr:1,gramm:1,dkg:10,kg:1000,ml:1,dl:100,l:1000,merokanal:150,kanal:15,evokanal:15,ek:15,pohar:250,bogre:300,marek:30,gomboc:60,csesze:240,doboz:330,korso:500,kocka:5};
+// "3 szelet grill csirke rizzsel, saláta" -> chicken 3 × 120 g, rice 180 g, salad 100 g. Foods without a number get a typical portion.
+function estimatePlate(desc){const items=[],unknown=[];
+  for(const seg0 of nrm(desc).split(/,|;|\+|\n|\bes\b|\bmeg\b|\bmelle\b|\bvalamint\b|\bplusz\b/)){const seg=seg0.trim();if(!seg)continue;
+    const hits=[];for(const fd of FDB){const m=seg.match(fd.re);if(m)hits.push({fd,at:m.index,len:m[0].length})}
+    hits.sort((a,b)=>b.len-a.len);const used=[],keep=[];for(const h of hits){if(used.some(([a,b])=>h.at<b&&h.at+h.len>a))continue;used.push([h.at,h.at+h.len]);keep.push(h)}keep.sort((a,b)=>a.at-b.at);
+    if(!keep.length){unknown.push(seg0.trim());continue}
+    const mod=/\b(dupla)\b/.test(seg)?2:/\b(nagy|sok)\b/.test(seg)?1.4:/\b(kis|kicsi|keves|picit)\b/.test(seg)?0.65:1;
+    keep.forEach((h,i)=>{const fd=h.fd;let g=fd.def;
+      if(i===0){const pre=seg.slice(0,h.at+h.len+12),m=pre.match(/(\d+(?:[.,]\d+)?|egy|ket|ketto|harom|negy|ot|hat|het|nyolc|fel|masfel)\s*(g|gr|gramm|dkg|kg|ml|dl|l|szelet|db|darab|adag|tanyer|tal|merokanal|evokanal|kanal|ek|pohar|bogre|marek|gomboc|csesze|doboz|korso|kocka)?\b/);
+        if(m){const q=NUMW[m[1]]!=null?NUMW[m[1]]:parseFloat(m[1].replace(',','.')),u=m[2];
+          if(u&&UNITG[u]!=null)g=q*UNITG[u];else if(u==='szelet')g=q*(fd.u.sz||fd.u.db||100);else if(u==='db'||u==='darab')g=q*(fd.u.db||fd.u.sz||100);else if(u==='adag')g=q*(fd.u.adag||fd.def);else if(u==='tanyer'||u==='tal')g=q*(fd.u.adag||fd.def)*1.3;
+          else g=q>20?q:q*(fd.u.db||fd.u.sz||fd.u.adag||fd.def)}}
+      items.push({id:fd.id,g:Math.round(g*mod)})})}
+  return{items,unknown}}
+function plateTotals(items){const t={kcal:0,p:0,c:0,f:0,s:0};for(const it of items){const fd=FDB.find(x=>x.id===it.id);for(const k in t)t[k]+=fd[k]*it.g/100}for(const k in t)t[k]=Math.round(t[k]*(k==='kcal'?1:10))/(k==='kcal'?1:10);return t}
+async function plateImg(f){const c=await fileCanvas(f,360);return c.toDataURL('image/jpeg',.62)}
+// Photos stay on the phone for 3 weeks so localStorage does not fill up.
+function prunePhotos(){const cut=new Date();cut.setDate(cut.getDate()-21);const ck=dk(cut);for(const d in S.food||{})if(d<ck)for(const x of S.food[d])delete x.img}
+
+/* ---------- Gear: clothes, equipment, supplements and where to buy them in Hungary ---------- */
+const GSRCH=(q,site)=>'https://www.google.com/search?q='+encodeURIComponent(q+(site?' site:'+site:''));
+const SHOPS=[['GymBeam','https://gymbeam.hu/','Táplálékkiegészítő, öv, heveder, kréta. Gyors hazai szállítás.'],['Myprotein','https://www.myprotein.hu/','Fehérje, kreatin, ruha. Gyakori nagy akciók.'],['BioTechUSA','https://biotechusa.hu/','Magyar márka, sok bolt országszerte.'],['Scitec Nutrition','https://scitec.hu/','Magyar márka.'],['Builder','https://shopbuilder.hu/','Magyar kiegészítő-bolt.'],['Decathlon','https://www.decathlon.hu/','Olcsó öv, heveder, gumiszalag, kulacs.'],['SBD Apparel','https://www.sbdapparel.com/','Prémium bőr öv, csuklószorító, térdszorító.'],['Nike','https://www.nike.com/hu/','Nike és NOCTA.'],['Adidas','https://www.adidas.hu/','Edzőruha, Dropset cipő.'],['Gymshark','https://www.gymshark.com/','Edzőruha, új drop-ok.'],['Under Armour','https://www.underarmour.eu/','HeatGear, ColdGear, Project Rock.'],['Footshop','https://www.footshop.hu/hu/','Cipők, Nike és NOCTA modellek.'],['About You','https://www.aboutyou.hu/','Sok márka egy helyen.'],['Zalando','https://www.zalando.hu/','Sok márka, ingyenes visszaküldés.'],['Sportisimo','https://www.sportisimo.hu/','Sportbolt, akciók.'],['dm','https://www.dm.hu/','D3-vitamin, magnézium, omega-3.'],['Rossmann','https://shop.rossmann.hu/','D3-vitamin, magnézium, omega-3.']];
+const DROPS=[['Gymshark Vengeance','Gymshark','Új kollekció, okt. 29.','https://www.gymshark.com/'],['Gymshark × Sam Sulek','Gymshark','Oversized tankok és shortok bodybuilding stílusban','https://www.gymshark.com/'],['NOCTA Holiday 2026','NOCTA','Track jacket, heavy fleece, sapkák (szept. 12.)','https://www.nike.com/hu/w/nocta'],['Venezia × NOCTA anthem jacket','NOCTA','Színátmenetes kabát, október','https://www.nike.com/hu/w/nocta']];
+const BRANDS=[['Nike','https://www.nike.com/hu/',['Dri-FIT edzőpólók és shortok','Nike Pro aláöltözet hidegebb napokra','Metcon edzőcipő: stabil, lapos talp guggoláshoz és felhúzáshoz','Tech Fleece melegítő']],
+  ['NOCTA','https://www.nike.com/hu/w/nocta',['Tech fleece és heavy fleece szettek','Hot Step és Glide cipők (utcára, nem emeléshez)','Sapkák, zoknik']],
+  ['Gymshark','https://www.gymshark.com/',['Crest, Power, Apex alapdarabok','Lifting Club oversized pólók','Element / SoftSense szuperpuha anyag']],
+  ['Under Armour','https://www.underarmour.eu/',['HeatGear (melegben) és ColdGear (télen) aláöltözet','Project Rock kollekció','UA Reign edzőcipő']],
+  ['Adidas','https://www.adidas.hu/',['Designed for Training pólók, shortok','Dropset edzőcipő: stabil, emeléshez jó','Adicolor melegítők']]];
+// [id, name, why, when, price, where (shop names)]
+const GEAR=[['ruha',[['tee','3-4 gyorsan száradó edzőpóló','Nem ázik át, nem dörzsöl','mindig','6 000-15 000 Ft/db',['Nike','Gymshark','Adidas']],['short','2 edzőshort','Guggoláshoz rugalmas, ne legyen szűk','mindig','8 000-18 000 Ft',['Gymshark','Nike','Under Armour']],['jogger','Jogger vagy melegítőnadrág','Télen az odaútra és a bemelegítéshez','ősztől tavaszig','15 000-35 000 Ft',['Nike','Adidas','Gymshark']],['hoodie','Hoodie','Bemelegítés, utána meg ne fázz','mindig','15 000-40 000 Ft',['Gymshark','NOCTA','Nike']],['shoe','Edzőcipő lapos, stabil talppal','Guggolásnál és felhúzásnál stabilabb, mint a futócipő','ha sokat guggolsz','35 000-60 000 Ft',['Nike','Adidas','Under Armour']],['base','Téli aláöltözet','Hideg reggeleken alá','ősztől tavaszig','10 000-25 000 Ft',['Under Armour','Nike']],['socks','Sportzokni szett','Ne csússzon a cipőben','mindig','4 000-8 000 Ft',['Nike','Adidas']]]],
+  ['kieg',[['belt','Emelőöv','Nehéz guggolásnál és felhúzásnál stabilabb a törzsed. Nem kell minden szetthez, csak a legnehezebbekhez.','ha guggolásban a testsúlyod 1,2-szerese fölött vagy','8 000-25 000 Ft (nylon), 35 000-70 000 Ft (bőr, SBD)',['GymBeam','Decathlon','SBD Apparel']],['straps','Húzóheveder („gurtni”)','Felhúzásnál, evezésnél, lehúzásnál nem a markolásod fogy el előbb, mint a hátad.','amikor a fogásod elfárad','2 500-8 000 Ft',['GymBeam','Decathlon','Myprotein']],['wraps','Csuklószorító','Nehéz fekvenyomásnál és vállból nyomásnál tartja a csuklót.','nehéz nyomó szetteknél','3 000-9 000 Ft',['GymBeam','SBD Apparel','Decathlon']],['sleeves','Térdszorító (5-7 mm)','Melegen tartja a térdet guggolásnál.','ha a térded hideg vagy érzékeny','8 000-25 000 Ft',['SBD Apparel','GymBeam']],['chalk','Kréta (folyékony)','Jobb fogás, kevesebb csúszás. A legtöbb terem a folyékonyat engedi.','felhúzás, húzódzkodás','2 000-5 000 Ft',['GymBeam','Decathlon']],['bands','Gumiszalag szett','Bemelegítés és a gumiszalag széthúzás gyakorlat.','minden edzés előtt','4 000-10 000 Ft',['Decathlon','GymBeam']],['shaker','Shaker és kulacs','A shake-hez és a napi vízcélhoz.','mindig','2 000-6 000 Ft',['Myprotein','GymBeam','Decathlon']],['roller','Masszázshenger vagy labda','Regeneráció, merevség ellen.','pihenőnapon','4 000-12 000 Ft',['Decathlon','GymBeam']],['bag','Edzőtáska','Ruha, shaker, cipő külön zsebben.','mindig','10 000-30 000 Ft',['Nike','Gymshark','Adidas']]]],
+  ['supp',[['crea','Kreatin-monohidrát (lehetőleg Creapure)','A leginkább bizonyított kiegészítő az erőhöz és az izomtömeghez.','napi 3-5 g, minden nap','kb. 2 000-4 000 Ft/hónap',['GymBeam','Myprotein','BioTechUSA','Scitec Nutrition']],['whey','Tejsavó fehérje (whey)','Kényelmes fehérje, ha ételből nem jön ki a napi 2 g/ttkg. Laktózérzékenységnél izolátum (pl. Iso Whey).','napi 1-2 adag','kb. 200-350 Ft/adag',['Myprotein','GymBeam','BioTechUSA','Scitec Nutrition','Builder']],['vitd','D3-vitamin','Ősztől tavaszig a legtöbb embernek kevés.','napi 1000-2000 NE','kb. 1 000-2 500 Ft/hónap',['dm','Rossmann','GymBeam']],['omega','Omega-3','Ha ritkán eszel halat.','napi 1-2 g EPA és DHA','kb. 2 000-4 000 Ft/hónap',['dm','Rossmann','Myprotein']],['mg','Magnézium','Alvás, görcsök ellen, ha kevés van az étrendben.','este 200-400 mg','kb. 1 000-2 500 Ft/hónap',['dm','Rossmann','GymBeam']],['caf','Koffein vagy pre-workout','Erősebb, fókuszáltabb edzés. Egy dupla eszpresszó is elég.','edzés előtt 30-60 perccel, délután 4 után ne','kb. 2 000-6 000 Ft/hónap',['GymBeam','Myprotein','BioTechUSA']]]]];
+const gearSt=id=>(S.gear&&S.gear[id])||{};
+function gearRow([id,n,why,when,price,where]){const st=gearSt(id),shops=where.map(w=>SHOPS.find(s=>s[0]===w)).filter(Boolean);
+  return `<div class="gear ${st.o?'own':''}"><div class="row"><button class="chk ${st.o?'on':''}" data-a="gearOwn" data-id="${id}" aria-pressed="${!!st.o}" aria-label="Megvan">${ICON.check}</button><div class="grow"><div class="row-title">${n}</div><div class="meta">${price} · ${when}</div></div><button class="icon-btn fav ${st.w?'on':''}" data-a="gearWish" data-id="${id}" aria-pressed="${!!st.w}" aria-label="Kívánságlista">${st.w?ICON.heart:ICON.heartO}</button></div><p class="meta" style="margin:6px 0 4px">${why}</p><div class="shops">${shops.map(s=>`<a href="${esc(GSRCH(n.replace(/\s*\(.*?\)|„|”/g,''),s[1].replace(/^https?:\/\/(www\.)?/,'').replace(/\/.*$/,'')))}" target="_blank" rel="noopener">${s[0]} ${ICON.ext}</a>`).join('')}</div></div>`}
+function rGear(){let h=bar()+heroBlock('Gear','Ruha, felszerelés és kiegészítők. Hol vedd meg itthon.','GEAR');
+  h+=seg('gearSeg',[['ruha','Ruha'],['kieg','Szerkó'],['supp','Táplálék'],['hol','Boltok']]);const wish=GEAR.flatMap(x=>x[1]).filter(x=>gearSt(x[0]).w);
+  if(ui.gearSeg==='ruha'){h+=`<h2>Friss drop-ok</h2><div class="card">${DROPS.map(([n,b,d,u])=>`<a class="drop" href="${u}" target="_blank" rel="noopener"><span class="tag acc">${b}</span><div class="grow"><div class="row-title">${n}</div><div class="meta">${d}</div></div>${ICON.ext}</a>`).join('')}</div>`;
+    h+=`<h2>Kedvenc márkáid</h2>${BRANDS.map(([n,u,ls])=>`<a class="brand-card" href="${u}" target="_blank" rel="noopener"><div class="bc-n">${n}${n==='NOCTA'?CL:''}</div><ul>${ls.map(l=>`<li>${l}</li>`).join('')}</ul><span class="meta">Webshop megnyitása ${ICON.ext}</span></a>`).join('')}`;
+    h+=`<h2>Alap gym gardrób</h2><p class="meta">Pipáld ki, ami megvan, szívvel tedd a kívánságlistára, amit szeretnél.</p><div class="card">${GEAR[0][1].map(gearRow).join('')}</div>`}
+  else if(ui.gearSeg==='kieg')h+=`<h2>Hasznos felszerelés</h2><div class="card">${GEAR[1][1].map(gearRow).join('')}</div>`;
+  else if(ui.gearSeg==='supp')h+=`<h2>Ami tényleg megéri</h2><p class="meta">Magyarországon rendelhető, ellenőrzött márkák. A kreatin és a fehérje után minden más csak kis plusz.</p><div class="card">${GEAR[2][1].map(gearRow).join('')}</div><p class="fine">Nem érdemes: BCAA (ha megvan a napi fehérje), gainer (drága, a saját shake jobb), tesztoszteronfokozók. Általános tájékoztatás, nem orvosi tanács. Az árak becslések.</p>`;
+  else h+=`<h2>Boltok</h2><div class="card">${SHOPS.map(([n,u,d])=>`<a class="drop" href="${u}" target="_blank" rel="noopener"><div class="grow"><div class="row-title">${n}</div><div class="meta">${d}</div></div>${ICON.ext}</a>`).join('')}</div>`;
+  if(wish.length)h+=`<h2>Kívánságlista</h2><div class="card">${wish.map(x=>`<div class="pr-row"><div class="row-title">${x[1]}</div><b>${x[4].split(' (')[0]}</b></div>`).join('')}</div>`;
+  return h}
+
 /* ---------- sheets ---------- */
 function sheetTop(title){return `<div class="sheet-top"><h2>${title}</h2><button class="icon-btn" data-a="close" aria-label="Bezárás">${ICON.x}</button></div>`}
 const SHEETS={
@@ -1438,6 +1517,16 @@ task(){const t=ui.te;return `${sheetTop(t.id?'Teendő szerkesztése':'Új teend�
   <label class="lbl">Időpont (nem kötelező)<input class="in" type="time" id="teTime" value="${t.time||''}"></label>
   <p class="meta">Az időpont után a teendő esedékesként jelenik meg, amíg ki nem pipálod.</p>
   <button class="btn acc full" data-a="teSave">Mentés</button>${t.id?'<button class="btn ghost full danger" data-a="teDel">Törlés</button>':''}`},
+plate(){const P=ui.pt,t=P.items.length?plateTotals(P.items):null;
+  return `${sheetTop('Tányér becslés')}<p class="meta">Fotózd le a tányért, és írd le röviden, mi van rajta, mennyi. Ebből számolom ki nagyjából a makrókat. A fotót az app nem elemzi, emlékként a bejegyzés mellé kerül.</p>
+  <label class="btn ghost full photo">${CAM_ICON}${P.img?'Másik fotó':'Fotó a tányérról'}<input type="file" accept="image/*" capture="environment" id="ptImg" hidden></label>${P.img?`<img class="pt-img" src="${P.img}" alt="A tányér fotója">`:''}
+  <label class="lbl">Mi van a tányéron?<textarea class="in" id="ptD" rows="2" placeholder="pl. 3 szelet grill csirke, rizs, uborkasaláta">${esc(P.desc)}</textarea></label>
+  <div class="qk">${['grill csirke','rizs','sült krumpli','tészta','saláta','tojás','kenyér','szósz','pörkölt','pizza'].map(x=>`<button data-a="ptAdd" data-v="${x}">+ ${x}</button>`).join('')}</div>
+  <button class="btn acc full" data-a="ptEst">Becslés</button>
+  ${P.unknown.length?`<p class="warn-t">Ezt nem ismertem fel: ${esc(P.unknown.join(', '))}. Írd le másképp, vagy add hozzá kézzel.</p>`:''}
+  ${t?`<div class="card">${P.items.map((it,i)=>{const fd=FDB.find(x=>x.id===it.id);return `<div class="pt-row"><div class="grow"><div class="row-title">${fd.n}</div><div class="meta">${Math.round(fd.kcal*it.g/100)} kcal, ${num(Math.round(fd.p*it.g/10)/10)} g fehérje</div></div>${stepper('ptG',it.g+' g',i)}</div>`}).join('')}
+    <div class="stats" style="margin-top:12px"><div><b>${t.kcal}</b><span>kcal</span></div><div><b>${num(t.p)}</b><span>g fehérje</span></div><div><b>${num(t.c)}</b><span>g szénhidr.</span></div><div><b>${num(t.f)}</b><span>g zsír</span></div></div><div class="meta">ebből kb. ${num(t.s)} g cukor. Átlagos adagokkal számolt becslés, a sütéshez használt olajtól kb. ±20%.</div></div>
+    <button class="btn acc full" data-a="ptSave">Hozzáadás a mai naplóhoz</button>`:''}`},
 pladd(){return `${sheetTop('Saját hely')}<label class="lbl">Név<input class="in" id="paN" maxlength="60" placeholder="pl. Kedvenc ramenezőnk"></label>
   <label class="lbl">Kategória<select class="in" id="paC">${Object.entries(CATL).map(([k,l])=>`<option value="${k}">${l}</option>`).join('')}</select></label>
   <label class="lbl">Link (weboldal, Instagram vagy térkép)<input class="in" id="paL" inputmode="url" placeholder="https://..."></label>
@@ -1460,11 +1549,11 @@ food(){const e=ui.fe,mp=mealPlan(new Date()),rec=recentFoods();
   <p class="meta">Fotózd le a vonalkódot vagy a tápérték-táblázatot, és kitöltöm az értékeket. Főtt ételnél válassz a receptek közül, vagy írd be kézzel.</p>
   <div class="row bc"><input class="in" id="feBc" inputmode="numeric" placeholder="vagy írd be a vonalkódot" aria-label="Vonalkód"><button class="btn ghost sm" data-a="feBc">Keresés</button></div>`:''}
   ${e.st?`<p class="scan">${esc(e.st)}</p>`:''}
-  ${e.per?`<div class="card"><div class="meta">100 g-ban, forrás: ${esc(e.per.src)}: ${Math.round(e.per.kcal)} kcal${e.per.p!=null?', '+num(e.per.p)+' g fehérje':''}${e.per.c!=null?', '+num(e.per.c)+' g szénhidrát':''}${e.per.s!=null?', '+num(e.per.s)+' g cukor':''}</div><label class="lbl">Mennyit ettél? (g vagy ml)<input class="in" id="feG" inputmode="decimal" value="${num(e.g)}"></label>${e.per.srv?`<button class="link" data-a="feSrv">1 adag: ${num(e.per.srv)} g</button>`:''}</div>`:''}
+  ${e.per?`<div class="card"><div class="meta">100 g-ban, forrás: ${esc(e.per.src)}: ${Math.round(e.per.kcal)} kcal${e.per.p!=null?', '+num(e.per.p)+' g fehérje':''}${e.per.c!=null?', '+num(e.per.c)+' g szénhidrát':''}${e.per.s!=null?', '+num(e.per.s)+' g cukor':''}${e.per.f!=null?', '+num(e.per.f)+' g zsír':''}</div><label class="lbl">Mennyit ettél? (g vagy ml)<input class="in" id="feG" inputmode="decimal" value="${num(e.g)}"></label>${e.per.srv?`<button class="link" data-a="feSrv">1 adag: ${num(e.per.srv)} g</button>`:''}</div>`:''}
   ${!e.id&&rec.length?`<div class="lbl">Gyakori</div><div class="qk">${rec.map((x,i)=>`<button data-a="feQuick" data-i="${i}">${esc(x.n)}<span>${Math.round(x.kcal)} kcal, ${num(x.p||0)} g fehérje</span></button>`).join('')}</div>`:''}
   ${!e.id&&mp.length?`<div class="lbl">A mai étrendből, 1 adag</div><div class="qk">${mp.map(([l,r])=>`<button data-a="feRecipe" data-id="${r.id}">${r.n}<span>${r.kcal} kcal, ${r.p} g fehérje</span></button>`).join('')}</div>`:''}
   <label class="lbl">Mit ettél?<input class="in" id="feN" value="${esc(e.n)}" placeholder="pl. 3 tojás és 2 pirítós" maxlength="60"></label>
-  <div class="grid2"><label class="lbl">Kalória (kcal)<input class="in" id="feK" inputmode="decimal" value="${num(e.kcal)}" placeholder="pl. 450"></label><label class="lbl">Fehérje (g)<input class="in" id="feP" inputmode="decimal" value="${num(e.p)}"></label><label class="lbl">Szénhidrát (g)<input class="in" id="feC" inputmode="decimal" value="${num(e.c)}"></label><label class="lbl">Ebből cukor (g)<input class="in" id="feS" inputmode="decimal" value="${num(e.s)}"></label></div>
+  <div class="grid2"><label class="lbl">Kalória (kcal)<input class="in" id="feK" inputmode="decimal" value="${num(e.kcal)}" placeholder="pl. 450"></label><label class="lbl">Fehérje (g)<input class="in" id="feP" inputmode="decimal" value="${num(e.p)}"></label><label class="lbl">Szénhidrát (g)<input class="in" id="feC" inputmode="decimal" value="${num(e.c)}"></label><label class="lbl">Ebből cukor (g)<input class="in" id="feS" inputmode="decimal" value="${num(e.s)}"></label><label class="lbl">Zsír (g)<input class="in" id="feF" inputmode="decimal" value="${num(e.f)}"></label></div>
   <p class="meta">Az értékeket a csomagolásról vagy egy kalóriatáblázatból tudod kiolvasni. Csak a név és a kalória kötelező.</p>
   <button class="btn acc full" data-a="feSave">Mentés</button>${e.id?'<button class="btn ghost full danger" data-a="feDel">Törlés</button>':''}`},
 swap(){const{o,id}=ui.sw,al=alts(o),day=getDay(ui.day),cur=day?exList(day,cycleInfo()):[];
@@ -1499,8 +1588,8 @@ function renderSheet(keep){const w=$('#sheetWrap');if(!ui.sheet){w.hidden=true;w
   const old=$('.sheet',w),sc=old?old.scrollTop:0;w.innerHTML=`<div class="sheet" role="dialog" aria-modal="true"><div class="grab" aria-hidden="true"></div>${SHEETS[ui.sheet]()}</div>`;w.hidden=false;document.body.classList.add('lock');if(keep)$('.sheet',w).scrollTop=sc}
 
 /* ---------- render ---------- */
-const TABS=[['ma','Ma'],['edzes','Edzés'],['etel','Étel'],['prep','Prep'],['halad','Haladás'],['free','Freetime']];
-const VIEWS={ma:rMa,edzes:rEdzes,etel:rEtel,prep:rPrep,halad:rHalad,free:rFree};
+const TABS=[['ma','Ma'],['edzes','Edzés'],['etel','Étel'],['prep','Prep'],['halad','Haladás'],['free','Freetime'],['shop','Gear']];
+const VIEWS={ma:rMa,edzes:rEdzes,etel:rEtel,prep:rPrep,halad:rHalad,free:rFree,shop:rGear};
 function render(keep){checkRewards();const y=window.scrollY,m=$('#main');m.innerHTML=VIEWS[ui.tab]();
   if(!keep){m.classList.remove('enter','sl','sr');void m.offsetWidth;m.classList.add('enter');if(ui.dir)m.classList.add(ui.dir);ui.dir=null}
   $('#nav').innerHTML=TABS.map(([k,l])=>`<button class="${ui.tab===k?'on':''}" data-a="tab" data-t="${k}" aria-current="${ui.tab===k?'page':'false'}"><span class="ic">${ICON[k]}</span><span>${l}</span></button>`).join('');
@@ -1569,6 +1658,13 @@ case 'teDel':S.tasks=S.tasks.filter(x=>x.id!==ui.te.id);save();closeSheet();rend
 case 'day':ui.day=d.d;render();break;
 case 'guide':ui.guide[d.ex]=!ui.guide[d.ex];render(true);break;
 case 'swap':ui.sw={o:d.o,id:d.id,k:d.k||''};openSheet('swap');break;
+case 'plate':ui.pt={img:null,desc:'',items:[],unknown:[]};openSheet('plate');break;
+case 'ptAdd':{const ta=$('#ptD');ui.pt.desc=(ta.value.trim()?ta.value.trim()+', ':'')+d.v;renderSheet(true);break}
+case 'ptEst':{ui.pt.desc=$('#ptD').value;if(!ui.pt.desc.trim()){toast('Írd le röviden, mi van a tányéron.');break}const r=estimatePlate(ui.pt.desc);ui.pt.items=r.items;ui.pt.unknown=r.unknown;renderSheet(true);break}
+case 'ptG':{ui.pt.desc=$('#ptD').value;const it=ui.pt.items[Number(d.id)];if(it){it.g=Math.max(0,Math.round(it.g*(Number(d.v)>0?1.25:0.8)/5)*5);if(!it.g)ui.pt.items.splice(Number(d.id),1)}renderSheet(true);break}
+case 'ptSave':{const P=ui.pt,tt=plateTotals(P.items),now=new Date();S.food=S.food||{};const name=(P.desc.trim()||'Tányér').replace(/\s+/g,' ').slice(0,60);
+  (S.food[t]=S.food[t]||[]).push({id:uid(),n:name,kcal:tt.kcal,p:tt.p,c:tt.c,f:tt.f,s:tt.s,img:P.img,tm:pad(now.getHours())+':'+pad(now.getMinutes())});S.food[t].sort((a,b)=>a.tm.localeCompare(b.tm));prunePhotos();save();closeSheet();render(true);toast('Hozzáadva: '+tt.kcal+' kcal');break}
+case 'gearOwn':case 'gearWish':{S.gear=S.gear||{};const g=S.gear[d.id]=S.gear[d.id]||{};if(a==='gearOwn')g.o=!g.o;else{g.w=!g.w;if(g.w)toast('Kívánságlistára téve')}save();render(true);break}
 case 'plFav':{S.pl=S.pl||{};const s=S.pl[d.id]=S.pl[d.id]||{};s.f=!s.f;save();render(true);if(s.f)toast('Kedvencekhez adva');break}
 case 'plCat':ui.plc=d.v;render(true);break;
 case 'plAdd':ui.pa={n:'',c:'etterem',l:'',note:''};openSheet('pladd');break;
@@ -1597,13 +1693,13 @@ case 'foodNew':ui.fe={id:null,n:'',kcal:null,p:null,c:null,s:null};openSheet('fo
 case 'feBc':{const v=($('#feBc').value||'').replace(/\D/g,'');barcodeLookup(v);break}
 case 'feSrv':readFE();ui.fe.g=ui.fe.per.srv;feCalc(ui.fe);renderSheet(true);break;
 case 'foodEdit':{const x=((S.food||{})[t]||[]).find(y=>y.id===d.id);if(!x)break;ui.fe={...x};openSheet('food');break}
-case 'feQuick':{const x=recentFoods()[Number(d.i)];if(x){readFE();Object.assign(ui.fe,{n:x.n,kcal:x.kcal,p:x.p,c:x.c,s:x.s});renderSheet(true)}break}
-case 'feRecipe':{const r=RI[d.id];if(r){readFE();Object.assign(ui.fe,{n:r.n,kcal:r.kcal,p:r.p,c:r.ch});renderSheet(true)}break}
+case 'feQuick':{const x=recentFoods()[Number(d.i)];if(x){readFE();Object.assign(ui.fe,{n:x.n,kcal:x.kcal,p:x.p,c:x.c,s:x.s,f:x.f});renderSheet(true)}break}
+case 'feRecipe':{const r=RI[d.id];if(r){readFE();Object.assign(ui.fe,{n:r.n,kcal:r.kcal,p:r.p,c:r.ch,f:r.f});renderSheet(true)}break}
 case 'feSave':{readFE();const e=ui.fe;if(!e.n.trim()){toast('Írd be, mit ettél.');$('#feN').focus();break}if(e.kcal==null||e.kcal<0||e.kcal>5000){toast('Add meg a kalóriát.');$('#feK').focus();break}
-  const now=new Date();S.food=S.food||{};const L=S.food[t]=S.food[t]||[],rec={id:e.id||uid(),n:e.n.trim(),kcal:e.kcal,p:e.p,c:e.c,s:e.s,tm:e.tm||pad(now.getHours())+':'+pad(now.getMinutes())};
+  const now=new Date();S.food=S.food||{};const L=S.food[t]=S.food[t]||[],rec={id:e.id||uid(),n:e.n.trim(),kcal:e.kcal,p:e.p,c:e.c,s:e.s,f:e.f,img:e.img||null,tm:e.tm||pad(now.getHours())+':'+pad(now.getMinutes())};
   const i=L.findIndex(x=>x.id===rec.id);if(i>=0)L[i]=rec;else L.push(rec);L.sort((a,b)=>a.tm.localeCompare(b.tm));save();closeSheet();render(true);toast('Étkezés mentve');break}
 case 'feDel':S.food[t]=(S.food[t]||[]).filter(x=>x.id!==ui.fe.id);save();closeSheet();render(true);toast('Törölve');break;
-case 'ateRecipe':{const r=RI[ui.rs.id],now=new Date();S.food=S.food||{};(S.food[t]=S.food[t]||[]).push({id:uid(),n:r.n,kcal:r.kcal,p:r.p,c:r.ch,s:null,tm:pad(now.getHours())+':'+pad(now.getMinutes())});S.food[t].sort((a,b)=>a.tm.localeCompare(b.tm));save();render(true);toast('Hozzáadva a mai naplóhoz');break}
+case 'ateRecipe':{const r=RI[ui.rs.id],now=new Date();S.food=S.food||{};(S.food[t]=S.food[t]||[]).push({id:uid(),n:r.n,kcal:r.kcal,p:r.p,c:r.ch,f:r.f,s:null,tm:pad(now.getHours())+':'+pad(now.getMinutes())});S.food[t].sort((a,b)=>a.tm.localeCompare(b.tm));save();render(true);toast('Hozzáadva a mai naplóhoz');break}
 case 'swapTo':{const{o,id,k}=ui.sw;
   if(k){const L=k==='x'?customToday().ex:plusFor(ui.day),i=L.indexOf(id);if(i>=0)L[i]=d.id;save();closeSheet();render(true);toast('Csere: '+EX[d.id].n);break}
   S.swaps=S.swaps||{};if(d.id===o)delete S.swaps[o];else S.swaps[o]=d.id;save();closeSheet();render(true);toast(d.id===o?'Visszaállítva':'Csere mentve: '+EX[d.id].n);break}
@@ -1676,7 +1772,8 @@ document.addEventListener('change',e=>{const el=e.target,t=dk();
     else{const v=pnum(el.value);if(v!=null)s[k]=v}
     save();applyTheme();ui.day=null;render(true);if(k==='spClientId'&&ui.sheet)renderSheet(true)}
   if(el.id==='impFile'&&el.files&&el.files[0])importData(el.files[0]);
-  if(el.id==='feImg'&&el.files&&el.files[0])scanFood(el.files[0]);});
+  if(el.id==='feImg'&&el.files&&el.files[0])scanFood(el.files[0]);
+  if(el.id==='ptImg'&&el.files&&el.files[0]){const P=ui.pt;P.desc=$('#ptD').value;plateImg(el.files[0]).then(img=>{P.img=img;if(ui.pt===P&&ui.sheet==='plate'){P.desc=$('#ptD').value;renderSheet(true)}}).catch(()=>toast('A fotót nem sikerült betölteni.'))}});
 document.addEventListener('input',e=>{if(e.target.id!=='plq')return;ui.plq=e.target.value;const q=ui.plq.toLowerCase(),c=ui.plc||'all',L=$('#plList');if(!L)return;
   const list=allPlaces().filter(p=>(c==='all'||(c==='fav'?plState(p.id).f:c==='new'?p.nw:p.c===c))&&(!q||(p.n+' '+p.note+' '+(CATL[p.c]||'')).toLowerCase().includes(q)));L.innerHTML=list.map(p=>plRow(p)).join('')||'<p class="empty">Nincs találat.</p>'});
 document.addEventListener('input',e=>{if(e.target.id!=='feG'||!ui.fe||!ui.fe.per)return;readFE();feCalc(ui.fe);const f=(id,v)=>{const x=$('#'+id);if(x)x.value=num(v)};f('feK',ui.fe.kcal);f('feP',ui.fe.p);f('feC',ui.fe.c);f('feS',ui.fe.s)});
