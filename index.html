@@ -491,6 +491,51 @@ nav button.on .ic{animation:pop2 .35s ease both}
 [data-theme="blue"] .lvlup svg{color:#DDFDFE}
 .lvlup .t1{font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;opacity:.7;animation:rise .6s .25s both}
 .lvlup .t2{font-size:52px;font-weight:800;font-stretch:125%;line-height:1;animation:rise .6s .35s both}
+/* interactivity + Freetime */
+.in-nav{position:relative}
+.nav-btns{display:flex;flex:1;min-width:0}
+.nav-btns button{min-width:0}
+.nav-ind{position:absolute;top:-1px;left:6px;width:calc((100% - 12px)/6);height:2px;background:var(--accent);box-shadow:0 0 12px var(--accent);transition:transform .5s cubic-bezier(.16,1,.3,1)}
+nav button{font-size:8.5px;letter-spacing:.12em}
+.btn,.chip,.rc,.swp,.qk button,.gchips button,.seg button,.plc .icon-btn{position:relative;overflow:hidden}
+.rip{position:absolute;border-radius:50%;background:currentColor;opacity:.22;transform:scale(0);animation:rip .65s ease-out forwards;pointer-events:none}
+@keyframes rip{to{transform:scale(1);opacity:0}}
+.burst{position:fixed;width:0;height:0;z-index:96;pointer-events:none}
+.burst i{position:absolute;left:-3px;top:-3px;width:6px;height:6px;background:var(--accent);box-shadow:0 0 8px var(--accent);animation:fly .75s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes fly{from{transform:rotate(var(--a)) translateY(0) scale(1);opacity:1}to{transform:rotate(var(--a)) translateY(calc(var(--d) * -1)) scale(.2);opacity:0}}
+@keyframes slideL{from{opacity:0;transform:translateX(46px)}}
+@keyframes slideR{from{opacity:0;transform:translateX(-46px)}}
+main.enter.sl>*{animation-name:slideL}
+main.enter.sr>*{animation-name:slideR}
+.rv{opacity:0;transform:translateY(28px) scale(.98);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.rv.in{opacity:1;transform:none}
+.grab{width:42px;height:4px;background:var(--line);margin:0 auto 10px;border-radius:2px}
+.ticker{margin:0 -18px 8px;overflow:hidden;background:var(--accent);color:var(--on-accent);font-size:10px;font-weight:800;letter-spacing:.24em;padding:7px 0;white-space:nowrap;font-stretch:125%}
+.ticker div{display:inline-block;animation:tick 32s linear infinite;padding-left:18px}
+@keyframes tick{to{transform:translateX(-50%)}}
+main{counter-reset:sec}
+main h2::before{counter-increment:sec;content:counter(sec,decimal-leading-zero);font-size:.6em;color:var(--accent);margin-right:10px;letter-spacing:.08em;vertical-align:.3em}
+.hero-card{transition:transform .25s ease}
+.hero-card:active{transform:scale(.985)}
+.date-card{border:1px solid var(--line);background:var(--surface);margin:12px 0;padding:4px 16px 8px;position:relative;overflow:hidden}
+.date-card::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--accent);box-shadow:0 0 14px var(--accent)}
+.dc-top{display:flex;justify-content:space-between;gap:8px;font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;padding:12px 0 6px;border-bottom:1px solid var(--line);color:var(--muted)}
+.dc-top span:first-child{color:var(--accent)}
+.plc{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.plc:last-child{border-bottom:0}
+.plc .grow{min-width:0}
+.plc-l{flex-basis:100%;font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:-6px}
+.plc .icon-btn{width:40px;height:40px;text-decoration:none;color:var(--text)}
+.plc .icon-btn svg{width:18px;height:18px}
+.icon-btn.fav.on{color:var(--accent);border-color:var(--accent)}
+.date-mini{cursor:pointer;border-left:3px solid var(--accent)}
+.date-mini .k{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.pgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 10px;margin-top:12px}
+.pst img{display:block;width:100%;aspect-ratio:2/3;object-fit:cover;background:var(--surface2);border:1px solid var(--line);transition:transform .3s ease}
+.pst a:active img{transform:scale(.97)}
+.pst .row-title{font-size:14px;margin-top:6px;line-height:1.2}
+.pst .meta{font-size:12px}
+.pst .link{padding:6px 0;font-size:10px}
 .lvlup .t3{font-size:16px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;animation:rise .6s .45s both}
 </style>
 </head>
@@ -499,7 +544,7 @@ nav button.on .ic{animation:pop2 .35s ease both}
 <div id="rest" class="rest" hidden><div class="grow"><div class="lab">Pihenő</div><div id="restT" class="rest-t">0:00</div></div><button data-a="rest30">+30 mp</button><button data-a="restSkip">Kihagyom</button></div>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 <div id="sheetWrap" class="sheet-wrap" hidden></div>
-<nav><div class="in-nav" id="nav"></div></nav>
+<nav><div class="in-nav"><i class="nav-ind" id="navInd"></i><div class="nav-btns" id="nav"></div></div></nav>
 <script>
 const $=(s,r=document)=>r.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -725,7 +770,7 @@ async function initDb(){try{
 }catch(e){dbRef=null;sync='local'}}
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&pushT){clearTimeout(pushT);push()}});
 
-const ui={tab:'ma',day:null,guide:{},foodSeg:'het',prepSeg:'plan',prep:{r:null,days:5,per:1},exChart:null,sheet:null,rs:null,te:null,resetArm:false};
+const ui={freeSeg:'randi',tab:'ma',day:null,guide:{},foodSeg:'het',prepSeg:'plan',prep:{r:null,days:5,per:1},exChart:null,sheet:null,rs:null,te:null,resetArm:false};
 
 /* ---------- helpers ---------- */
 function applyTheme(){const t=S.settings.theme,h=document.documentElement;if(t==='system')h.removeAttribute('data-theme');else h.setAttribute('data-theme',t);
@@ -879,6 +924,7 @@ function seg(key,opts){return `<div class="seg" role="tablist">${opts.map(([v,l]
 function stepper(a,v,id){return `<div class="stepper"><button class="round" data-a="${a}" data-v="-1" ${id?`data-id="${id}"`:''} aria-label="Kevesebb">${ICON.minus}</button><b>${v}</b><button class="round" data-a="${a}" data-v="1" ${id?`data-id="${id}"`:''} aria-label="Több">${ICON.plus}</button></div>`}
 function bar(){return `<header class="bar"><div class="brand">${MARK}<span class="wm">NOCTA</span>${CL}<span class="tm">FORMA</span></div><button class="icon-btn" data-a="settings" aria-label="Beállítások">${ICON.gear}</button></header>`}
 function heroBlock(big,sub,ghost,mark){const L=String(big).length,fs=L>5?`style="font-size:min(${(92/(L*1.02)).toFixed(1)}vw,${Math.round(600/(L*1.02))}px)"`:'';return `<div class="heroWrap">${mark?`<div class="heroMark">${MARK}</div>`:`<div class="heroGhost" aria-hidden="true">${esc(ghost)}</div>`}<div class="hero" ${fs}>${big}</div>${sub?`<div class="sub">${sub}</div>`:''}${mark?`<div class="slogan">${SLOGAN}</div><div class="cl-row"><span>C.L</span><span>A.W.R</span></div>`:''}</div>`}
+function ticker(){const t=['NOCTA','GYM TIME','C.L','A.W.R',SLOGAN.toUpperCase(),'IN ASSOCIATION WITH FORMA'].join(' ✦ ')+' ✦ ';return `<div class="ticker" aria-hidden="true"><div>${t}${t}</div></div>`}
 function exImg(id,cls){return `<div class="exi ${cls||''}"><img src="ex/${id}-0.jpg" alt="" loading="lazy" decoding="async"><img src="ex/${id}-1.jpg" alt="" loading="lazy" decoding="async"></div>`}
 function ring(done,total){const r=30,c=2*Math.PI*r,p=total?done/total:0;return `<svg class="ring" viewBox="0 0 76 76" aria-label="${done} / ${total} gyakorlat kész"><circle class="bgc" cx="38" cy="38" r="${r}"/><circle class="fgc" cx="38" cy="38" r="${r}" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${(c*(1-p)).toFixed(1)}" transform="rotate(-90 38 38)"/><text x="38" y="46" text-anchor="middle">${done}/${total}</text></svg>`}
 function chart(points){if(points.length<2)return `<p class="meta" style="margin-top:12px">Legalább két mérés kell a grafikonhoz.</p>`;
@@ -941,7 +987,7 @@ const WXI={sun:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strok
   storm:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7.5 15h9.5a3.8 3.8 0 0 0 .4-7.5 5.5 5.5 0 0 0-10.5-.9A4.2 4.2 0 0 0 7.5 15z"/><path d="M12.5 15l-2 3.5h3l-2 3.5"/></svg>',
   fog:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 9h16M3 13h18M5 17h14"/></svg>'};
 const WXC={0:['Derült','sun'],1:['Többnyire derült','sun'],2:['Részben felhős','partly'],3:['Borult','cloud'],45:['Köd','fog'],48:['Zúzmarás köd','fog'],51:['Gyenge szitálás','rain'],53:['Szitálás','rain'],55:['Erős szitálás','rain'],56:['Ónos szitálás','rain'],57:['Ónos szitálás','rain'],61:['Gyenge eső','rain'],63:['Eső','rain'],65:['Erős eső','rain'],66:['Ónos eső','rain'],67:['Ónos eső','rain'],71:['Gyenge havazás','snow'],73:['Havazás','snow'],75:['Erős havazás','snow'],77:['Hószemcse','snow'],80:['Gyenge zápor','rain'],81:['Zápor','rain'],82:['Heves zápor','rain'],85:['Hózápor','snow'],86:['Erős hózápor','snow'],95:['Zivatar','storm'],96:['Zivatar jégesővel','storm'],99:['Zivatar jégesővel','storm']};
-const WX_URL='https://api.open-meteo.com/v1/forecast?latitude=47.5417&longitude=19.0336&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Europe%2FBudapest&forecast_days=1';
+const WX_URL='https://api.open-meteo.com/v1/forecast?latitude=47.5417&longitude=19.0336&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Europe%2FBudapest&forecast_days=7';
 let wx={d:null,err:false,t:0};
 try{const c=JSON.parse(localStorage.getItem('forma_wx')||'null');if(c&&c.day===dk())wx={d:c.d,err:false,t:c.t}}catch(e){}
 async function loadWx(force){if(!force&&wx.d&&Date.now()-wx.t<30*60e3)return;
@@ -1111,12 +1157,13 @@ function importData(file){const fr=new FileReader();fr.onload=()=>{try{const o=J
 /* ---------- views ---------- */
 function weekStrip(){const m=monday(new Date()),t=dk();let h='<div class="wk">';for(let i=0;i<7;i++){const d=new Date(m);d.setDate(m.getDate()+i);const k=dk(d),day=dayForWeekday(d.getDay());h+=`<div class="wkd ${k===t?'today':''} ${day?'train':''} ${S.sessions[k]||(S.xdone&&S.xdone[k])?'done':''}" title="${day?day.name:'Pihenő'}"><span>${WDS[d.getDay()]}</span><b>${d.getDate()}</b><i></i></div>`}return h+'</div>'}
 function rMa(){const now=new Date(),t=dk(now),wd=now.getDay(),ci=cycleInfo(),day=dayForWeekday(wd),tg=targets();
-  let h=bar()+heroBlock(WD[wd],greet(now.getHours())+(S.settings.name?', '+esc(S.settings.name):'')+'. '+MON[now.getMonth()]+' '+now.getDate()+'.',null,true)+weekStrip();
+  let h=bar()+ticker()+heroBlock(WD[wd],greet(now.getHours())+(S.settings.name?', '+esc(S.settings.name):'')+'. '+MON[now.getMonth()]+' '+now.getDate()+'.',null,true)+weekStrip();
   h+=lvlCard(rwStats())+calCard();
   if(wd===0||wd===1)h+=`<button class="btn ghost full" data-a="weekOpen" data-v="${wd===1?-1:0}">Heti NOCTA összefoglaló kép</button>`;
   if(day){const done=S.sessions[t],pr=dayProgress(day,ci),ups=exList(day,ci).filter(id=>suggest(id,ci).up).length;h+=`<div class="hero-card ${done?'is-done':''}"><div class="hc-row"><div class="grow"><div class="k">Mai edzés${ci.deload?', deload hét':''}</div><div class="big">${day.name}</div></div>${ring(pr.done,pr.total)}</div><div class="meta">${pr.total} gyakorlat, kb. 60 perc.</div>${ups&&!done?`<div class="ups">▲ ${ups} gyakorlatnál ma emelj súlyt</div>`:''}<button class="btn full" data-a="goday" data-d="${day.id}">${done?'Kész, megnézem':pr.done?'Folytatás':'Indítás'}</button></div>`}
   {const c=customToday(),xd=!!(S.xdone&&S.xdone[t]),pg=c?dayProgress(getDay('x'),ci):null;
     h+=`<div class="card xcard"><div class="row"><div class="grow"><div class="k">Bármikor</div><div class="row-title">${c?'Saját edzés: '+esc(c.g.join(', ')):'Ma is mennél?'}</div><div class="meta">${c?`${pg.done}/${pg.total} gyakorlat kész${xd?', kész edzés':''}`:'Rakj össze egy rövid kar-, has- vagy válledzést, a 4 tervezett mellett is.'}</div></div></div><button class="btn ${day&&!S.sessions[t]?'ghost':'acc'} full" data-a="${c?'goday':'custom'}" data-d="x">${c?(xd?'Megnézem':'Folytatás'):'Saját edzés összeállítása'}</button></div>`}
+  if(wd>=4&&wd<=6){const di=dateIdeas(),it=(wd===6?di.sat:di.fri).filter(x=>x[1]);h+=`<div class="card date-mini" data-a="tab" data-t="free"><div class="k">Randi Barbival, ${wd===6?'ma':'péntek este'}</div><div class="row-title">${it.map(x=>esc(x[1].n)).join(' + ')}</div><div class="meta">Koppints a részletekért és a térképért.</div></div>`}
   h+=wxCard(day);
   h+=dailyCard(t,mealPlan(now));
 
@@ -1291,6 +1338,79 @@ async function weekImage(off){const W=1080,H=1920,c=document.createElement('canv
   return new Promise(r=>c.toBlob(r,'image/png'))}
 async function weekShow(){const s=ui.wk;s.url&&URL.revokeObjectURL(s.url);s.url=null;s.blob=null;renderSheet(true);const b=await weekImage(s.off);if(ui.wk!==s)return;s.blob=b;s.url=URL.createObjectURL(b);if(ui.sheet==='week')renderSheet(true)}
 
+/* ---------- Freetime: places (from Balázs's list + new 2026 openings), date ideas, new series and movies ---------- */
+Object.assign(ICON,{free:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>',
+  heart:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>',
+  heartO:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>',
+  pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 21s-6.5-6.2-6.5-11.5a6.5 6.5 0 0 1 13 0C18.5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.3"/></svg>',
+  ext:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>'});
+const CATL={brunch:'Brunch',etterem:'Étterem',bar:'Bár',kave:'Kávézó, desszert',spa:'Spa',elmeny:'Élmény',szallas:'Szállás',balaton:'Balaton',becs:'Bécs'};
+// [name, category, note, flags (o = outdoor, n = new in 2026, f = Fri-Sat only), city for the map search ('' = name only)]
+const PL_RAW=[
+['Tribes Hotel Budapest','szallas','Design hotel'],['Essence Hotel Budapest','szallas','Butikhotel'],['Slowood kabin','szallas','Faház a természetben','o',''],['Black Wood faház','szallas','Jakuzzis faház','o',''],['Westside Garden Airbnb','szallas','Kertes szállás'],['Mókus Villa','szallas','Hangulatos villa','',''],['Feketefenyő','szallas','Erdei szállás','o',''],['Bodrog Hotel','szallas','Hétvégi kiruccanás','',''],['Kenese Bay Garden Hotel','szallas','Wellness a Balatonnál','','Balatonkenese'],['Sárvár Spirit Hotel','szallas','Wellness hétvége','','Sárvár'],['Mjus World Resort','szallas','Cinta10 és Lejon10 wellness','','Körmend'],['Le Primoré Éden Spa Hotel','szallas','5*, spa','',''],['Melea Hotel','szallas','5*','',''],['Manon les Suites','szallas','Spa szálloda','',''],
+['Mitico Budapest','bar','Koktélbár'],['Kaa Mixology','bar','Koktélbár'],['The Duchess Rooftop','bar','Tetőbár a Matild Palace-ban','o'],['Blue Fox The Bar','bar','A Kempinski bárja'],['Black Swan Lab','bar','Koktélbár'],['Rodolfo Bar','bar','Koktélbár'],['St. Regis Bar','bar','Elegáns hotelbár'],['High Note SkyBar','bar','Tetőbár kilátással a Bazilikára','o'],['Selva Skybar','bar','Tetőbár','o'],['9Up Rooftop','bar','Tetőbár','o'],['Este11','bar','Rejtett kertes koktélbár, Villányi út','o'],['Hide Budapest','bar','Ybl Miklós tér, csak péntek-szombat','f'],['Bar Huso','bar','Bem tér, 5* hotelben'],['Noa Cocktail Bar','bar','Koktélbár'],['Society25','bar','Speakeasy'],['Velvet Bar','bar','Koktélbár'],['Múzsa','bar','Kávéház és bár'],['Coco Bar','bar','Koktélbár'],['W Lounge','bar','A W Budapest bárja'],['Lazy Lion Budapest','bar','Új koktélbár a Szabadság tér mellett','n'],['La Havanna','bar','Kubai hangulat'],["David's Kitchen",'bar','Koktél és ételek'],['Jardin Bar','bar','Koktélbár'],['Boho Budapest','bar','Koktél és étterem'],['Zsiráf','bar','Kávéház és bár'],['Csendes Társ','bar','Hangulatos bár'],['Pavilon Kert','bar','Kerthelyiség','o'],['Mad Garden','bar','Budai kert','o'],['Zenekert','bar','Kerthelyiség zenével','o'],['Kabin Népsziget','bar','Vízparti bár-grill','o'],
+['Aleli','etterem','Olasz'],['Bestia','etterem','Grill és steak'],['Nightingale','etterem','Étterem'],['Marischka','etterem','Étterem'],['A Kert Bisztró','etterem','Bisztró, Thököly út'],['Csók Bisztró','etterem','Bisztró'],['Buja Bisztró','etterem','Bisztró a Városligetben','o'],['Déryné Bisztró','etterem','Klasszikus budai bisztró'],['Hadik','etterem','Kávéház és bisztró'],['Mazel Tov','etterem','Közel-keleti, gyönyörű belső kert'],['Vintage Garden','etterem','Virágos kávézó és étterem'],['Fruska Bisztró','etterem','Nádor utca'],['Perem Népsziget','etterem','Vízparti bisztró, lángos és hekk','o'],['Zappi Napoletana','etterem','Pizza és kert, Széll Kálmán tér','o'],['Forni di Napoli','etterem','Nápolyi pizza, Szent István krt.'],['Tutto Budapest','etterem','Olasz'],['Popolare','etterem','Olasz, a Wonder hotelben, brunch is','n'],['Impasto','etterem','Olasz'],['Neverland Budapest','etterem','Pizza és koktél'],['Yama','etterem','Japán-ázsiai fúzió, Október 6. u.'],['Hachi Japan','etterem','Japán'],['Tokio Budapest','etterem','Kínai'],['Reiskorn','etterem','Ázsiai, sushi'],['Mây Budapest','etterem','Vietnámi'],['Pompás Budapest','etterem','Bisztró és koktél, Thaly Kálmán u.'],['ODA Tabán','etterem','Kertes, brunch is','o'],['Pavilon de Paris','etterem','Kertes francia','o'],['Lebristo','etterem','Kopaszi-gát','o'],['Szitakötő','etterem','Kilátós','o'],['Trilla Bisztró','etterem','Szombaton brunch'],['Bibo','etterem','Brunch is'],['Balagan','etterem','Gyönyörű belső, brunch is'],['Stika','etterem','Étterem'],['Blueberry','etterem','Étterem'],['Blue Bird','etterem','Étterem'],['A la Maison','etterem','Elegáns, brunch is'],['Villa Bagatelle','etterem','Villa, brunch is','o'],['Solid Rooftop','bar','Tetőterasz','o'],
+['Koryo Bistro','etterem','Új: koreai-mongol bisztró, Mester utca','n'],['Pici Pörc Bisztró','etterem','Új: modern magyar, nyúlpaprikás, túrógombóc','n'],['KOHO Budapest','etterem','Új: Horváth Mihály tér, az ősz egyik legjobb nyitása','n'],['Gordon Ramsay Bar & Grill','etterem','Új: a Dorothea Hotelben','n'],['Fúzió by Textúra & Borkonyha','etterem','Új: Michelin-csillagos séf bisztrója a Time Out Marketben','n'],['Hachi-Ko','etterem','Új: kreatív ramen, Madách tér','n'],['Mori Ramen','etterem','Új: hangulatos ramenező','n'],['Saboré','etterem','Új: spanyol tapas, Falk Miksa u.','n'],['Celsius Budapest','etterem','Ázsiai-magyar fúzió a Palotanegyedben','n'],['JUNE bistro Budapest','etterem','Új: small plates, MOM Park mellett','n'],['Little Geisha Can Cook','etterem','Új, nagyobb hely a Corvin-negyedben','n'],
+['Lulu Budapest','brunch','Brunch'],['Bálna Terasz','brunch','Dunai terasz','o'],['Zileat Brunch & Bistro','brunch','Döbrentei utca'],['Zazie Bistro','brunch','Brunch és bisztró'],['Cookie Beacon Brunch','brunch','Hercegprímás utca'],['Briós','brunch','Pozsonyi út'],['San Ramon','brunch','Brunch'],['Coni Bar & Brunch','brunch','Brunch és bár'],['Awake Coffee & Brunch','brunch','Reggeli és brunch'],['Agos Kimpton BEM','brunch','Brunch és koktél a Kimpton BEM-ben'],['Extra Budapest','brunch','Reggeli'],['Brooklyn Bagel','brunch','Bagelek'],['Eggdrop','brunch','Laza reggeliző'],['Ginger and Paris','brunch','Brunch és desszert'],['Cafe Kicsi Zsó','brunch','Reggeliző'],['Cafe Brunch Budapest Lánchíd','brunch','Új: egész napos reggeli dunai kilátással','n'],['ÉS Bisztró','brunch','Vasárnapi brunch prosseccóval és DJ-vel','n'],['Funky Budapest Bistro & Bar','brunch','Új: brunch, este DJ','n'],
+['New York Café','kave','A világ egyik legszebb kávéháza'],['Városliget Café','kave','Kávézó a tó partján','o'],['The Garden Café','kave','Kertes kávézó'],['Mabelle Cafe','kave','Kávézó'],['Arbica','kave','Kávézó'],['Muse Cafe','kave','Desszert, Deák tér'],['Edison & Jupiter','kave','Kávézó'],['Freyja the croissant story','kave','Croissant és pékség'],['Bageri','kave','Pékség-kávézó, Ráday u.'],['Nor/ma','kave','Északi pékség, Kecskeméti u.'],['Scruton','kave','Kávézó és teák, Veres Pálné u.'],['Matchy35','kave','Matcha, Nagy Templom u.'],['Matcha Tsuki','kave','Matcha'],['Jade Matcha','kave','Matcha'],['Teahom','kave','Teázó'],['Find Tea','kave','Teázó'],['Donuterie','kave','Fánkok'],['La Mousse de Lait','kave','Desszert'],['Pichler Cukrászda','kave','Cukrászda'],['Erdei Ice Cream','kave','Fagyi'],
+['Magnolia Day Spa','spa','Kezelések'],['Away Spa W Budapest','spa','A W szálloda spája'],['Secret Garden Spa','spa','Spa'],['Aronia Spa & Wellness','spa','Wellness'],['Spa Centre Island','spa','Margitsziget'],['Mandala Bath','spa','Fürdő élmény'],['Yuru Headspa','spa','Japán fejmasszázs'],
+['Japánkert Margitsziget','elmeny','Séta a Margitszigeten','o'],['Filozófusok kertje','elmeny','Naplemente a Gellért-hegyen','o'],['Brunszvik-kastély','elmeny','Kastély és park','o','Martonvásár'],['Biodóm','elmeny','Fény- és élménymúzeum az Állatkertben'],['Koller Galéria','elmeny','Galéria a Várban'],['Cinema Mystica','elmeny','Különleges mozi'],['Magic Rooms','elmeny','Szabadulószoba'],['Makery DIY Kitchen','elmeny','Közös főzés-sütés'],['Normafa','elmeny','Séta, kilátás és rétes a budai hegyekben','o'],
+['Picnic boat Balaton','balaton','Piknik hajó','o',''],['Akali Port','balaton','Étterem a parton','o','Balatonakali'],['Nekem a Balaton','balaton','Balatoni hely','o',''],['Picit Más','balaton','Balatoni hely','o',''],['Lido Beach','balaton','Strand','o',''],['Plage18 Beach Club','balaton','Beach club','o','Tihany'],
+['Schönbrunn','becs','Kastély és park','o','Wien'],['Ikono','becs','Instagram-élménymúzeum','','Wien'],['Japanischer Garten Schönbrunn','becs','Japánkert','o','Wien'],['Prater','becs','Vidámpark','o','Wien'],['Aida Café','becs','Klasszikus cukrászda','','Wien'],['JP Pancakes','becs','Japán palacsinta','','Wien'],['Jiggly Cats','becs','Brunch','','Wien'],['Mamma Leone','becs','Olasz','','Wien'],['Bao Bar','becs','Bao','','Wien'],['SO/ Vienna Rooftop','becs','Tetőbár','o','Wien'],['Silent Spa','becs','Spa','','Wien'],['Cinamood','becs','Fahéjas csiga','','Wien']];
+const slug=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const PLACES=PL_RAW.map(([n,c,note,fl,city])=>({id:slug(n),n,c,note:note||'',o:/o/.test(fl||''),nw:/n/.test(fl||''),fs:/f/.test(fl||''),city:city==null?'Budapest':city}));
+const mapsUrl=p=>p.link||'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(p.n+(p.city?' '+p.city:''));
+const allPlaces=()=>PLACES.concat((S.myPl||[]).map(p=>({...p,mine:true,city:'Budapest'})));
+const plState=id=>(S.pl&&S.pl[id])||{};
+// Rain or cold on the given day drops outdoor places from the date idea.
+function wxFor(d){const w=wx.d&&wx.d.daily;if(!w||!w.time)return null;const i=w.time.indexOf(d);if(i<0)return null;return{p:w.precipitation_probability_max[i]??0,mx:w.temperature_2m_max[i],mn:w.temperature_2m_min[i],code:w.weather_code[i]}}
+function weekendDates(){const m=monday(new Date()),f=new Date(m);f.setDate(m.getDate()+4);const s=new Date(m);s.setDate(m.getDate()+5);return[dk(f),dk(s)]}
+function dateIdeas(){const wk=weekKey(),r=rng(hash(wk+'#date'+((S.dateRr||{})[wk]||0))),[fd,sd]=weekendDates(),fw=wxFor(fd),sw=wxFor(sd);
+  const bad=w=>w&&(w.p>=40||w.code>=51||w.mx<14),pick=(cats,w,excl=[])=>{let p=PLACES.filter(x=>cats.includes(x.c)&&!excl.includes(x.id)&&!plState(x.id).no);if(bad(w))p=p.filter(x=>!x.o);
+    const fav=p.filter(x=>plState(x.id).f),pool=fav.length&&r()<.35?fav:p;return pool[Math.floor(r()*pool.length)]};
+  const dinner=pick(['etterem'],fw),bar1=pick(['bar'],fw),brunch=pick(['brunch','kave'],sw),act=pick(['elmeny','spa'],sw),sbar=pick(['bar'],sw,[bar1&&bar1.id]);
+  return{fd,sd,fw,sw,fri:[['Vacsora',dinner],['Utána egy koktél',bar1]],sat:[['Brunch',brunch],['Délután',act],['Este',sbar]]}}
+const wxShort=w=>w?`${Math.round(w.mx)}°, ${(WXC[w.code]||['változékony'])[0].toLowerCase()}${w.p>=30?', '+w.p+'% eső':''}`:'';
+function plRow(p,lab){const st=plState(p.id);return `<div class="plc">${lab?`<span class="plc-l">${lab}</span>`:''}<div class="grow"><div class="row-title">${esc(p.n)}${p.nw?' <span class="tag acc">Új</span>':''}${st.v?' <span class="tag">Voltunk</span>':''}</div><div class="meta">${CATL[p.c]||'Saját'}${p.note?', '+esc(p.note.replace(/^Új:\s*/,'')):''}${p.city&&p.city!=='Budapest'?', '+esc(p.city):''}</div></div><a class="icon-btn" href="${esc(mapsUrl(p))}" target="_blank" rel="noopener" aria-label="Megnyitás térképen">${p.link?ICON.ext:ICON.pin}</a><button class="icon-btn fav ${st.f?'on':''}" data-a="plFav" data-id="${p.id}" aria-pressed="${!!st.f}" aria-label="Kedvenc">${st.f?ICON.heart:ICON.heartO}</button></div>`}
+let media={tv:null,mv:null,err:false,busy:false};
+try{const c=JSON.parse(localStorage.getItem('forma_media')||'null');if(c&&c.day===dk())media={tv:c.tv,mv:c.mv,err:false,busy:false}}catch(e){}
+const BIGTV=['Netflix','HBO Max','Max','Disney+','Apple TV+','Apple TV','Prime Video','Amazon Prime Video','SkyShowtime','Hulu','Paramount+','Peacock'];
+async function loadMedia(force){if(media.busy||(!force&&media.tv&&media.mv))return;media.busy=true;media.err=false;
+  try{const ds=[];for(let i=-7;i<=2;i++){const x=new Date();x.setDate(x.getDate()+i);ds.push(dk(x))}
+    const days=await Promise.all(ds.map(d=>fetch('https://api.tvmaze.com/schedule/web?date='+d).then(r=>r.ok?r.json():[]).catch(()=>[])));const seen=new Set(),tv=[];
+    for(const e of days.flat()){const s=e&&e._embedded&&e._embedded.show,wc=s&&s.webChannel&&s.webChannel.name;if(!s||e.number!==1||!BIGTV.includes(wc)||!s.image||seen.has(s.id))continue;seen.add(s.id);
+      tv.push({n:s.name,se:e.season,pf:wc,d:e.airdate,img:s.image.medium,url:s.officialSite||s.url,g:(s.genres||[]).slice(0,2).join(', ')})}
+    tv.sort((a,b)=>b.d.localeCompare(a.d));
+    const j=await fetch('https://itunes.apple.com/hu/rss/topmovies/limit=30/json').then(r=>r.json());const L=x=>x&&x.label;
+    const mv=((j.feed&&j.feed.entry)||[]).map(e=>({n:L(e['im:name']),img:L((e['im:image']||[]).slice(-1)[0]),d:(e['im:releaseDate']&&e['im:releaseDate'].label||'').slice(0,10),g:e.category&&e.category.attributes&&e.category.attributes.label||'',url:((Array.isArray(e.link)?e.link[0]:e.link)||{attributes:{}}).attributes.href})).filter(x=>x.n&&x.img).sort((a,b)=>b.d.localeCompare(a.d));
+    media={tv,mv,err:!tv.length&&!mv.length,busy:false};try{localStorage.setItem('forma_media',JSON.stringify({day:dk(),tv,mv}))}catch(e){}}
+  catch(e){media.err=true;media.busy=false}
+  if(ui.tab==='free'&&!ui.sheet)render(true)}
+const fmtD=d=>d?shortDate(d):'';
+function mediaCard(x,kind){return `<div class="pst"><a href="${esc(x.url)}" target="_blank" rel="noopener"><img src="${esc(kind==='mv'?x.img.replace(/\d+x\d+bb/,'300x450bb'):x.img)}" alt="" loading="lazy"></a><div class="row-title">${esc(x.n)}</div><div class="meta">${kind==='tv'?`${x.se}. évad, ${esc(x.pf)}, ${fmtD(x.d)}`:`${esc(x.g)}${x.d?', '+x.d.slice(0,4):''}`}</div><button class="link" data-a="toIdea" data-t="${esc((kind==='tv'?'Sorozat: ':'Film: ')+x.n)}" data-l="${esc(x.url)}">+ Listára</button></div>`}
+function rFree(){let h=bar()+heroBlock('Freetime','Barbival: randik, helyek, filmek és sorozatok','DATE');
+  h+=seg('freeSeg',[['randi','Randi'],['helyek','Helyek'],['nezni','Film, sori'],['lista','Lista']]);
+  if(ui.freeSeg==='randi'){const di=dateIdeas();
+    const card=(title,d,w,items)=>`<div class="date-card"><div class="dc-top"><span>${title}</span><span>${shortDate(d).toUpperCase()}${w?' · '+wxShort(w):''}</span></div>${items.filter(x=>x[1]).map(([l,p])=>plRow(p,l)).join('')}</div>`;
+    h+=`<h2>Randi a hétvégére</h2><p class="meta">Barbival. Az ötlet hetente változik, és az időjáráshoz igazodik: esőben fedett helyeket ajánlok.</p>`;
+    h+=card('Péntek este',di.fd,di.fw,di.fri)+card('Szombat',di.sd,di.sw,di.sat);
+    h+=`<div class="btn-row"><button class="btn ghost" data-a="dateRr">Másik ötlet</button><button class="btn acc" data-a="dateSave">Mentés a listába</button></div>`;
+    h+=`<h2>Lepj meg</h2><div class="gchips">${['brunch','etterem','bar','kave','elmeny','spa'].map(c=>`<button data-a="surprise" data-v="${c}">${CATL[c]}</button>`).join('')}</div>`;
+    if(ui.sur){const p=PLACES.find(x=>x.id===ui.sur);if(p)h+=`<div class="card">${plRow(p)}</div>`}
+    const nw=PLACES.filter(p=>p.nw);h+=`<h2>Új helyek 2026</h2><div class="card">${nw.map(p=>plRow(p)).join('')}</div><p class="fine">Az új helyeket a We Love Budapest, a Funzine és a Roadster idei összefoglalói alapján válogattam. Indulás előtt nézd meg a nyitvatartást.</p>`}
+  else if(ui.freeSeg==='helyek'){const q=(ui.plq||'').toLowerCase(),c=ui.plc||'all';const list=allPlaces().filter(p=>(c==='all'||(c==='fav'?plState(p.id).f:c==='new'?p.nw:p.c===c))&&(!q||(p.n+' '+p.note).toLowerCase().includes(q)));
+    h+=`<input class="in" id="plq" placeholder="Keresés: pl. brunch, olasz, tetőbár" value="${esc(ui.plq||'')}" aria-label="Keresés a helyek között" style="margin-top:14px">`;
+    h+=`<div class="chips">${[['all','Mind'],['fav','Kedvencek'],['new','Új'],...Object.entries(CATL)].map(([k,l])=>`<button class="chip ${c===k?'on':''}" data-a="plCat" data-v="${k}"><span>${k==='all'?allPlaces().length:k==='fav'?allPlaces().filter(p=>plState(p.id).f).length:k==='new'?PLACES.filter(p=>p.nw).length:allPlaces().filter(p=>p.c===k).length}</span>${l}</button>`).join('')}</div>`;
+    h+=`<div class="card" id="plList">${list.map(p=>plRow(p)).join('')||'<p class="empty">Nincs találat.</p>'}</div><button class="btn ghost full" data-a="plAdd">+ Saját hely hozzáadása</button>`}
+  else if(ui.freeSeg==='nezni'){loadMedia();
+    if(!media.tv&&!media.mv)h+=`<p class="meta" style="margin-top:16px">${media.err?'Most nem sikerült betölteni. <button class="link" data-a="mediaRe">Újra</button>':'Betöltés...'}</p>`;
+    else{h+=`<h2>Új sorozatok</h2><p class="meta">Új évadok és premierek az elmúlt hétről és a következő napokról: Netflix, HBO Max, Disney+, Apple TV+, Prime Video, SkyShowtime.</p><div class="pgrid">${(media.tv||[]).slice(0,16).map(x=>mediaCard(x,'tv')).join('')||'<p class="empty">Most nincs új premier.</p>'}</div>`;
+      h+=`<h2>Filmek</h2><p class="meta">A legnépszerűbb filmek most az Apple TV magyar toplistáján, a legújabbak elöl.</p><div class="pgrid">${(media.mv||[]).slice(0,16).map(x=>mediaCard(x,'mv')).join('')}</div><p class="fine">Források: TVMaze és az iTunes toplista. Naponta frissül.</p>`}}
+  else{const L=(S.ideas||[]).slice().sort((a,b)=>(a.done-b.done)||b.ts-a.ts);
+    h+=`<div class="card" style="margin-top:14px"><label class="lbl" style="margin-top:0">Írj ide bármit<input class="in" id="ideaT" placeholder="pl. Dune 3 moziban, korcsolyázás, Lulu brunch" maxlength="120"></label><label class="lbl">Link (nem kötelező)<input class="in" id="ideaL" placeholder="https://..." inputmode="url"></label><button class="btn acc full" data-a="ideaAdd">Hozzáadás</button></div>`;
+    h+=L.length?`<div class="card">${L.map(x=>`<div class="task ${x.done?'on':''}"><button class="chk ${x.done?'on':''}" data-a="ideaDone" data-id="${x.id}" aria-pressed="${!!x.done}" aria-label="Kész">${ICON.check}</button><div class="grow"><div class="task-t">${esc(x.t)}</div>${x.l?`<a class="meta" href="${esc(x.l)}" target="_blank" rel="noopener">${esc(x.l.replace(/^https?:\/\//,'').slice(0,40))}</a>`:''}</div><button class="round" data-a="ideaDel" data-id="${x.id}" aria-label="Törlés">${ICON.x}</button></div>`).join('')}</div>`:'<p class="empty">Még üres. Ide gyűjtheted a közös terveket, filmeket és helyeket.</p>'}
+  return h}
+
 /* ---------- sheets ---------- */
 function sheetTop(title){return `<div class="sheet-top"><h2>${title}</h2><button class="icon-btn" data-a="close" aria-label="Bezárás">${ICON.x}</button></div>`}
 const SHEETS={
@@ -1318,6 +1438,11 @@ task(){const t=ui.te;return `${sheetTop(t.id?'Teendő szerkesztése':'Új teend�
   <label class="lbl">Időpont (nem kötelező)<input class="in" type="time" id="teTime" value="${t.time||''}"></label>
   <p class="meta">Az időpont után a teendő esedékesként jelenik meg, amíg ki nem pipálod.</p>
   <button class="btn acc full" data-a="teSave">Mentés</button>${t.id?'<button class="btn ghost full danger" data-a="teDel">Törlés</button>':''}`},
+pladd(){return `${sheetTop('Saját hely')}<label class="lbl">Név<input class="in" id="paN" maxlength="60" placeholder="pl. Kedvenc ramenezőnk"></label>
+  <label class="lbl">Kategória<select class="in" id="paC">${Object.entries(CATL).map(([k,l])=>`<option value="${k}">${l}</option>`).join('')}</select></label>
+  <label class="lbl">Link (weboldal, Instagram vagy térkép)<input class="in" id="paL" inputmode="url" placeholder="https://..."></label>
+  <label class="lbl">Megjegyzés<input class="in" id="paNote" maxlength="80" placeholder="pl. foglalni kell, terasz"></label>
+  <p class="meta">Ha nem adsz meg linket, a Google Térképen keresem meg.</p><button class="btn acc full" data-a="plSave">Mentés</button>`},
 custom(){const c=ui.cb;return `${sheetTop('Saját edzés')}<p class="meta">Bármikor, a 4 tervezett edzés mellett is. Válassz egy sablont, vagy jelöld be az izomcsoportokat, és összerakom. Utána bármelyik gyakorlatot cserélheted, törölheted, vagy hozzáadhatsz újat.</p>
   <div class="lbl">Sablonok</div><div class="qk">${PRESETS.map((p,i)=>`<button data-a="cbPreset" data-v="${i}">${p[0]}<span>${p[2]} gyakorlat</span></button>`).join('')}</div>
   <div class="lbl">Izomcsoportok</div><div class="gchips">${GL.map(g=>`<button class="${c.g.includes(g)?'on':''}" data-a="cbG" data-v="${g}" aria-pressed="${c.g.includes(g)}">${g}</button>`).join('')}</div>
@@ -1371,12 +1496,38 @@ function closeSheet(){const w=$('#sheetWrap');ui.sheet=null;ui.resetArm=false;if
 function celebrate(t1,t2,t3){const el=document.createElement('div');el.className='lvlup';el.innerHTML=`${MARK}<div class="t1">${t1}</div><div class="t2">${t2}</div><div class="t3">${t3}</div>`;
   const bye=()=>{el.classList.add('out');setTimeout(()=>el.remove(),350)};el.addEventListener('click',bye);document.body.appendChild(el);try{navigator.vibrate&&navigator.vibrate([60,40,120])}catch(e){}setTimeout(bye,2800)}
 function renderSheet(keep){const w=$('#sheetWrap');if(!ui.sheet){w.hidden=true;w.innerHTML='';document.body.classList.remove('lock');return}
-  const old=$('.sheet',w),sc=old?old.scrollTop:0;w.innerHTML=`<div class="sheet" role="dialog" aria-modal="true">${SHEETS[ui.sheet]()}</div>`;w.hidden=false;document.body.classList.add('lock');if(keep)$('.sheet',w).scrollTop=sc}
+  const old=$('.sheet',w),sc=old?old.scrollTop:0;w.innerHTML=`<div class="sheet" role="dialog" aria-modal="true"><div class="grab" aria-hidden="true"></div>${SHEETS[ui.sheet]()}</div>`;w.hidden=false;document.body.classList.add('lock');if(keep)$('.sheet',w).scrollTop=sc}
 
 /* ---------- render ---------- */
-const TABS=[['ma','Ma'],['edzes','Edzés'],['etel','Étel'],['prep','Prep'],['halad','Haladás']];
-const VIEWS={ma:rMa,edzes:rEdzes,etel:rEtel,prep:rPrep,halad:rHalad};
-function render(keep){checkRewards();const y=window.scrollY,m=$('#main');m.innerHTML=VIEWS[ui.tab]();if(!keep){m.classList.remove('enter');void m.offsetWidth;m.classList.add('enter')}$('#nav').innerHTML=TABS.map(([k,l])=>`<button class="${ui.tab===k?'on':''}" data-a="tab" data-t="${k}" aria-current="${ui.tab===k?'page':'false'}"><span class="ic">${ICON[k]}</span><span>${l}</span></button>`).join('');try{window.scrollTo(0,keep?y:0)}catch(e){}}
+const TABS=[['ma','Ma'],['edzes','Edzés'],['etel','Étel'],['prep','Prep'],['halad','Haladás'],['free','Freetime']];
+const VIEWS={ma:rMa,edzes:rEdzes,etel:rEtel,prep:rPrep,halad:rHalad,free:rFree};
+function render(keep){checkRewards();const y=window.scrollY,m=$('#main');m.innerHTML=VIEWS[ui.tab]();
+  if(!keep){m.classList.remove('enter','sl','sr');void m.offsetWidth;m.classList.add('enter');if(ui.dir)m.classList.add(ui.dir);ui.dir=null}
+  $('#nav').innerHTML=TABS.map(([k,l])=>`<button class="${ui.tab===k?'on':''}" data-a="tab" data-t="${k}" aria-current="${ui.tab===k?'page':'false'}"><span class="ic">${ICON[k]}</span><span>${l}</span></button>`).join('');
+  $('#navInd').style.transform=`translateX(${TABS.findIndex(x=>x[0]===ui.tab)*100}%)`;
+  try{window.scrollTo(0,keep?y:0)}catch(e){}
+  if(!keep&&!REDUCED){countUp(m);reveal(m)}}
+// Motion helpers: numbers count up, off-screen cards slide in, gold particles on completion, ripple on press.
+const REDUCED=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function countUp(root){root.querySelectorAll('.stats b,.stats3 b,.big-n,.lvl-today b,.lvl-n b,.wx-t,.prog-head b').forEach(el=>{const mt=el.textContent.trim().match(/^(\+?)(\d{2,5})([%°]?)$/);if(!mt)return;
+  const to=+mt[2],t0=performance.now(),D=700;const step=t=>{const k=Math.min(1,(t-t0)/D),v=Math.round(to*(1-Math.pow(1-k,3)));el.textContent=mt[1]+v+mt[3];if(k<1)requestAnimationFrame(step)};requestAnimationFrame(step)})}
+let revIO=null;
+function reveal(root){if(!('IntersectionObserver' in window))return;revIO&&revIO.disconnect();revIO=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');revIO.unobserve(e.target)}}),{rootMargin:'0px 0px -6% 0px'});
+  root.querySelectorAll('.card,.ex,.rc,.date-card,.pst,.hero-card,.badges,.chart').forEach(el=>{if(el.getBoundingClientRect().top>innerHeight){el.classList.add('rv');revIO.observe(el)}})}
+function burst(x,y){if(REDUCED)return;const c=document.createElement('div');c.className='burst';c.style.left=x+'px';c.style.top=y+'px';
+  for(let i=0;i<12;i++){const s=document.createElement('i');s.style.setProperty('--a',(i*30+Math.random()*14)+'deg');s.style.setProperty('--d',(30+Math.random()*26)+'px');c.appendChild(s)}document.body.appendChild(c);setTimeout(()=>c.remove(),800)}
+document.addEventListener('pointerdown',e=>{const b=e.target.closest('.btn,.chip,.rc,.swp,.qk button,.gchips button,.plc .icon-btn,.seg button');if(!b||b.disabled)return;try{navigator.vibrate&&navigator.vibrate(6)}catch(er){}
+  if(REDUCED)return;const r=b.getBoundingClientRect(),s=document.createElement('span'),dm=Math.max(r.width,r.height)*2.2;s.className='rip';s.style.cssText=`width:${dm}px;height:${dm}px;left:${e.clientX-r.left-dm/2}px;top:${e.clientY-r.top-dm/2}px`;b.appendChild(s);setTimeout(()=>s.remove(),650)},{passive:true});
+// Swipe left/right on the page switches tabs.
+{let sx=0,sy=0,st=0,ok=false;document.addEventListener('touchstart',e=>{const t=e.touches[0];ok=!ui.sheet&&!ui.wo&&e.touches.length===1&&!e.target.closest('.chips,.gchips,.qk,input,select,textarea,.wk,.pgrid');sx=t.clientX;sy=t.clientY;st=Date.now()},{passive:true});
+  document.addEventListener('touchend',e=>{if(!ok)return;const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;if(Math.abs(dx)<70||Math.abs(dy)>50||Date.now()-st>600)return;const i=TABS.findIndex(x=>x[0]===ui.tab),j=i+(dx<0?1:-1);if(j<0||j>=TABS.length)return;
+    ui.dir=dx<0?'sl':'sr';ui.tab=TABS[j][0];render();try{navigator.vibrate&&navigator.vibrate(8)}catch(er){}},{passive:true})}
+// Pull the sheet down by its top bar to close it.
+{let y0=null,sh=null;document.addEventListener('touchstart',e=>{const g=e.target.closest('.grab,.sheet-top');sh=g&&g.closest('.sheet');y0=sh&&sh.scrollTop<=0?e.touches[0].clientY:null},{passive:true});
+  document.addEventListener('touchmove',e=>{if(y0==null||!sh)return;const dy=Math.max(0,e.touches[0].clientY-y0);sh.style.transition='none';sh.style.transform=`translateY(${dy}px)`},{passive:true});
+  document.addEventListener('touchend',e=>{if(y0==null||!sh)return;const dy=e.changedTouches[0].clientY-y0;sh.style.transition='transform .3s cubic-bezier(.16,1,.3,1)';if(dy>110)closeSheet();else sh.style.transform='';y0=null;sh=null},{passive:true})}
+// Hero watermark drifts slower than the page.
+window.addEventListener('scroll',()=>{const hm=$('.heroMark');if(hm&&!REDUCED)hm.style.translate=`0 ${Math.round(scrollY*.35)}px`},{passive:true});
 
 /* ---------- rest timer ---------- */
 let timer=null;
@@ -1390,7 +1541,7 @@ let actx;function beep(){try{navigator.vibrate&&navigator.vibrate([200,100,200])
 function readTE(){const t=ui.te,a=$('#teTitle'),b=$('#teDate'),c=$('#teTime');if(a)t.title=a.value;if(b)t.date=b.value;if(c)t.time=c.value}
 function act(a,b){const t=dk(),d=b.dataset;
 switch(a){
-case 'tab':ui.tab=d.t;if(d.s)ui.prepSeg=d.s;render();break;
+case 'tab':{const i=TABS.findIndex(x=>x[0]===ui.tab),j=TABS.findIndex(x=>x[0]===d.t);ui.dir=j>i?'sl':j<i?'sr':null;ui.tab=d.t;if(d.s)ui.prepSeg=d.s;render();break}
 case 'seg':ui[d.k]=d.v;render(true);break;
 case 'settings':openSheet('settings');break;
 case 'close':closeSheet();break;
@@ -1418,6 +1569,21 @@ case 'teDel':S.tasks=S.tasks.filter(x=>x.id!==ui.te.id);save();closeSheet();rend
 case 'day':ui.day=d.d;render();break;
 case 'guide':ui.guide[d.ex]=!ui.guide[d.ex];render(true);break;
 case 'swap':ui.sw={o:d.o,id:d.id,k:d.k||''};openSheet('swap');break;
+case 'plFav':{S.pl=S.pl||{};const s=S.pl[d.id]=S.pl[d.id]||{};s.f=!s.f;save();render(true);if(s.f)toast('Kedvencekhez adva');break}
+case 'plCat':ui.plc=d.v;render(true);break;
+case 'plAdd':ui.pa={n:'',c:'etterem',l:'',note:''};openSheet('pladd');break;
+case 'plSave':{const n=($('#paN').value||'').trim();if(!n){toast('Add meg a hely nevét.');break}let l=($('#paL').value||'').trim();if(l&&!/^https?:\/\//.test(l))l='https://'+l;
+  S.myPl=S.myPl||[];S.myPl.push({id:'my-'+uid(),n,c:$('#paC').value,link:l,note:($('#paNote').value||'').trim()});save();closeSheet();ui.plc='all';render(true);toast('Hely mentve');break}
+case 'dateRr':{const wk=weekKey();S.dateRr=S.dateRr||{};S.dateRr[wk]=(S.dateRr[wk]||0)+1;save();render(true);break}
+case 'dateSave':{const di=dateIdeas(),f=x=>x.filter(y=>y[1]).map(y=>y[1].n).join(' + ');S.ideas=S.ideas||[];
+  S.ideas.push({id:uid(),t:'Péntek ('+shortDate(di.fd)+'): '+f(di.fri),l:'',done:false,ts:Date.now()},{id:uid(),t:'Szombat ('+shortDate(di.sd)+'): '+f(di.sat),l:'',done:false,ts:Date.now()});save();toast('Mentve a listába');break}
+case 'surprise':{const p=PLACES.filter(x=>x.c===d.v&&x.id!==ui.sur);ui.sur=p[Math.floor(Math.random()*p.length)].id;render(true);break}
+case 'mediaRe':loadMedia(true);render(true);break;
+case 'toIdea':S.ideas=S.ideas||[];S.ideas.push({id:uid(),t:d.t,l:d.l||'',done:false,ts:Date.now()});save();toast('A listára került');break;
+case 'ideaAdd':{const tt=($('#ideaT').value||'').trim();if(!tt){toast('Írj be valamit.');$('#ideaT').focus();break}let l=($('#ideaL').value||'').trim();if(l&&!/^https?:\/\//.test(l))l='https://'+l;
+  S.ideas=S.ideas||[];S.ideas.push({id:uid(),t:tt,l,done:false,ts:Date.now()});save();render(true);toast('Hozzáadva');break}
+case 'ideaDone':{const x=(S.ideas||[]).find(y=>y.id===d.id);if(x){x.done=!x.done;save();render(true)}break}
+case 'ideaDel':S.ideas=(S.ideas||[]).filter(y=>y.id!==d.id);save();render(true);break;
 case 'custom':{const c=customToday();ui.cb={g:c?[...c.g]:['Bicepsz','Tricepsz','Váll','Has'],n:c?Math.max(3,Math.min(10,c.ex.length)):6};openSheet('custom');break}
 case 'cbPreset':{const p=PRESETS[Number(d.v)];ui.cb={g:[...p[1]],n:p[2]};act('cbGo',b);break}
 case 'cbG':{const g=ui.cb.g,i=g.indexOf(d.v);if(i>=0)g.splice(i,1);else g.push(d.v);renderSheet(true);break}
@@ -1494,7 +1660,7 @@ case 'delW':S.weights=S.weights.filter(x=>x[0]!==d.d);save();render(true);break;
 case 'newCycle':S.settings.planStart=dk(monday(new Date()));save();render(true);toast('Új ciklus indult');break;
 case 'reset':if(!ui.resetArm){ui.resetArm=true;renderSheet(true);break}S=defaults();save();applyTheme();ui.resetArm=false;closeSheet();ui.tab='ma';render();toast('Minden adat törölve');break;
 }}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;act(b.dataset.a,b)});
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const fx=b.matches('.chk,.wo-go')&&!b.classList.contains('on'),r=fx&&b.getBoundingClientRect();act(b.dataset.a,b);if(fx)burst(r.left+r.width/2,r.top+r.height/2)});
 document.addEventListener('change',e=>{const el=e.target,t=dk();
   if(el.dataset.in){const k=el.dataset.in;
     if(k==='kg'||k==='reps'){const L=ensureLog(el.dataset.ex),i=Number(el.dataset.i);let v=pnum(el.value);if(k==='reps'&&v!=null)v=Math.round(v);L[i][k==='kg'?0:1]=v;save()}
@@ -1511,6 +1677,8 @@ document.addEventListener('change',e=>{const el=e.target,t=dk();
     save();applyTheme();ui.day=null;render(true);if(k==='spClientId'&&ui.sheet)renderSheet(true)}
   if(el.id==='impFile'&&el.files&&el.files[0])importData(el.files[0]);
   if(el.id==='feImg'&&el.files&&el.files[0])scanFood(el.files[0]);});
+document.addEventListener('input',e=>{if(e.target.id!=='plq')return;ui.plq=e.target.value;const q=ui.plq.toLowerCase(),c=ui.plc||'all',L=$('#plList');if(!L)return;
+  const list=allPlaces().filter(p=>(c==='all'||(c==='fav'?plState(p.id).f:c==='new'?p.nw:p.c===c))&&(!q||(p.n+' '+p.note+' '+(CATL[p.c]||'')).toLowerCase().includes(q)));L.innerHTML=list.map(p=>plRow(p)).join('')||'<p class="empty">Nincs találat.</p>'});
 document.addEventListener('input',e=>{if(e.target.id!=='feG'||!ui.fe||!ui.fe.per)return;readFE();feCalc(ui.fe);const f=(id,v)=>{const x=$('#'+id);if(x)x.value=num(v)};f('feK',ui.fe.kcal);f('feP',ui.fe.p);f('feC',ui.fe.c);f('feS',ui.fe.s)});
 $('#sheetWrap').addEventListener('click',e=>{if(e.target.id==='sheetWrap')closeSheet()});
 document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(ui.sheet)closeSheet();else if(ui.wo){ui.wo=null;renderWo();render(true)}});
