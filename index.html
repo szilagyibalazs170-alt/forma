@@ -574,6 +574,43 @@ textarea.in{resize:vertical;min-height:64px;line-height:1.4}
 .exo-btn{width:36px;height:36px;font-size:20px;line-height:1;flex:none;align-self:flex-start}
 .opt{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
 .opt .stepper b{font-size:16px;min-width:56px}
+.fc.has-ring .fc-k,.fc.has-ring .fc-t,.fc.has-ring .fc-m{padding-right:78px}
+.tw-top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-top:18px}
+.tw-week{display:flex;align-items:baseline;gap:8px;margin-top:6px}
+.tw-week b{font-size:64px;font-weight:800;font-stretch:125%;line-height:.9;color:var(--accent)}
+.tw-week span{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.12em;font-weight:700}
+.tw-dots{display:flex;gap:4px;flex:none}
+.tw-dots i{width:22px;height:30px;border:1px solid var(--line);display:flex;align-items:flex-end;justify-content:center;font-style:normal}
+.tw-dots i em{font-style:normal;font-size:9px;font-weight:800;color:var(--muted);padding-bottom:3px}
+.tw-dots i.on{background:var(--accent);border-color:var(--accent)}
+.tw-dots i.on em{color:var(--on-accent)}
+.tw-dots i.now{outline:1px solid var(--text);outline-offset:2px}
+.tw-bar{height:3px;background:var(--line);margin:14px 0 4px}
+.tw-bar i{display:block;height:100%;background:var(--accent);box-shadow:0 0 12px var(--accent);transition:width .6s cubic-bezier(.16,1,.3,1)}
+.tw-rest{display:flex;align-items:center;gap:12px;margin-top:14px}
+.tw-rest .btn{flex:none}
+.tw-hero{position:relative;overflow:hidden;margin-top:16px;padding:22px 18px 18px;border:1px solid var(--accent);background:radial-gradient(140% 120% at 100% 0%,rgba(246,181,17,.25) 0%,var(--surface) 60%)}
+.tw-hero.done{border-color:var(--line)}
+.tw-ghost{position:absolute;right:-8px;top:-14px;font-size:120px;font-weight:800;font-stretch:125%;text-transform:uppercase;line-height:1;color:var(--text);opacity:.05;pointer-events:none;white-space:nowrap}
+.tw-name{position:relative;font-size:clamp(30px,9vw,44px);font-weight:800;font-stretch:125%;text-transform:uppercase;line-height:1;margin:8px 0 6px}
+.tw-focus{position:relative;color:var(--muted);font-size:14px}
+.tw-stats{position:relative;display:grid;grid-template-columns:repeat(3,1fr);margin:18px 0 0;border-top:1px solid var(--line)}
+.tw-stats div{padding:12px 0 0}
+.tw-stats div+div{padding-left:12px;border-left:1px solid var(--line)}
+.tw-stats b{display:block;font-size:24px;font-weight:800;font-stretch:125%}
+.tw-stats span{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.tw-prog{height:4px;background:var(--line);margin:16px 0}
+.tw-prog i{display:block;height:100%;background:var(--accent)}
+.tw-hero.done .tw-prog{margin-bottom:0}
+.tw-pick{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.twp{display:flex;flex-direction:column;align-items:flex-start;gap:3px;padding:12px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;text-align:left;transition:border-color .2s,transform .15s}
+.twp:active{transform:scale(.97)}
+.twp.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.twp b{font-size:18px;font-weight:800;font-stretch:125%;text-transform:uppercase}
+.twp span{font-size:12px;color:var(--muted)}
+.twp em{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+.twp em.ok{color:var(--accent)}
+.twp em.tired{color:#ff7a59}
 .gymbar{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:12px}
 .gchip{border:1px solid var(--line);background:transparent;color:var(--text);padding:7px 10px;font-size:11px;font-weight:700;letter-spacing:.08em}
 .gchip.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
@@ -991,8 +1028,17 @@ function applyTheme(){const t=S.settings.theme,h=document.documentElement;if(t==
 function curWeight(){const w=S.weights;return w.length?w[w.length-1][1]:S.settings.weight}
 function targets(){const st=S.settings,w=curWeight();const bmr=10*w+6.25*st.height-5*st.age+(st.sex==='m'?5:-161);const kcal=Math.round((bmr*Number(st.activity)+Number(st.surplus)+Number(st.calAdj||0))/10)*10;const p=Math.round(w*2);const f=Math.round(kcal*0.25/9);const c=Math.max(0,Math.round((kcal-p*4-f*9)/4));return{kcal,p,f,c}}
 function cycleInfo(d=new Date()){const start=parseDk(S.settings.planStart);let weeks=Math.round((monday(d)-start)/(7*DAY));if(weeks<0)weeks=0;const cycle=Math.floor(weeks/6)+1,week=weeks%6+1;return{cycle,week,deload:week===6,variant:(cycle-1)%2?'B':'A'}}
-function dayForWeekday(wd){const i=S.settings.days.indexOf(wd);return i>=0?DAYS[i]:null}
-function nextTraining(from){for(let i=1;i<=7;i++){const d=new Date(from);d.setDate(d.getDate()+i);const day=dayForWeekday(d.getDay());if(day)return{wd:d.getDay(),day}}return null}
+// Flexible plan: no fixed training days. The suggested workout continues the rotation after the last finished one;
+// S.pick overrides it for one day and S.rest marks a rest day the user chose.
+const trained=k=>!!(S.sessions[k]||(S.xdone&&S.xdone[k]));
+const lastDoneBefore=t=>{const ks=Object.keys(S.sessions).filter(k=>k<t&&DAYS.some(d=>d.id===S.sessions[k])).sort();return ks.length?ks[ks.length-1]:null};
+const rotNext=id=>DAYS[(DAYS.findIndex(d=>d.id===id)+1)%DAYS.length];
+function rotDay(d=new Date()){const t=dk(d),p=S.pick&&S.pick[t];if(p&&p!=='x'&&getDay(p))return getDay(p);const l=lastDoneBefore(t);return l?rotNext(S.sessions[l]):DAYS[0]}
+function planDay(d=new Date()){const t=dk(d);if(S.sessions[t])return getDay(S.sessions[t]);if(S.rest&&S.rest[t])return null;return rotDay(d)}
+function streakDays(d=new Date()){let n=0;const x=new Date(d);x.setDate(x.getDate()-1);while(trained(dk(x))){n++;x.setDate(x.getDate()-1)}return n}
+function weekCount(){const m=monday(new Date());let n=0;for(let i=0;i<7;i++){const d=new Date(m);d.setDate(m.getDate()+i);if(trained(dk(d)))n++}return n}
+function daysSince(id){const ks=Object.keys(S.sessions).filter(k=>S.sessions[k]===id&&k<=dk()).sort();if(!ks.length)return null;return Math.round((parseDk(dk())-parseDk(ks[ks.length-1]))/DAY)}
+function nextTraining(from){const t=dk(from),d=new Date(from);d.setDate(d.getDate()+1);const day=S.sessions[t]?rotNext(S.sessions[t]):S.rest&&S.rest[t]?rotDay(from):rotNext(rotDay(from).id);return{wd:d.getDay(),day}}
 // Base lifts ('*' slots) rotate per 6-week cycle, accessories rotate weekly; S.swaps replaces unavailable exercises.
 function slotList(day,ci){const gw=(ci.cycle-1)*6+ci.week-1,used=new Set(),out=[];
   day.sl.forEach((s,i)=>{const cyc=s[0]==='*',p=cyc?s.slice(1):s,k=cyc?ci.cycle-1:gw+i;
@@ -1022,7 +1068,7 @@ function getDay(id){if(id==='x'){const c=customToday();return c?{id:'x',name:'Sa
 const sessDone=(id,t)=>id==='x'?!!(S.xdone&&S.xdone[t]):S.sessions[t]===id;
 const PRESETS=[['Kar, has, váll',['Bicepsz','Tricepsz','Váll','Has'],6],['Has, 15 perc',['Has'],4],['Kar pumpa',['Bicepsz','Tricepsz'],6],['Felsőtest',['Mell','Hát','Váll'],6],['Láb és has',['Láb','Has'],6],['Teljes test',['Mell','Hát','Láb','Váll','Has'],7]];
 const GL=['Mell','Hát','Láb','Váll','Bicepsz','Tricepsz','Csuklya','Vádli','Has'];
-function buildCustom(g,n){const t=dk(),r=rng(hash(t+g.join()+Date.now())),planned=new Set((dayForWeekday(new Date().getDay())&&!S.sessions[t])?exList(dayForWeekday(new Date().getDay()),cycleInfo()):[]);
+function buildCustom(g,n){const t=dk(),r=rng(hash(t+g.join()+Date.now())),planned=new Set((planDay()&&!S.sessions[t])?exList(planDay(),cycleInfo()):[]);
   const pools=g.map(x=>Object.keys(EX).filter(id=>GRP[id]===x).sort(()=>r()-.5).sort((a,b)=>planned.has(a)-planned.has(b))),out=[];
   for(let k=0;out.length<n&&k<40;k++){const p=pools[k%pools.length];const id=p.find(y=>!out.includes(y));if(id)out.push(id)}
   return out}
@@ -1245,7 +1291,7 @@ function mealPlan(now){const picks=weekPicks(),idx=(now.getDay()+6)%7,by=c=>pick
   const fr=S.inventory.filter(x=>x.loc==='fridge').sort((a,b)=>a.exp-b.exp).map(x=>RI[x.r]).filter(r=>r&&r.c==='fo');
   const mains=by('fo'),m1=fr[0]||rot(mains,idx),m2=rot(mains.filter(r=>r!==m1),idx+1);
   return [['Reggeli',rot(by('reggeli'),idx)],['Ebéd',m1],['Vacsora',m2],['Snack',rot(by('snack'),idx)]].filter(x=>x[1])}
-function recs(now){const t=dk(now),h=now.getHours(),day=dayForWeekday(now.getDay()),ci=cycleInfo(),tg=targets(),out=[],mp=mealPlan(now);
+function recs(now){const t=dk(now),h=now.getHours(),day=planDay(now),ci=cycleInfo(),tg=targets(),out=[],mp=mealPlan(now);
   if(day&&!S.sessions[t]){if(h<17&&mp[1])out.push(['Edzés előtt','1,5-2 órával előtte egyél szénhidrátot és fehérjét, például '+mp[1][1].n.toLowerCase()+'.']);out.push(['Edzés után','1-2 órán belül 30-40 g fehérje. A tömegnövelő shake egymagában 67 g.'])}
   if(day&&S.sessions[t])out.push(['Szép munka','A mai edzés kész. Most a kaja és az alvás dönt: legalább '+tg.p+' g fehérje és 8 óra alvás.']);
   if(!day){const nx=nextTraining(now);out.push(['Pihenőnap','20-30 perc séta és 10 perc nyújtás gyorsítja a regenerációt, a kalóriát ma se vedd vissza.'+(nx?' Következő edzés: '+WD[nx.wd]+', '+nx.day.name.toLowerCase()+'.':'')])}
@@ -1255,10 +1301,10 @@ function recs(now){const t=dk(now),h=now.getHours(),day=dayForWeekday(now.getDay
   const tr=weightTrend();if(tr!=null&&tr<0.1)out.push(['Súly','Nem nő a súlyod. Tegyél hozzá napi kb. 200-300 kcal-t, a legegyszerűbb egy plusz shake.']);else if(tr!=null&&tr>0.75)out.push(['Súly','Gyorsan nő a súlyod (heti '+num(Math.round(tr*10)/10)+' kg). Vegyél vissza 150-200 kcal-t, hogy kevesebb zsír jöjjön.']);
   const mon=dk(monday(now));if(!S.weights.some(w=>w[0]>=mon))out.push(['Mérés',now.getDay()===1?'Hétfő van: reggel, éhgyomorra mérd meg a súlyod.':'Ezen a héten még nem mérted a súlyod.']);
   if(ci.deload)out.push(['Deload','Könnyebb hét. Ne menj tönkremenetelig, jövő héten jönnek az új rekordok.']);
-  const nx=nextTraining(now);if(h>=19&&nx&&nx.wd===(now.getDay()+1)%7)out.push(['Holnap',nx.day.name+'. Készítsd elő ma este a kaját és a cuccot.']);
+  const nx=nextTraining(now);if(h>=19&&nx&&!(S.rest&&S.rest[t]))out.push(['Holnap',nx.day.name+'. Készítsd elő ma este a kaját és a cuccot.']);
   if(now.getMonth()>=9||now.getMonth()<=2){if(!S.settings.supps.vitd)out.push(['D-vitamin','Ősztől tavaszig kevés a napfény. Nézd meg a kiegészítők között, érdemes-e szedned.'])}
   return out.slice(0,5)}
-function adherence(){const st=parseDk(S.settings.started||dk()),today=new Date(),t=dk(today);let planned=0,done=0;for(let d=new Date(st);dk(d)<=t;d.setDate(d.getDate()+1)){const k=dk(d);if(dayForWeekday(d.getDay())&&(k<t||S.sessions[k]))planned++;}done=Object.keys(S.sessions).filter(k=>k>=dk(st)).length;return{planned,done,pct:planned?Math.min(100,Math.round(done/planned*100)):null}}
+function adherence(){const st=parseDk(S.settings.started||dk()),g=S.settings.weekGoal||5,days=Math.round((parseDk(dk())-st)/DAY)+1,planned=Math.max(1,Math.round(days/7*g)),done=Object.keys(S.sessions).filter(k=>k>=dk(st)).length;return{planned,done,pct:Math.min(100,Math.round(done/planned*100))}}
 function barChart(labels,values,fmt){const W=320,H=140,B=22,T=14,n=values.length,mx=Math.max(1,...values),bw=(W-8)/n;
   return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Oszlopdiagram">${values.map((v,i)=>{const h=(H-B-T)*v/mx,x=4+i*bw+bw*0.18,y=H-B-h;return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${(bw*0.64).toFixed(1)}" height="${Math.max(h,v?2:0).toFixed(1)}" rx="4" fill="${i===n-1?'var(--accent)':'var(--surface2)'}"/>${v?`<text x="${(x+bw*0.32).toFixed(1)}" y="${(y-4).toFixed(1)}" text-anchor="middle">${fmt(v)}</text>`:''}<text x="${(x+bw*0.32).toFixed(1)}" y="${H-6}" text-anchor="middle">${labels[i]}</text>`}).join('')}</svg>`}
 
@@ -1267,7 +1313,7 @@ function barChart(labels,values,fmt){const W=320,H=140,B=22,T=14,n=values.length
 const SEED_PL={'2026-10-25':{name:'Mai Rap Mix: Új és Régi Gyöngyszemek',url:'https://open.spotify.com/playlist/5IX2QDZilZIXTtdXfCEK9v?utm_source=anthropic&utm_medium=claude&go=1&nap_web=1&request_id=cb239e7e-4f9d-4342-b84b-14b7eefd5ea2'}};
 let mcpNs=null,spBusy=false,spMsg='';
 const ARTISTS='Drake, Tory Lanez, Juice WRLD, The Kid LAROI, Khalid, The Weeknd, Russ, Bazzi, SAINt JHN, Ollie, Dzsúdló, Bruno x Spacc, Ufo361 és Jazeek, plusz hozzájuk hasonló új előadók, például Don Toliver, PARTYNEXTDOOR, Bryson Tiller, Pogány Induló és Luciano';
-function plPrompt(now){const day=dayForWeekday(now.getDay());
+function plPrompt(now){const day=planDay(now);
   const base=`új rap ${ARTISTS} számokkal, pár kevésbé ismert hidden gem rappel, pár régi, jó basszusos klasszikussal 50 Cent, Tupac és The Notorious B.I.G. számokkal, és német rappel Ufo361, Jazeek és Shindy számokkal`;
   if(day&&!S.sessions[dk(now)])return `Készíts nekem egy pörgős, energikus edzős rap playlistet mára a ${day.name.toLowerCase()} edzéshez, kb. 75 percben: ${base}.`;
   return `Készíts nekem egy chilles rap playlistet mára, kb. 60 percben: ${base}. Legyen inkább nyugodtabb, laza hangulatú.`}
@@ -1292,7 +1338,7 @@ async function makePlaylist(){if(spBusy)return;if(STANDALONE){spBusy=true;spMsg=
       c==='rate_limited'?'Túl sok kérés ment ki. Próbáld újra pár perc múlva.':
       'Nem sikerült a playlist készítése. Próbáld újra később.'}
   spBusy=false;render(true)}
-function spotifyCard(){if(!STANDALONE&&!mcpNs&&!todayPl())return '';const pl=todayPl(),day=dayForWeekday(new Date().getDay());
+function spotifyCard(){if(!STANDALONE&&!mcpNs&&!todayPl())return '';const pl=todayPl(),day=planDay();
   let h=`<div class="sec-head"><h2>Mai zene</h2></div><div class="card sp">`;
   if(pl)h+=`<div class="row"><div class="sp-ic">${ICON.music}</div><div class="grow"><div class="row-title">${esc(pl.name)}</div><div class="meta">Spotify playlist, ${day&&!S.sessions[dk()]?'edzéshez':'chill'}</div></div></div><a class="btn acc full" href="${esc(pl.url)}" target="_blank" rel="noopener">Megnyitás a Spotify-ban</a>`;
   else h+=`<div class="meta">${day&&!S.sessions[dk()]?'Edzésnap van: pörgős rap mix a '+day.name.toLowerCase()+' naphoz.':'Pihenősebb nap: chilles rap mix.'} Fele a mostani kedvenceidből (Drake, Tory Lanez, Dzsúdló, Ufo361...), fele hozzájuk hasonló új előadókból.</div>`;
@@ -1338,7 +1384,7 @@ const SIM_HYPE=['Don Toliver','Lil Tecca','Trippie Redd','Roddy Ricch','Lil Tjay
 const SIM_CHILL=['PARTYNEXTDOOR','Bryson Tiller','6LACK','Brent Faiyaz','Giveon','Jeremih','Rod Wave','Lund','Powfu','Jutes','iann dior','Azahriah','Krúbi','Apache 207','RIN'];
 const HYPE=MY_HYPE,CHILL=MY_CHILL;
 async function spTopArtists(){try{const j=await spApi('/me/top/artists?'+new URLSearchParams({limit:'15',time_range:'short_term'}));return((j&&j.items)||[]).map(a=>a.name)}catch(e){if(e&&e.sp==='auth')throw e;return[]}}
-async function spGenerate(){const now=new Date(),day=dayForWeekday(now.getDay()),hype=!!(day&&!S.sessions[dk(now)]),r=rng(hash(dk(now)+'|'+Date.now()));
+async function spGenerate(){const now=new Date(),day=planDay(now),hype=!!(day&&!S.sessions[dk(now)]),r=rng(hash(dk(now)+'|'+Date.now()));
   const norm=s=>String(s).toLowerCase().replace(/[^a-z0-9]/g,'');
   // Since Feb 2026 dev-mode search returns max 10 results and no popularity, so variety comes from random offsets and skipping recently used tracks.
   // About half the artists come from what the user plays (live top artists when the token allows it), half are similar new names.
@@ -1384,8 +1430,8 @@ async function exportData(){const filename='forma-mentes-'+dk()+'.json',data=JSO
 function importData(file){const fr=new FileReader();fr.onload=()=>{try{const o=JSON.parse(fr.result);if(!o||!o.settings||!o.logs)throw 0;S=migrate(o);save();applyTheme();closeSheet();render();toast('Adatok visszatöltve')}catch(e){toast('Ez nem FORMA mentésfájl.')}};fr.readAsText(file)}
 
 /* ---------- views ---------- */
-function weekStrip(){const m=monday(new Date()),t=dk();let h='<div class="wk">';for(let i=0;i<7;i++){const d=new Date(m);d.setDate(m.getDate()+i);const k=dk(d),day=dayForWeekday(d.getDay());h+=`<div class="wkd ${k===t?'today':''} ${day?'train':''} ${S.sessions[k]||(S.xdone&&S.xdone[k])?'done':''}" title="${day?day.name:'Pihenő'}"><span>${WDS[d.getDay()]}</span><b>${d.getDate()}</b><i></i></div>`}return h+'</div>'}
-function rMa(){const now=new Date(),t=dk(now),wd=now.getDay(),ci=cycleInfo(),day=dayForWeekday(wd),tg=targets();
+function weekStrip(){const m=monday(new Date()),t=dk();let h='<div class="wk">';for(let i=0;i<7;i++){const d=new Date(m);d.setDate(m.getDate()+i);const k=dk(d),day=S.sessions[k]?getDay(S.sessions[k]):k===t?planDay():null;h+=`<div class="wkd ${k===t?'today':''} ${day?'train':''} ${trained(k)?'done':''}" title="${day?day.name:''}"><span>${WDS[d.getDay()]}</span><b>${d.getDate()}</b><i></i></div>`}return h+'</div>'}
+function rMa(){const now=new Date(),t=dk(now),wd=now.getDay(),ci=cycleInfo(),day=planDay(now),tg=targets();
   let h=bar()+ticker()+heroBlock(WD[wd],greet(now.getHours())+(S.settings.name?', '+esc(S.settings.name):'')+'. '+MON[now.getMonth()]+' '+now.getDate()+'.',null,true)+weekStrip();
   const rs=rwStats();h+=calCard();
   h+=`<div class="fcar-wrap"><div class="fcar" id="fcar">${focusCards(now,day,ci)}</div><div class="fdots" id="fdots"></div></div>`;
@@ -1427,22 +1473,29 @@ function exCard(id,ci,idx,o,kind,auto){const ex=EX[id],sg=suggest(id,ci),L=today
   if(sg.last)h+=`<div class="last">Legutóbb, ${shortDate(sg.last.date)}: ${sg.last.sets.filter(x=>x[2]).map(x=>(ex.u==='mp'||ex.u==='testsúly'?'':num(x[0])+' × ')+(x[1]??'')).join(', ')}</div>`;
   h+=`<div class="sets">${L.map((s,i)=>setRow(ex,id,s,i)).join('')}</div></div>`;
   return h}
-function rEdzes(){const ci=cycleInfo();if(!ui.day||!getDay(ui.day)){const d=dayForWeekday(new Date().getDay())||(nextTraining(new Date())||{}).day||DAYS[0];ui.day=d.id}
-  const day=getDay(ui.day),t=dk(),done=sessDone(day.id,t),pr=dayProgress(day,ci),mon=dk(monday(new Date()));
-  let h=bar()+heroBlock('Edzés',`${ci.cycle}. ciklus, ${ci.week}. hét a 6-ból`,day.short);
+function rEdzes(){const ci=cycleInfo(),t=dk(),now=new Date();if(!ui.day||!getDay(ui.day))ui.day=(customToday()&&!S.sessions[t]?getDay('x'):planDay(now)||rotDay(now)).id;
+  const day=getDay(ui.day),done=sessDone(day.id,t),pr=dayProgress(day,ci),sl=slotList(day,ci),ups=sl.filter(x=>suggest(x.id,ci).up).length;
+  const goal=S.settings.weekGoal||5,wk=weekCount(),st=streakDays(now),rest=!!(S.rest&&S.rest[t]),m=monday(now);
+  const mins=Math.round(sl.reduce((a,x)=>a+EX[x.id].s*(EX[x.id].rest+45),0)/60/5)*5;
+  let h=bar();
+  h+=`<div class="tw-top"><div><div class="fc-k">${ci.cycle}. ciklus · ${ci.week}/6. hét${ci.deload?' · deload':''}</div><div class="tw-week"><b>${wk}</b><span>/ ${goal} edzés a héten</span></div></div><div class="tw-dots">${[0,1,2,3,4,5,6].map(i=>{const d=new Date(m);d.setDate(m.getDate()+i);const k=dk(d);return `<i class="${trained(k)?'on':''} ${k===t?'now':''}" title="${WDS[d.getDay()]}"><em>${WDS[d.getDay()][0]}</em></i>`}).join('')}</div></div>`;
+  h+=`<div class="tw-bar"><i style="width:${Math.min(100,wk/goal*100)}%"></i></div>`;
   if(ci.deload)h+=`<div class="card note acc-note"><b>Deload hét.</b> Kevesebb szett, kb. 15%-kal kisebb súly. Most a regeneráció a cél, jövő héten jön az új ciklus.</div>`;
-  h+=`<div class="chips">${DAYS.map((d,i)=>{const did=Object.keys(S.sessions).some(k=>k>=mon&&S.sessions[k]===d.id);return `<button class="chip ${d.id===ui.day?'on':''} ${did?'did':''}" data-a="day" data-d="${d.id}"><span>${WD[S.settings.days[i]]}</span>${d.short}</button>`}).join('')}<button class="chip ${ui.day==='x'?'on':''} ${S.xdone&&S.xdone[t]?'did':''}" data-a="${customToday()?'day':'custom'}" data-d="x"><span>Bármikor</span>+ Saját</button></div>`;
-  h+=`<h2>${day.name}</h2><div class="meta">${day.focus}</div>`;
+  if(rest&&!trained(t))h+=`<div class="card tw-rest"><div class="grow"><div class="row-title">Ma pihenőnap</div><div class="meta">Holnap ez vár: ${rotDay(now).name.toLowerCase()}.</div></div><button class="btn ghost" data-a="restDay">Mégis edzek</button></div>`;
+  else if(st>=3&&!trained(t))h+=`<div class="card tw-rest"><div class="grow"><div class="row-title">${st} napja edzel egymás után</div><div class="meta">Ha fáradt vagy, ma pihenj. Az izom pihenés közben nő, a sorrend nem vész el.</div></div><button class="btn ghost" data-a="restDay">Ma pihenek</button></div>`;
+  const kick=done?'Kész ✓':day.custom?'Saját edzés · ma':S.sessions[t]||ui.day!==rotDay(now).id?'Választott edzés':'Következő a sorban';
+  h+=`<div class="tw-hero ${done?'done':''}"><div class="tw-ghost" aria-hidden="true">${esc(day.short)}</div><div class="fc-k">${kick}</div><div class="tw-name">${day.custom?esc(day.focus):day.name}</div><div class="tw-focus">${day.custom?'Te állítottad össze, bármikor edzheted':day.focus}</div>
+    <div class="tw-stats"><div><b>${pr.done}/${pr.total}</b><span>gyakorlat</span></div><div><b>~${mins}</b><span>perc</span></div><div><b>${ups?'▲ '+ups:'0'}</b><span>súlyemelés</span></div></div>
+    <div class="tw-prog"><i style="width:${pr.total?pr.done/pr.total*100:0}%"></i></div>
+    ${done?'':`<button class="btn acc full" data-a="woOpen" data-d="${day.id}">${pr.done?'Workout mód folytatása':'Workout mód indítása'}</button>`}</div>`;
+  h+=`<h2>Mit edzel ma?</h2><div class="tw-pick">${DAYS.map(d=>{const n=daysSince(d.id),fresh=n==null||n>=2,on=d.id===ui.day,nx=!S.sessions[t]&&d.id===rotDay(now).id&&!S.pick?.[t];return `<button class="twp ${on?'on':''}" data-a="pickDay" data-d="${d.id}"><b>${d.short}</b><span>${n==null?'még nem volt':n===0?'ma':n===1?'tegnap':n+' napja'}</span><em class="${fresh?'ok':'tired'}">${nx?'▶ következő':fresh?'kipihent':'pihen még'}</em></button>`}).join('')}<button class="twp ${ui.day==='x'?'on':''}" data-a="${customToday()?'day':'custom'}" data-d="x"><b>+ Saját</b><span>bármi, bármikor</span><em class="ok">${customToday()?'folytatás':'összeállítás'}</em></button></div>`;
   {const sel=(S.gym||{}).sel||'main';h+=`<div class="gymbar"><span class="meta">Terem</span>${Object.entries(GYM_PRESETS).map(([k,v])=>`<button class="gchip ${sel===k?'on':''}" data-a="gymSel" data-v="${k}">${v.n}</button>`).join('')}<button class="link" data-a="gymOpen">Eszközök</button></div>`;const sk=skipFor(day.id);if(sk.length)h+=`<div class="meta" style="margin-top:8px">Ma kihagyva: ${sk.map(x=>EX[x].n).join(', ')}. <button class="link" data-a="unskip">Visszaállítás</button></div>`}
+  h+=`<h2>Gyakorlatok</h2>`;
   if(day.custom)h+=`<div class="btn-row"><button class="btn ghost" data-a="custom">Új összeállítás</button><button class="btn ghost" data-a="addEx">+ Gyakorlat</button></div>`;
-  h+=`<div class="prog-head"><span class="meta">Mai haladás</span><b>${pr.done}/${pr.total}</b></div><div class="bar-p" style="margin-top:4px"><i style="width:${pr.total?pr.done/pr.total*100:0}%"></i></div>`;
-  const sl=slotList(day,ci),ups=sl.filter(x=>suggest(x.id,ci).up).length;
-  if(ups&&!done)h+=`<div class="pbn up"><b>▲ Ma ${ups} gyakorlatnál emelünk</b><span>Múltkor ott minden szettben megvolt a felső ismétlésszám.</span></div>`;
-  if(!done)h+=`<button class="btn acc full" data-a="woOpen" data-d="${day.id}">${pr.done?'Workout mód folytatása':'Workout mód indítása'}</button><p class="meta" style="margin:6px 0 0">Teljes képernyő, egyszerre egy gyakorlat, nagy gombok, és a kijelző nem alszik el.</p>`;
   h+=sl.map((x,i)=>exCard(x.id,ci,i,x.o,day.custom?'x':x.plus?'p':'',x.auto)).join('');
   h+=`<button class="btn ghost full" data-a="addEx">+ Gyakorlat hozzáadása</button>`;
   h+=`<button class="btn ${done?'ghost':'acc'} full" data-a="finish" data-d="${day.id}">${done?'Kész edzés visszavonása':'Edzés befejezése'}</button>`;
-  h+=`<p class="fine">Az alapgyakorlatok 6 hetes ciklusonként, a kiegészítők hetente cserélődnek, így mindig jön valami új. Ha nincs meg egy gép vagy foglalt, nyomd meg a Csere gombot, és az app megjegyzi. Minden szettet úgy fejezz be, hogy még 1-2 ismétlés benned maradjon. Ha az összes szettben eléred a felső ismétlésszámot, legközelebb az app súlyemelést kér.</p>`;
+  h+=`<p class="fine">Nincsenek kötött napok: edzhetsz bármikor, akár egymás után több nap is. Az app a hát, mell, láb, váll és kar sorrendben a következőt ajánlja, de bármelyiket választhatod; a „pihen még” jelzés azt mutatja, ha azt az izomcsoportot 2 napon belül edzetted. Az alapgyakorlatok 6 hetes ciklusonként, a kiegészítők hetente cserélődnek, így mindig jön valami új. Ha nincs meg egy gép vagy foglalt, nyomd meg a Csere gombot, és az app megjegyzi. Minden szettet úgy fejezz be, hogy még 1-2 ismétlés benned maradjon. Ha az összes szettben eléred a felső ismétlésszámot, legközelebb az app súlyemelést kér.</p>`;
   return h}
 
 function rCard(r){const fav=S.fav.includes(r.id),hid=S.hidden.includes(r.id);return `<button class="rc ${hid?'hid':''}" data-a="recipe" data-id="${r.id}"><div class="grow"><div class="rc-n">${r.n}${fav?'<span class="star">Kedvenc</span>':''}</div><div class="meta">${r.t} perc, ${r.p} g fehérje, kb. ${ft(recipeCost(r,1).sum)}/adag, ${storeLabel(r)}${hid?', nem ajánlott':''}</div></div><div class="rc-k"><b>${r.kcal}</b><span>kcal/adag</span></div></button>`}
@@ -1884,10 +1937,10 @@ function rBox(){const bx=S.box||{},n=Object.keys(bx.done||{}).length,cfg=bx.cfg|
 Object.assign(ICON,{learn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 6.5 12 3l9 3.5-9 3.5z"/><path d="M7 8.5v5c0 1.7 2.2 3 5 3s5-1.3 5-3v-5M21 6.5V12"/></svg>',
   more:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="6.5" height="6.5"/><rect x="13.5" y="4" width="6.5" height="6.5"/><rect x="4" y="13.5" width="6.5" height="6.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5"/></svg>'});
 function focusCards(now,day,ci){const t=dk(now),out=[],c=customToday(),tg=targets(),fs=foodSum(t);
-  const card=(cls,k,title,meta,extra,acts,ic)=>`<div class="fc ${cls}"><div class="fc-ic" aria-hidden="true">${ic}</div><div class="fc-k">${k}</div><div class="fc-t">${title}</div><div class="fc-m">${meta}</div>${extra||''}<div class="fc-act">${acts}</div></div>`;
+  const card=(cls,k,title,meta,extra,acts,ic)=>`<div class="fc ${cls}${extra&&extra.startsWith('<svg class="ring')?' has-ring':''}"><div class="fc-ic" aria-hidden="true">${ic}</div><div class="fc-k">${k}</div><div class="fc-t">${title}</div><div class="fc-m">${meta}</div>${extra||''}<div class="fc-act">${acts}</div></div>`;
   if(day){const done=S.sessions[t],pr=dayProgress(day,ci),ups=exList(day,ci).filter(id=>suggest(id,ci).up).length;
     out.push(card('train'+(done?' done':''),'Mai edzés'+(ci.deload?' · deload':''),day.name,`${pr.done}/${pr.total} gyakorlat${ups&&!done?` · ▲ ${ups}× emelés`:''}`,ring(pr.done,pr.total),`<button class="btn" data-a="goday" data-d="${day.id}">${done?'Megnézem':pr.done?'Folytatás':'Indítás'}</button>`,ICON.edzes))}
-  else{const nx=nextTraining(now);out.push(card('train','Pihenőnap','Regeneráció',nx?`Következő: ${WD[nx.wd]}, ${nx.day.name.toLowerCase()}`:'',null,`<button class="btn" data-a="custom">Mégis edzenék</button>`,ICON.edzes))}
+  else{const nx=nextTraining(now);out.push(card('train','Pihenőnap','Regeneráció',nx?`Következő: ${WD[nx.wd]}, ${nx.day.name.toLowerCase()}`:'',null,`<button class="btn" data-a="restDay">Mégis edzek</button><button class="btn ghost" data-a="custom">Saját</button>`,ICON.edzes))}
   if(c){const pg=dayProgress(getDay('x'),ci);out.push(card('train','Saját edzés',esc(c.g.join(', ')),`${pg.done}/${pg.total} gyakorlat`,ring(pg.done,pg.total),`<button class="btn" data-a="goday" data-d="x">Folytatás</button>`,ICON.edzes))}
   {const td=esToday(),n=td!=null?td:esNext(),done=Object.keys((S.learn||{}).es||{}).length;out.push(card('es'+(td!=null?' done':''),'Spanyol · '+(td!=null?'mai lecke kész ✓':'mai lecke'),`${n+1}. ${ES[n].t}`,`${done}/${ES.length} lecke · kb. 10 perc`,`<div class="fc-bar"><i style="width:${done/ES.length*100}%"></i></div>`,`<button class="btn" data-a="goLearn" data-v="es">${td!=null?'Ismétlés':'Kezdés'}</button>`,'<span class="fc-flag"><i></i><i></i><i></i></span>'))}
   {const r=READS[readIdx(t)],rd=S.learn&&S.learn.read&&S.learn.read[t]!=null;out.push(card('read'+(rd?' done':''),'Napi olvasmány · '+r[0],esc(r[2]),rd?'Elolvasva ✓':'1 perc, +10 XP',null,`<button class="btn" data-a="goLearn" data-v="olvas">${rd?'Újra':'Elolvasom'}</button>`,ICON.learn))}
@@ -2007,7 +2060,7 @@ settings(){const s=S.settings;const sel=(key,opts)=>`<select class="in" data-set
   <label class="lbl">Aktivitás${sel('activity',[[1.375,'Könnyű: ülőmunka, kevés mozgás'],[1.55,'Közepes: heti 4 edzés, napi séta'],[1.725,'Magas: fizikai munka vagy sok sport']])}</label>
   <label class="lbl">Kalóriatöbblet${sel('surplus',[[250,'+250 kcal, lassú és tiszta'],[400,'+400 kcal, ajánlott'],[550,'+550 kcal, gyorsabb']])}</label>
   ${Number(s.calAdj)?`<p class="meta">Az okos igazítás miatt a napi cél ${s.calAdj>0?'+':''}${s.calAdj} kcal-lal módosítva, most ${targets().kcal} kcal. <button class="link" data-a="calReset">Visszaállítás</button></p>`:`<p class="meta">Ha legalább 2 hétig méred a súlyod, az app magától javasolja, mikor emeld vagy csökkentsd a napi célt.</p>`}
-  <h3>Edzésnapok</h3><div class="grid2">${DAYS.map((d,i)=>`<label class="lbl">${d.name}<select class="in" data-set="day${i}">${[1,2,3,4,5,6,0].map(w=>`<option value="${w}" ${s.days[i]===w?'selected':''}>${WD[w]}</option>`).join('')}</select></label>`).join('')}</div>
+  <h3>Edzés</h3><label class="lbl">Heti cél<select class="in" data-set="weekGoal">${[2,3,4,5,6,7].map(n=>`<option value="${n}" ${(s.weekGoal||5)===n?'selected':''}>${n} edzés</option>`).join('')}</select></label><p class="meta">Nincsenek kötött napok: bármikor edzhetsz, az app sorban ajánlja a következőt (hát, mell, láb, váll és kar).</p>
   <button class="btn ghost full" data-a="newCycle">Új ciklus indítása ettől a héttől</button>
   <h3>Napi követés</h3><label class="lbl">Kreatin adag (g)<input class="in" inputmode="decimal" data-set="creatine" value="${num(s.creatine)}"></label>
   <label class="sw"><input type="checkbox" data-set="water" ${s.water?'checked':''}> Vízfogyasztás követése</label>
@@ -2097,6 +2150,8 @@ case 'teSave':{readTE();const te=ui.te;if(!te.title.trim()){toast('Írd be, mit 
   const i=S.tasks.findIndex(x=>x.id===rec.id);if(i>=0)S.tasks[i]=rec;else S.tasks.push(rec);save();closeSheet();render(true);toast('Teendő mentve');break}
 case 'teDel':S.tasks=S.tasks.filter(x=>x.id!==ui.te.id);save();closeSheet();render(true);toast('Teendő törölve');break;
 case 'day':ui.day=d.d;render();break;
+case 'pickDay':{ui.day=d.d;if(!S.sessions[t]){S.pick=S.pick||{};S.pick[t]=d.d;if(S.rest)delete S.rest[t];save()}render(true);break}
+case 'restDay':{S.rest=S.rest||{};if(S.rest[t])delete S.rest[t];else{S.rest[t]=1;toast('Pihenőnap. Holnap folytatjuk.')}save();render(true);break}
 case 'guide':ui.guide[d.ex]=!ui.guide[d.ex];render(true);break;
 case 'swap':ui.sw={o:d.o,id:d.id,k:d.k||''};openSheet('swap');break;
 case 'bxStart':boxStart();break;
@@ -2110,7 +2165,7 @@ case 'bxOpen':{const i=Number(d.i);if(i>Object.keys((S.box||{}).done||{}).length
 case 'bxDone':{S.box=S.box||{};S.box.done=S.box.done||{};S.box.done[d.i]=t;save();ui.bxOpen=Number(d.i)+1<BOX.length?Number(d.i)+1:null;render(true);toast('+20 XP, jöhet a következő');break}
 case 'bxR':case 'bxW':case 'bxP':{S.box=S.box||{};const c=S.box.cfg=S.box.cfg||{r:3,w:120,p:60,call:true},v=Number(d.v);if(a==='bxR')c.r=Math.max(1,Math.min(12,c.r+v));else if(a==='bxW')c.w=Math.max(30,Math.min(300,c.w+30*v));else c.p=Math.max(15,Math.min(120,c.p+15*v));save();render(true);break}
 case 'goLearn':ui.dir='sl';ui.tab='learn';ui.learnSeg=d.v;ui.es=null;render();break;
-case 'wxTip':toast(wx.d?wxTip(wx.d,dayForWeekday(new Date().getDay())):'Időjárás betöltése...');break;
+case 'wxTip':toast(wx.d?wxTip(wx.d,planDay()):'Időjárás betöltése...');break;
 case 'exo':ui.exo={id:d.id,o:d.o||d.id,k:d.k||''};openSheet('exo');break;
 case 'exoS':case 'exoR':case 'exoT':case 'exoReset':{const id=ui.exo.id,ex=EX[id],v=Number(d.v||0);S.exCfg=S.exCfg||{};const c=S.exCfg[id]=S.exCfg[id]||{};
   if(a==='exoS')c.s=Math.max(1,Math.min(8,ex.s+v));else if(a==='exoR'){const st=ex.u==='mp'?10:2;c.r=[Math.max(1,ex.r[0]+st*v),Math.max(1,ex.r[1]+st*v)]}else if(a==='exoT')c.rest=Math.max(15,Math.min(300,ex.rest+15*v));else delete S.exCfg[id];
