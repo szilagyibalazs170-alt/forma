@@ -635,6 +635,41 @@ textarea.in{resize:vertical;min-height:64px;line-height:1.4}
 .es-res{text-align:center;padding:26px 10px;border:1px solid var(--line);margin:14px 0}
 .es-res.ok{border-color:var(--accent);box-shadow:0 0 30px rgba(246,181,17,.18)}
 .es-res .big-n{font-size:56px}
+.fc.box{background:radial-gradient(130% 120% at 100% 0%,rgba(200,30,30,.28) 0%,var(--surface) 60%)}
+.bx-hero{display:flex;align-items:center;gap:12px;margin-top:16px}
+.bx-glove{font-size:48px;animation:jabx 2.6s ease-in-out infinite}
+@keyframes jabx{0%,70%,100%{transform:translateX(0) rotate(0)}78%{transform:translateX(-14px) rotate(-8deg)}84%{transform:translateX(0)}}
+.bx-cfg .opt:first-of-type{margin-top:6px}
+.bx-nums{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bx-nums div{border:1px solid var(--line);padding:10px;text-align:center}
+.bx-nums b{display:block;font-size:26px;font-weight:800;font-stretch:125%;color:var(--accent)}
+.bx-nums span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.bxl{border:1px solid var(--line);background:var(--surface);margin:8px 0;transition:border-color .2s}
+.bxl.open{border-color:var(--accent)}
+.bxl.lock{opacity:.5}
+.bxl-h{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;color:var(--text);padding:14px;font:inherit;text-align:left}
+.bxl-h b{font-size:18px;font-weight:800;font-stretch:125%;color:var(--accent);width:30px}
+.bxl-h span{font-weight:700}
+.bxl-h em{font-style:normal;color:var(--accent)}
+.bxl-b{padding:0 14px 14px;animation:rise .35s cubic-bezier(.16,1,.3,1)}
+.bxl-b p{margin:0 0 6px}
+.bx{position:fixed;inset:0;z-index:65;background:#050505;color:#F4F1EA;display:flex;padding:calc(env(safe-area-inset-top,0px) + 14px) 18px calc(env(safe-area-inset-bottom,0px) + 18px)}
+.bx-in{flex:1;display:flex;flex-direction:column;align-items:center;max-width:520px;margin:0 auto;width:100%;transition:background .4s}
+.bx-top{display:flex;justify-content:space-between;align-items:center;width:100%}
+.bx-top .icon-btn{color:#F4F1EA;border-color:#2A2823}
+.bx-r{font-size:12px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#8F8A7E}
+.bx-ph{margin-top:8vh;font-size:14px;font-weight:800;letter-spacing:.4em;text-transform:uppercase;color:#F6B511}
+.bx-in.rest .bx-ph{color:#5fb3ff}
+.bx-in.pre .bx-ph{color:#8F8A7E}
+.bx-time{font-size:min(30vw,150px);font-weight:800;font-stretch:125%;line-height:1;margin:10px 0 20px;font-variant-numeric:tabular-nums}
+.bx-in.work .bx-time{text-shadow:0 0 40px rgba(246,181,17,.35)}
+.bx-combo{text-align:center;animation:pop2 .35s ease}
+.bx-combo b{display:block;font-size:min(16vw,76px);font-weight:800;font-stretch:125%;color:#F6B511;letter-spacing:.06em}
+.bx-combo span{font-size:15px;color:#cfc9bd;text-transform:uppercase;letter-spacing:.14em}
+.bx-tip{color:#8F8A7E;text-align:center;max-width:300px}
+.bx-btns{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.bx-btns .full{grid-column:1/-1}
+.bx-btns .btn.ghost{color:#F4F1EA;border-color:#F4F1EA}
 .nav-ind{position:absolute;top:-1px;left:6px;width:calc((100% - 12px)/5);height:2px;background:var(--accent);box-shadow:0 0 12px var(--accent);transition:transform .5s cubic-bezier(.16,1,.3,1)}
 nav button{font-size:9px;letter-spacing:.12em}
 .btn,.chip,.rc,.swp,.qk button,.gchips button,.seg button,.plc .icon-btn{position:relative;overflow:hidden}
@@ -1134,13 +1169,13 @@ const rankOf=l=>RANKS[Math.min(RANKS.length-1,Math.floor((l-1)/5))];
 const BADGES=[['w1','Első edzés','Az első teljesített edzés',s=>s.workouts,1],['w10','10 edzés','',s=>s.workouts,10],['w25','25 edzés','',s=>s.workouts,25],['w50','50 edzés','',s=>s.workouts,50],['w100','100 edzés','',s=>s.workouts,100],
   ['fw1','Teljes hét','Mind a 4 edzés egy héten',s=>s.fullWeeks,1],['fw4','Kihagyás nélkül','4 teljes hét',s=>s.fullWeeks,4],['s100','100 szett','',s=>s.sets,100],['s1000','1000 szett','',s=>s.sets,1000],
   ['pr1','Első rekord','Többet emeltél, mint valaha',s=>s.prs,1],['pr10','10 rekord','',s=>s.prs,10],['pr50','50 rekord','',s=>s.prs,50],['t10','10 tonna','Összes megmozgatott súly',s=>Math.floor(s.vol/1000),10],['t100','100 tonna','',s=>Math.floor(s.vol/1000),100],
-  ['c7','Kreatin hét','7 nap egymás után',s=>s.maxCre,7],['c30','Kreatin hónap','30 nap egymás után',s=>s.maxCre,30],['h7','Hidratált','7 nap teljes vízcél',s=>s.waterDays,7],['ch10','Kihívó','10 napi kihívás',s=>s.ch,10],['m4','Mérlegen','4 súlymérés',s=>s.weighs,4],['f7','Naplóíró','7 nap kajanapló',s=>s.foodDays,7],['f30','Könyvelő','30 nap kajanapló',s=>s.foodDays,30],['p7','Fehérjegép','7 nap meglett a fehérjecél',s=>s.proteinDays,7],['night','Night Shift','Edzés 21:00 után',s=>s.night,1],['early','Early Bird','Edzés reggel 8 előtt',s=>s.early,1],['glacier','Glacier','Edzés fagyos napon',s=>s.glacier,1],['hot','Hot Step','Edzés 27 fok feletti napon',s=>s.hot,1],['fs3','Nonstop','3 teljes hét egymás után',s=>s.fullStreak,3],['es10','¡Hola!','10 spanyol lecke',s=>s.esN,10],['es30','Viajero','A teljes spanyol kurzus',s=>s.esN,30],['rd30','Könyvmoly','30 napi olvasmány',s=>s.rdN,30],['l10','Certified','10. szint',s=>s.lvl,10]];
+  ['c7','Kreatin hét','7 nap egymás után',s=>s.maxCre,7],['c30','Kreatin hónap','30 nap egymás után',s=>s.maxCre,30],['h7','Hidratált','7 nap teljes vízcél',s=>s.waterDays,7],['ch10','Kihívó','10 napi kihívás',s=>s.ch,10],['m4','Mérlegen','4 súlymérés',s=>s.weighs,4],['f7','Naplóíró','7 nap kajanapló',s=>s.foodDays,7],['f30','Könyvelő','30 nap kajanapló',s=>s.foodDays,30],['p7','Fehérjegép','7 nap meglett a fehérjecél',s=>s.proteinDays,7],['night','Night Shift','Edzés 21:00 után',s=>s.night,1],['early','Early Bird','Edzés reggel 8 előtt',s=>s.early,1],['glacier','Glacier','Edzés fagyos napon',s=>s.glacier,1],['hot','Hot Step','Edzés 27 fok feletti napon',s=>s.hot,1],['fs3','Nonstop','3 teljes hét egymás után',s=>s.fullStreak,3],['es10','¡Hola!','10 spanyol lecke',s=>s.esN,10],['es30','Viajero','A teljes spanyol kurzus',s=>s.esN,30],['rd30','Könyvmoly','30 napi olvasmány',s=>s.rdN,30],['bx1','Első menet','Az első box menet',s=>s.bxR,1],['bx50','Boxer','50 box menet',s=>s.bxR,50],['bxl','Alapok megvannak','Mind a 12 box lecke',s=>s.bxL,12],['l10','Certified','10. szint',s=>s.lvl,10]];
 function rwStats(){const t=dk(),g=S.settings.waterGoal||3000,best={},prDays={};let prs=0,sets=0,vol=0;const prList=[];
   for(const d of Object.keys(S.logs).sort())for(const id in S.logs[d]){const ex=EX[id];if(!ex)continue;const done=S.logs[d][id].filter(s=>s[2]);sets+=done.length;for(const s of done)vol+=setVol(id,s);
     if(!done.length||ex.u==='mp'||ex.u==='testsúly')continue;const m=Math.max(...done.map(s=>s[0]||0));if(best[id]!=null&&m>best[id]){prs++;prDays[d]=(prDays[d]||0)+1;prList.push({d,id,kg:m})}if(best[id]==null||m>best[id])best[id]=m}
   const fd=S.food||{},tp=targets().p,fDays=Object.keys(fd).filter(d=>fd[d].length),pDays=fDays.filter(d=>foodSum(d).p>=tp);
-  const ch=S.chDone||{},days=new Set([...Object.keys((S.learn||{}).read||{}),...Object.values((S.learn||{}).es||{}).map(e=>e.d),...fDays,...Object.keys(S.xdone||{}),...Object.keys(S.logs),...Object.keys(S.sessions),...Object.keys(S.creatine),...Object.keys(S.water),...Object.keys(S.sleep),...Object.keys(S.taskDone),...Object.keys(ch),...S.weights.map(w=>w[0])]);
-  const dayXp=d=>{let x=0;const l=S.logs[d];if(l)for(const id in l)x+=l[id].filter(s=>s[2]).length*5;if(S.sessions[d])x+=100;if(S.xdone&&S.xdone[d])x+=100;if(S.creatine[d])x+=10;if((S.water[d]||0)>=g)x+=20;if(S.sleep[d]!=null&&S.sleep[d]>=7)x+=10;x+=(S.taskDone[d]||[]).length*10;if(S.weights.some(w=>w[0]===d))x+=15;if(ch[d])x+=30;{const lr=S.learn||{};if(lr.read&&lr.read[d]!=null)x+=10;x+=Object.values(lr.es||{}).filter(e=>e.d===d).length*30}if(fd[d])x+=Math.min(4,fd[d].length)*5;if(pDays.includes(d))x+=20;return x+(prDays[d]||0)*50};
+  const ch=S.chDone||{},days=new Set([...Object.keys((S.box||{}).rounds||{}),...Object.values((S.box||{}).done||{}),...Object.keys((S.learn||{}).read||{}),...Object.values((S.learn||{}).es||{}).map(e=>e.d),...fDays,...Object.keys(S.xdone||{}),...Object.keys(S.logs),...Object.keys(S.sessions),...Object.keys(S.creatine),...Object.keys(S.water),...Object.keys(S.sleep),...Object.keys(S.taskDone),...Object.keys(ch),...S.weights.map(w=>w[0])]);
+  const dayXp=d=>{let x=0;const l=S.logs[d];if(l)for(const id in l)x+=l[id].filter(s=>s[2]).length*5;if(S.sessions[d])x+=100;if(S.xdone&&S.xdone[d])x+=100;if(S.creatine[d])x+=10;if((S.water[d]||0)>=g)x+=20;if(S.sleep[d]!=null&&S.sleep[d]>=7)x+=10;x+=(S.taskDone[d]||[]).length*10;if(S.weights.some(w=>w[0]===d))x+=15;if(ch[d])x+=30;{const lr=S.learn||{};if(lr.read&&lr.read[d]!=null)x+=10;x+=Object.values(lr.es||{}).filter(e=>e.d===d).length*30}{const bx=S.box||{};x+=Object.values(bx.done||{}).filter(v=>v===d).length*20+Math.min(6,(bx.rounds||{})[d]||0)*10}if(fd[d])x+=Math.min(4,fd[d].length)*5;if(pDays.includes(d))x+=20;return x+(prDays[d]||0)*50};
   let xp=0,today=0;const byDay={};for(const d of days){const x=dayXp(d);xp+=x;byDay[d]=x;if(d===t)today=x}
   const st=S.sessT||{},wl=S.wxLog||{},sd=[...new Set([...Object.keys(S.sessions),...Object.keys(S.xdone||{})])],cnt=f=>sd.filter(f).length;
   const night=cnt(d=>st[d]>=21),early=cnt(d=>st[d]!=null&&st[d]<8),glacier=cnt(d=>wl[d]&&wl[d].mn<=0),hot=cnt(d=>wl[d]&&wl[d].mx>=27);
@@ -1148,7 +1183,7 @@ function rwStats(){const t=dk(),g=S.settings.waterGoal||3000,best={},prDays={};l
   const wk={};for(const d of Object.keys(S.sessions)){const m=dk(monday(parseDk(d)));wk[m]=(wk[m]||0)+1}
   let fullStreak=0,fr=0,pw=null;for(const m of Object.keys(wk).filter(m=>wk[m]>=4).sort()){fr=pw&&Math.round((parseDk(m)-parseDk(pw))/DAY)===7?fr+1:1;fullStreak=Math.max(fullStreak,fr);pw=m}
   const lvl=Math.floor((50+Math.sqrt(2500+200*xp))/100);
-  return{xp,today,lvl,cur:50*lvl*(lvl-1),nxt:50*(lvl+1)*lvl,prs,prList,sets,vol,workouts:Object.keys(S.sessions).length+Object.keys(S.xdone||{}).length,maxCre,waterDays:Object.keys(S.water).filter(d=>S.water[d]>=g).length,ch:Object.keys(ch).length,weighs:S.weights.length,fullWeeks:Object.values(wk).filter(n=>n>=4).length,foodDays:fDays.length,proteinDays:pDays.length,esN:Object.keys((S.learn||{}).es||{}).length,rdN:Object.keys((S.learn||{}).read||{}).length,byDay,night,early,glacier,hot,fullStreak}}
+  return{xp,today,lvl,cur:50*lvl*(lvl-1),nxt:50*(lvl+1)*lvl,prs,prList,sets,vol,workouts:Object.keys(S.sessions).length+Object.keys(S.xdone||{}).length,maxCre,waterDays:Object.keys(S.water).filter(d=>S.water[d]>=g).length,ch:Object.keys(ch).length,weighs:S.weights.length,fullWeeks:Object.values(wk).filter(n=>n>=4).length,foodDays:fDays.length,proteinDays:pDays.length,esN:Object.keys((S.learn||{}).es||{}).length,bxL:Object.keys((S.box||{}).done||{}).length,bxR:Object.values((S.box||{}).rounds||{}).reduce((a,b)=>a+b,0),rdN:Object.keys((S.learn||{}).read||{}).length,byDay,night,early,glacier,hot,fullStreak}}
 function badgesOf(s){return BADGES.map(([id,n,d,f,goal])=>({id,n,d:d||n,v:Math.min(goal,f(s)),goal,on:f(s)>=goal}))}
 function lvlCard(s){const pct=Math.round((s.xp-s.cur)/(s.nxt-s.cur)*100);return `<div class="card lvl" data-a="tab" data-t="halad"><div class="row"><div class="lvl-n"><span>Szint</span><b>${s.lvl}</b></div><div class="grow"><div class="row-title">${rankOf(s.lvl)}</div><div class="meta">${s.xp} XP, még ${s.nxt-s.xp} a következő szintig</div></div><div class="lvl-today"><b>+${s.today}</b><span>XP ma</span></div></div><div class="bar-p"><i style="width:${pct}%"></i></div></div>`}
 function checkRewards(){const s=rwStats(),got=badgesOf(s).filter(b=>b.on).map(b=>b.id);
@@ -1443,7 +1478,7 @@ function rHalad(){const ci=cycleInfo(),w=curWeight();let h=bar()+heroBlock('Hala
   const mon=dk(monday(new Date()));const wkSessions=Object.keys(S.sessions).filter(d=>d>=mon).length;const total=Object.keys(S.sessions).length+Object.keys(S.xdone||{}).length;
   const ad=adherence(),allVol=Object.keys(S.logs).reduce((a,d)=>a+dayVol(d),0),gain=Math.round((w-S.settings.weight)*10)/10;
   const rs=rwStats(),bg=badgesOf(rs);
-  h+=`<h2>Jutalmak</h2>`+lvlCard(rs)+`<div class="xp-legend">Szett +5, edzés +100, spanyol lecke +30, napi olvasmány +10, új rekord +50, napi kihívás +30, meglett fehérjecél +20, teljes vízcél +20, mérés +15, naplózott étkezés +5 (naponta max. 20), kreatin, teendő és 7+ óra alvás +10 XP. Rangok 5 szintenként: ${RANKS.join(', ')}.</div>`;
+  h+=`<h2>Jutalmak</h2>`+lvlCard(rs)+`<div class="xp-legend">Szett +5, edzés +100, spanyol lecke +30, box lecke +20, box menet +10, napi olvasmány +10, új rekord +50, napi kihívás +30, meglett fehérjecél +20, teljes vízcél +20, mérés +15, naplózott étkezés +5 (naponta max. 20), kreatin, teendő és 7+ óra alvás +10 XP. Rangok 5 szintenként: ${RANKS.join(', ')}.</div>`;
   h+=`<h3>Jelvények, ${bg.filter(b=>b.on).length}/${bg.length}</h3><div class="badges">${bg.map(b=>`<div class="bdg ${b.on?'':'off'}">${MARK}<b>${b.n}</b><span>${b.on?b.d:b.v+' / '+b.goal}</span></div>`).join('')}</div>`;
   h+=`<button class="btn ghost full" data-a="weekOpen" data-v="0">Heti NOCTA összefoglaló kép</button>`;
   h+=`<h2>Összesítés</h2><div class="card"><div class="stats"><div><b>${total}</b><span>edzés</span></div><div><b>${ad.pct==null?'0':ad.pct}%</b><span>betartás</span></div><div><b>${num(Math.round(allVol/100)/10)}</b><span>tonna mozgatva</span></div><div><b>${gain>0?'+':''}${num(gain)}</b><span>kg változás</span></div></div><div class="meta">Kezdés: ${shortDate(S.settings.started||dk())}. ${ad.planned?ad.done+' edzés a '+ad.planned+' tervezettből.':''} Kreatin sorozat: ${streak()} nap.</div></div>`;
@@ -1739,13 +1774,14 @@ function esQuiz(i){const L=ES[i],r=rng(hash(i+'#'+Date.now())),sh=a=>[...a].sort
   if(L.f.length){const ph=sh(L.f)[0],others=sh(ES.flatMap(x=>x.f).filter(x=>x!==ph)).slice(0,2).map(x=>x[0]);qs.push({type:'phrase',q:ph[1],a:ph[0],opts:sh([ph[0],...others]),say:ph[0]})}
   if(i>0){sh(ES.slice(0,i).flatMap(x=>x.v)).slice(0,2).forEach(x=>{const m=mc(x,'es');m.rev=true;qs.push(m)})}
   return qs}
-function rLearn(){let h=bar()+heroBlock('Tanulás','Napi olvasmány és spanyol nulláról','LEARN');
-  h+=seg('learnSeg',[['olvas','Napi olvasmány'],['es','Spanyol']]);const lr=L0(),t=dk();
+function rLearn(){let h=bar()+heroBlock('Tanulás','Napi olvasmány, spanyol és box az alapoktól','LEARN');
+  h+=seg('learnSeg',[['olvas','Olvasmány'],['es','Spanyol'],['box','Box']]);const lr=L0(),t=dk();
   if(ui.learnSeg==='olvas'){const i=readIdx(t),[c,lg,ti,body,task]=READS[i],read=lr.read[t]!=null;
     h+=`<div class="read-card ${read?'done':''}"><div class="rc-top"><span class="tag acc">${c}</span><span class="meta">${lg==='en'?'English':'Magyar'} · kb. 1 perc</span></div><h3 class="rc-t">${esc(ti)}</h3><p class="rc-b">${esc(body)}</p><div class="rc-task"><b>Mai feladat</b><span>${esc(task)}</span></div>
       <button class="btn ${read?'ghost':'acc'} full" data-a="readDone">${read?'Elolvasva ✓':'Elolvastam, +10 XP'}</button></div>`;
     const past=[];for(let k=1;k<=6;k++){const x=new Date();x.setDate(x.getDate()-k);past.push([dk(x),READS[readIdx(dk(x))]])}
     h+=`<h2>Az elmúlt napok</h2><div class="card">${past.map(([d,r])=>`<details class="rd-old"><summary><span class="meta">${shortDate(d)} · ${r[0]}</span><span class="row-title">${esc(r[2])}</span>${lr.read[d]!=null?'<span class="tag">✓</span>':''}</summary><p>${esc(r[3])}</p></details>`).join('')}</div>`}
+  else if(ui.learnSeg==='box')h+=rBox();
   else if(ui.es&&ui.es.step)h+=esLesson();
   else{const n=esNext(),done=Object.keys(lr.es).length,td=esToday();
     h+=`<div class="es-head"><div class="es-flag"><i></i><i></i><i></i></div><div class="grow"><div class="row-title">Spanyol utazáshoz</div><div class="meta">${done}/${ES.length} lecke kész · napi 1 lecke, kb. 10 perc</div></div></div><div class="bar-p"><i style="width:${done/ES.length*100}%"></i></div>`;
@@ -1768,6 +1804,58 @@ function esLesson(){const E=ui.es,L=ES[E.i];let h=`<div class="es-top"><button c
       h+='</div>'}}
   return h}
 
+/* ---------- Box: basics from zero, round timer with gong and combo caller ---------- */
+const PUNCH={1:'jab',2:'egyenes',3:'horog',4:'hátsó horog',5:'felütés',6:'hátsó felütés'};
+// [title, numbers it teaches, why, steps, common mistakes, drill, video search]
+const BOX=[
+['Alapállás','','Minden ütés és védekezés az állásból indul. Ha az állás jó, stabil vagy, gyorsan mozogsz és nehéz eltalálni.',['Ha jobbkezes vagy, a bal lábad és a bal kezed van elöl (orthodox). Balkezesnél fordítva.','A lábad kb. vállszélességben, a hátsó láb egy fél lépéssel hátrébb és kissé kifelé fordítva.','A hátsó sarkad kicsit emeld meg, a térded enyhén hajlítva, a súlyod a két láb között.','A kezed az arcod előtt: hátsó kéz az állad mellett, első kéz kicsit előrébb, könyökök a bordáidon.','Az állad lent, a szemed felnéz a szemöldököd alól.'],['Egy vonalban álló lábak, így könnyű kibillenteni.','Leeső kéz és felemelt áll.'],'3 × 1 perc: állj tükör elé, tartsd az állást, és figyeld, hogy a kezed nem esik-e le.','boxing stance for beginners'],
+['Mozgás (footwork)','','A jó bokszoló nem ugrál, hanem kis lépésekkel, egyensúlyban mozog. Mindig ott vagy, ahol ütni tudsz, és nem ott, ahol eltalálnak.',['Előre: az első lábad lép, a hátsó csúszik utána ugyanannyit.','Hátra: a hátsó lábad lép először, az első követi.','Oldalra: abba az irányba eső lábad lép először.','A lábad soha nem keresztezi egymást, és a távolság köztük állandó marad.','Kis lépések, a súly a talp elülső részén.'],['Keresztbe lépő lábak.','Túl nagy lépések, felegyenesedő törzs.'],'3 × 2 perc: lépj 4 irányba (előre, hátra, balra, jobbra), közben tartsd az állást és a kezed.','boxing footwork basics'],
+['Jab (1)','1','A jab a legfontosabb ütés: méri a távolságot, megállítja az ellenfelet és nyitja a kombinációkat.',['Az első kezed egyenesen előre lő az alapállásból.','Közben fordítsd az öklöd tenyérrel lefelé, és a vállad emelkedjen az állad elé.','Az ütés végén a karod majdnem teljesen kinyúlik, de a könyököd nem reccsen ki.','Ugyanazon az úton húzd vissza gyorsan az arcod elé.','Haladó: lépj előre egy kicsit a jabbal együtt (step jab).'],['Visszahúzás közben leejtett kéz.','Lendítés oldalról, nem egyenesen.'],'3 × 2 perc árnyékbox csak jabbal: egyes, dupla jab, lépő jab.','how to throw a jab boxing'],
+['Egyenes (2) és az 1-2','2','A hátsó kéz egyenese az egyik legerősebb ütés, mert az egész test forgása van mögötte. Az 1-2 a boksz alapkombinációja.',['A hátsó kezed egyenesen előre lő az álladtól.','Közben a hátsó lábad sarkát fordítsd kifelé, mintha eltaposnál egy bogarat, és fordítsd a csípőd előre.','Az első kezed közben az arcodat védi.','Az ütés után azonnal húzd vissza, és állj vissza alapállásba.','Gyakorold egyben: jab, egyenes (1-2).'],['Csak karból ütsz, a csípő nem fordul.','Az első kéz leesik a cross közben.'],'3 × 2 perc: 1-2, 1-1-2, majd 1-2 és egy lépés hátra.','boxing cross punch technique'],
+['Védekezés: hárítás és blokk','','Nem az nyer, aki a legtöbbet üt, hanem aki a legkevesebbet kapja. A védekezés az első naptól része az edzésnek.',['Parry: a hátsó tenyereddel kis mozdulattal üsd félre a jabot az arcod előtt.','Blokk: a kesztyűdet szorítsd a fejed oldalához a horgok ellen, a könyököd a bordáidat védi.','Shell: állat le, vállak fel, kesztyű az arc előtt, ha sorozatot kapsz.','Védekezés után azonnal üss vissza (például parry után 2-es).'],['Becsukod a szemed.','Túl nagy mozdulat, utána nyitva maradsz.'],'Árnyékboxban 3 × 2 perc: képzelj el egy jabot, hárítsd, és üss vissza 1-2-vel.','boxing defense basics parry block'],
+['Horog (3)','3','A horog oldalról jön, közelről nagyon erős. Az 1-2 után a 3-as zárja a klasszikus kombinációt.',['Az első kezed könyöke kb. 90 fokban, a karod vállmagasságban.','Az ütést a csípőd és az első lábad fordítása adja, nem a kar lendítése.','Az ököl lehet tenyérrel lefelé vagy függőleges, rövid íven mozog.','A hátsó kezed végig az arcodat védi.','Kombó: 1-2-3.'],['Túl széles, lendítő mozdulat.','Csak a kar dolgozik, a láb nem fordul.'],'3 × 2 perc: 1-2-3, 1-3, majd 3-2.','boxing lead hook technique'],
+['Elhajlás és kitérés','','A fejmozgás teszi nehezen eltalálhatóvá a bokszolót, és jó szögből ad lehetőséget a visszaütésre.',['Slip: a térdedből és a csípődből billents kicsit oldalra, hogy az egyenes elmenjen a fejed mellett.','Roll (bob and weave): hajlítsd a térded, és egy U alakú mozdulattal bújj át a horog alatt.','A szemed végig előre néz, a kezed fent marad.','Kitérés után azonnal üss: slip, majd 2-es.'],['Derékból hajolsz előre, nem térdből.','Túl nagy mozdulat, kibillensz.'],'3 × 2 perc: slip balra, slip jobbra, roll, és mindegyik után egy ütés.','boxing slip and roll drill'],
+['Felütés (5 és 6)','5','A felütés alulról jön, közelharcban és lehajló ellenfél ellen hatásos.',['Kicsit ereszkedj le a térdedből az ütés előtt.','A lábadból és a csípődből told fel az öklödet, tenyérrel magad felé.','Rövid mozdulat, a könyököd nem nyílik ki teljesen.','A 6-os a hátsó kéz felütése, ugyanígy, a hátsó csípő fordításával.','Kombó: 1-6-3-2.'],['Lehúzod a kezed, mielőtt felütsz (ezt látja az ellenfél).','Túl hosszú, lendítő mozdulat.'],'3 × 2 perc: 5-2, 1-6-3, 1-2-5-2.','boxing uppercut technique'],
+['Hátsó horog (4) és testütések','4','A hátsó horog és a testütések bontják le az ellenfél védekezését, és megnyitják a fejet.',['A hátsó horog a hátsó csípő és láb fordításából jön, mint a 3-as tükörképe.','Testütésnél ereszkedj le a térdedből, ne csak a karod nyújtsd lefelé.','A test és a fej váltogatása a lényeg: 1-2 a fejre, 3 a testre.','Kombó: 1-2-3-4.'],['Lehajolsz derékból, és nyitva marad a fejed.','Testütés után nem jössz vissza védekezésbe.'],'3 × 2 perc: 3-4, 1-2-3 test, 2-3-2.','boxing body shots technique'],
+['Kombinációk','','A kombinációk folyamatos ritmust adnak. A számok miatt gyorsan felismered, mit kell ütni.',['1-1-2: dupla jab, egyenes.','1-2-3-2: a klasszikus négyes.','1-6-3-2: felütéssel indító közeli kombó.','Slip, 2, 3, 2: kitérés és visszaütés.','Minden kombó után mozdulj el vagy védekezz, ne állj meg a középen.'],['Kombó után állva maradsz.','A sebesség fontosabb lesz, mint a technika.'],'Menetidőzítő a kombó-bemondóval: 3 × 2 perc, a hívott kombókat üsd.','boxing combinations for beginners'],
+['Árnyékbox','','Az árnyékbox (shadowboxing) a boksz legjobb gyakorlása: technika, mozgás és kondi egyszerre, eszköz nélkül.',['Képzelj el magad előtt egy ellenfelet, és mozogj körülötte.','Keverd a mozgást, az ütéseket és a védekezést.','Lassan kezdj, a technikára figyelj, és a menet végére gyorsíts.','Tükör előtt a legjobb, mert látod a hibáidat.'],['Csak ütsz, nem mozogsz és nem védekezel.','Leeső kéz a menet végére.'],'Menetidőzítő: 3 × 3 perc, 1 perc pihenő, a kombó-bemondóval.','shadow boxing for beginners'],
+['Zsákozás és kondi','','A zsák az erőt és az ütések erejét fejleszti, az ugrálókötél a lábmunkát és az állóképességet.',['Mindig tekerj kézbandázst (3,5-4,5 m), és használj 12-14 unciás kesztyűt.','A zsákot ütés után ne told, hanem pattints vissza, és mozogj körülötte.','Kezdd 3 × 2 perccel, közepes erővel, a technikára figyelve.','Kondi: 3 × 2 perc ugrálókötél bemelegítésnek.','Sparringhoz menj edzőtermi edzésre, edző felügyelete mellett.'],['Bandázs nélkül ütöd a zsákot (sérülésveszély).','Teljes erővel ütsz, és szétesik a technika.'],'3 × 2 perc ugrálókötél, majd 4 × 2 perc zsák a kombó-bemondóval.','heavy bag workout beginner']];
+const COMBOS=[['1','1-1','1-1-1'],['1-2','1-1-2','2','1-2-1'],[],['1-2-3','1-3','3-2','1-2-3-2'],['slip 2','1-2 slip','slip 2-3'],['5-2','1-6-3-2','1-2-5-2'],['3-4','1-2-3-4','2-3-2','1-2 3 test']];
+const boxDone=i=>!!(S.box&&S.box.done&&S.box.done[i]);
+function comboPool(){const n=Object.keys((S.box||{}).done||{}).length,lv=[[2,0],[3,1],[5,3],[6,4],[7,5],[8,6]].filter(([k])=>n>=k).map(x=>x[1]);const p=COMBOS[0].concat(COMBOS[1]);for(const l of lv)p.push(...COMBOS[l]);return [...new Set(p)]}
+const comboName=c=>c.split(/[- ]/).map(x=>PUNCH[x]||x).join(', ');
+let bxT=null;
+function gong(n){try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();for(let i=0;i<n;i++){const o=actx.createOscillator(),g=actx.createGain(),t0=actx.currentTime+i*0.35;o.type='triangle';o.frequency.value=880;g.gain.setValueAtTime(.35,t0);g.gain.exponentialRampToValueAtTime(.001,t0+1.1);o.connect(g);g.connect(actx.destination);o.start(t0);o.stop(t0+1.2)}}catch(e){}try{navigator.vibrate&&navigator.vibrate(n>1?[300,120,300]:400)}catch(e){}}
+function sayHu(t){try{const u=new SpeechSynthesisUtterance(t);u.lang='hu-HU';u.rate=1.15;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function boxStart(){const c=(S.box&&S.box.cfg)||{r:3,w:120,p:60,call:true};ui.bx={...c,round:1,phase:'pre',end:Date.now()+5000,paused:0,combo:'',next:0};keepAwake(true);clearInterval(bxT);bxT=setInterval(boxTick,200);renderBx()}
+function boxStop(){clearInterval(bxT);bxT=null;ui.bx=null;keepAwake(false);renderBx();render(true)}
+function boxLog(){S.box=S.box||{};S.box.rounds=S.box.rounds||{};const t=dk();S.box.rounds[t]=(S.box.rounds[t]||0)+1;save()}
+function boxTick(){const B=ui.bx;if(!B||B.paused)return;const now=Date.now(),left=B.end-now;
+  if(B.phase==='work'&&B.call&&now>=B.next){const p=comboPool();B.combo=p[Math.floor(Math.random()*p.length)];B.next=now+3500+Math.random()*3000;sayHu(B.combo.replace(/-/g,' '))}
+  if(B.phase==='work'&&left<=10000&&left>9800)beep();
+  if(left<=0){if(B.phase==='pre'||B.phase==='rest'){B.phase='work';B.end=now+B.w*1000;B.next=now+1500;gong(1)}
+    else if(B.phase==='work'){boxLog();if(B.round>=B.r){B.phase='done';gong(3);clearInterval(bxT);keepAwake(false);setTimeout(()=>celebrate('Kész!',B.r+' menet','Szép munka, bajnok'),600)}else{B.phase='rest';B.end=now+B.p*1000;B.combo='';B.round++;gong(2)}}}
+  renderBx()}
+function renderBx(){let el=$('#bx');if(!el){document.body.insertAdjacentHTML('beforeend','<div id="bx" class="bx" hidden></div>');el=$('#bx')}const B=ui.bx;
+  if(!B){el.hidden=true;el.innerHTML='';if(!ui.sheet&&!ui.wo)document.body.classList.remove('lock');return}
+  const left=Math.max(0,Math.ceil((B.paused?B.pausedLeft:B.end-Date.now())/1000)),mm=Math.floor(left/60)+':'+pad(left%60);
+  const lab={pre:'Készülj',work:'Menet',rest:'Pihenő',done:'Vége'}[B.phase];
+  // Only the clock changes every tick; rebuilding the whole screen would restart the combo animation.
+  const key=[B.phase,B.round,B.combo,B.paused,B.call].join('|');if(el.dataset.key===key&&!el.hidden){const tm=$('.bx-time',el);if(tm)tm.textContent=B.phase==='done'?'✓':mm;return}el.dataset.key=key;
+  el.innerHTML=`<div class="bx-in ${B.phase}"><div class="bx-top"><button class="icon-btn" data-a="bxStop" aria-label="Bezárás">${ICON.x}</button><span class="bx-r">${B.phase==='done'?B.r+' menet kész':`${B.round}. menet / ${B.r}`}</span></div>
+    <div class="bx-ph">${lab}</div><div class="bx-time">${B.phase==='done'?'✓':mm}</div>
+    ${B.phase==='work'&&B.call&&B.combo?`<div class="bx-combo" key="${B.combo}"><b>${B.combo}</b><span>${comboName(B.combo)}</span></div>`:B.phase==='rest'?'<div class="bx-tip">Lélegezz mélyeket, rázd ki a karod. Igyál egy kortyot.</div>':''}
+    <div class="bx-btns">${B.phase==='done'?'<button class="btn acc full" data-a="bxStop">Bezárás</button>':`<button class="btn ghost" data-a="bxPause">${B.paused?'Folytatás':'Szünet'}</button><button class="btn ghost" data-a="bxCall">Kombók: ${B.call?'be':'ki'}</button>`}</div></div>`;
+  el.hidden=false;document.body.classList.add('lock')}
+function rBox(){const bx=S.box||{},n=Object.keys(bx.done||{}).length,cfg=bx.cfg||{r:3,w:120,p:60,call:true},tot=Object.values(bx.rounds||{}).reduce((a,b)=>a+b,0);
+  let h=`<div class="bx-hero"><div class="grow"><div class="fc-k">Box alapok</div><div class="fc-t">${n}/${BOX.length} lecke</div><div class="fc-m">${tot} menet összesen${(bx.rounds||{})[dk()]?', ma '+bx.rounds[dk()]:''}</div></div><div class="bx-glove">🥊</div></div><div class="bar-p"><i style="width:${n/BOX.length*100}%"></i></div>`;
+  h+=`<div class="card bx-cfg"><div class="row-title">Menetidőzítő</div><div class="opt"><div class="grow">Menetek</div>${stepper('bxR',cfg.r)}</div><div class="opt"><div class="grow">Menet hossza</div>${stepper('bxW',Math.floor(cfg.w/60)+':'+pad(cfg.w%60))}</div><div class="opt"><div class="grow">Pihenő</div>${stepper('bxP',cfg.p+' mp')}</div>
+    <label class="sw"><input type="checkbox" data-bxcall="1" ${cfg.call?'checked':''}> Kombó-bemondó (a megtanult ütésekből)</label><button class="btn acc full" data-a="bxStart">Indítás 🥊</button></div>`;
+  h+=`<h2>Ütések számai</h2><div class="card bx-nums">${Object.entries(PUNCH).map(([k,v])=>`<div><b>${k}</b><span>${v}</span></div>`).join('')}</div><p class="meta">Jobbkezes alapállásban az 1, 3, 5 a bal (első) kéz, a 2, 4, 6 a jobb (hátsó) kéz.</p>`;
+  h+=`<h2>Leckék</h2>${BOX.map(([t,nums,why,st,mi,dr,yt],i)=>{const d=boxDone(i),open=ui.bxOpen===i,lock=i>n;return `<div class="bxl ${d?'done':''} ${open?'open':''} ${lock?'lock':''}"><button class="bxl-h" data-a="bxOpen" data-i="${i}"><b>${pad(i+1)}</b><span class="grow">${t}</span>${d?'<em>✓</em>':lock?'<em>🔒</em>':''}</button>${open?`<div class="bxl-b"><p>${why}</p><h4>Így csináld</h4><ol class="steps">${st.map(s=>`<li>${s}</li>`).join('')}</ol><h4>Kerüld</h4><ul class="avoid">${mi.map(s=>`<li>${s}</li>`).join('')}</ul><div class="rc-task"><b>Gyakorlás</b><span>${dr}</span></div><a class="btn ghost full" href="https://www.youtube.com/results?search_query=${encodeURIComponent(yt)}" target="_blank" rel="noopener">Videók megnézése ${ICON.ext}</a>${d?'':`<button class="btn acc full" data-a="bxDone" data-i="${i}">Megtanultam, +20 XP</button>`}</div>`:''}</div>`}).join('')}`;
+  h+=`<p class="fine">Edzés előtt 5 perc bemelegítés (ugrálókötél vagy helyben futás). Bandázs és kesztyű nélkül ne üss zsákot. Sparringhoz, vagyis ellenféllel való gyakorláshoz menj boxterembe, edző mellé: <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('box edzőterem Óbuda')}" target="_blank" rel="noopener">boxtermek Óbudán</a>.</p>`;
+  return h}
+
 /* ---------- Ma: focus carousel + bento tiles, and the "Több" hub ---------- */
 Object.assign(ICON,{learn:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 6.5 12 3l9 3.5-9 3.5z"/><path d="M7 8.5v5c0 1.7 2.2 3 5 3s5-1.3 5-3v-5M21 6.5V12"/></svg>',
   more:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="6.5" height="6.5"/><rect x="13.5" y="4" width="6.5" height="6.5"/><rect x="4" y="13.5" width="6.5" height="6.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5"/></svg>'});
@@ -1779,6 +1867,7 @@ function focusCards(now,day,ci){const t=dk(now),out=[],c=customToday(),tg=target
   if(c){const pg=dayProgress(getDay('x'),ci);out.push(card('train','Saját edzés',esc(c.g.join(', ')),`${pg.done}/${pg.total} gyakorlat`,ring(pg.done,pg.total),`<button class="btn" data-a="goday" data-d="x">Folytatás</button>`,ICON.edzes))}
   {const td=esToday(),n=td!=null?td:esNext(),done=Object.keys((S.learn||{}).es||{}).length;out.push(card('es'+(td!=null?' done':''),'Spanyol · '+(td!=null?'mai lecke kész ✓':'mai lecke'),`${n+1}. ${ES[n].t}`,`${done}/${ES.length} lecke · kb. 10 perc`,`<div class="fc-bar"><i style="width:${done/ES.length*100}%"></i></div>`,`<button class="btn" data-a="goLearn" data-v="es">${td!=null?'Ismétlés':'Kezdés'}</button>`,'<span class="fc-flag"><i></i><i></i><i></i></span>'))}
   {const r=READS[readIdx(t)],rd=S.learn&&S.learn.read&&S.learn.read[t]!=null;out.push(card('read'+(rd?' done':''),'Napi olvasmány · '+r[0],esc(r[2]),rd?'Elolvasva ✓':'1 perc, +10 XP',null,`<button class="btn" data-a="goLearn" data-v="olvas">${rd?'Újra':'Elolvasom'}</button>`,ICON.learn))}
+  {const bx=S.box||{},n=Object.keys(bx.done||{}).length,r=(bx.rounds||{})[t]||0;out.push(card('box','Box · '+n+'/'+BOX.length+' lecke',n<BOX.length?`${n+1}. ${BOX[n][0]}`:'Menetidőzítő',r?`Ma ${r} menet ✓`:'Alapoktól, kombó-bemondóval',null,`<button class="btn" data-a="goLearn" data-v="box">${n?'Folytatás':'Kezdés'}</button>`,'<span style="font-size:96px;line-height:1">🥊</span>'))}
   out.push(card('food','Mai kaja',`${fs.kcal} / ${tg.kcal} kcal`,`${fs.p} / ${tg.p} g fehérje`,`<div class="fc-bar"><i style="width:${Math.min(100,fs.kcal/tg.kcal*100)}%"></i></div>`,`<button class="btn" data-a="foodNew">+ Étkezés</button><button class="btn ghost" data-a="plate">Tányér</button>`,ICON.etel));
   const wd=now.getDay();if(wd>=4&&wd<=6){const di=dateIdeas(),it=(wd===6?di.sat:di.fri).filter(x=>x[1]);out.push(card('date','Randi Barbival',it.map(x=>esc(x[1].n)).join(' + '),wd===6?'Ma':'Péntek este',null,`<button class="btn" data-a="tab" data-t="free">Részletek</button>`,ICON.heart))}
   return out.join('')}
@@ -1986,6 +2075,13 @@ case 'teDel':S.tasks=S.tasks.filter(x=>x.id!==ui.te.id);save();closeSheet();rend
 case 'day':ui.day=d.d;render();break;
 case 'guide':ui.guide[d.ex]=!ui.guide[d.ex];render(true);break;
 case 'swap':ui.sw={o:d.o,id:d.id,k:d.k||''};openSheet('swap');break;
+case 'bxStart':boxStart();break;
+case 'bxStop':boxStop();break;
+case 'bxPause':{const B=ui.bx;if(!B)break;if(B.paused){B.end=Date.now()+B.pausedLeft;B.paused=0}else{B.pausedLeft=B.end-Date.now();B.paused=1}renderBx();break}
+case 'bxCall':ui.bx.call=!ui.bx.call;if(!ui.bx.call)ui.bx.combo='';renderBx();break;
+case 'bxOpen':{const i=Number(d.i);if(i>Object.keys((S.box||{}).done||{}).length){toast('Előbb tanuld meg az előző leckét.');break}ui.bxOpen=ui.bxOpen===i?null:i;render(true);break}
+case 'bxDone':{S.box=S.box||{};S.box.done=S.box.done||{};S.box.done[d.i]=t;save();ui.bxOpen=Number(d.i)+1<BOX.length?Number(d.i)+1:null;render(true);toast('+20 XP, jöhet a következő');break}
+case 'bxR':case 'bxW':case 'bxP':{S.box=S.box||{};const c=S.box.cfg=S.box.cfg||{r:3,w:120,p:60,call:true},v=Number(d.v);if(a==='bxR')c.r=Math.max(1,Math.min(12,c.r+v));else if(a==='bxW')c.w=Math.max(30,Math.min(300,c.w+30*v));else c.p=Math.max(15,Math.min(120,c.p+15*v));save();render(true);break}
 case 'goLearn':ui.dir='sl';ui.tab='learn';ui.learnSeg=d.v;ui.es=null;render();break;
 case 'wxTip':toast(wx.d?wxTip(wx.d,dayForWeekday(new Date().getDay())):'Időjárás betöltése...');break;
 case 'exo':ui.exo={id:d.id,o:d.o||d.id,k:d.k||''};openSheet('exo');break;
@@ -2113,6 +2209,7 @@ document.addEventListener('change',e=>{const el=e.target,t=dk();
     else if(k==='prepR'){ui.prep.r=el.value;render(true)}
     else if(k==='exChart'){ui.exChart=el.value;render(true)}}
   if(el.dataset.sup){S.settings.supps[el.dataset.sup]=el.checked;save();render(true)}
+  if(el.dataset.bxcall){S.box=S.box||{};S.box.cfg=S.box.cfg||{r:3,w:120,p:60,call:true};S.box.cfg.call=el.checked;save()}
   if(el.dataset.geq){const g=S.gym=S.gym||{},sel=g.sel||'main',eq=new Set(gymEq());if(el.checked)eq.add(el.dataset.geq);else eq.delete(el.dataset.geq);g[sel]=[...eq];save();render(true)}
   if(el.dataset.set){const k=el.dataset.set,s=S.settings;
     if(k.startsWith('day'))s.days[Number(k.slice(3))]=Number(el.value);
