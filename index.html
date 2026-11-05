@@ -551,6 +551,35 @@ textarea.in{resize:vertical;min-height:64px;line-height:1.4}
 .bt-bar i{display:block;height:100%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
 .bt.cre.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent),0 0 24px rgba(246,181,17,.18)}
 .bt.cre.on b{color:var(--accent)}
+.bt-fix{position:relative;margin-top:auto;padding:6px 0 0;border:0;background:none;color:var(--muted);font:inherit;font-size:11px;font-weight:700;letter-spacing:.06em;text-decoration:underline;text-underline-offset:3px;text-align:left}
+.bt-fix.warn{color:var(--accent)}
+.cfx{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:12px}
+.cfx-d{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0;border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit}
+.cfx-d span{font-size:9px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.cfx-d b{font-size:17px;font-weight:800;font-stretch:125%}
+.cfx-d i{font-style:normal;height:14px;font-size:12px;font-weight:800}
+.cfx-d.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.cfx-d.on span{color:var(--on-accent)}
+.es-cnt{flex:none;text-align:right}
+.es-cnt b{font-size:34px;font-weight:800;font-stretch:125%;color:var(--accent);line-height:1}
+.es-cnt span{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.es-day{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
+.es-ses{display:flex;flex-direction:column;gap:4px;padding:14px;border:1px solid var(--line);background:var(--surface)}
+.es-ses.ok{border-color:var(--accent)}
+.es-ses .btn{margin-top:auto;min-height:44px;font-size:11px}
+.es-ses .meta{margin-bottom:8px}
+.es-sk{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.es-rem summary{display:flex;justify-content:space-between;align-items:center;cursor:pointer;list-style:none}
+.es-rem summary::-webkit-details-marker{display:none}
+.es-rem .btn-row .btn{font-size:11px}
+.bld{display:flex;flex-wrap:wrap;gap:6px;min-height:56px;padding:10px;border:1px dashed var(--line);margin-bottom:12px;align-items:center}
+.bld-pool{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.bld-w,.bld-t{border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;font-size:16px;font-weight:600;padding:9px 12px;animation:pop2 .25s ease}
+.bld-w{border-color:var(--accent)}
+.bld-t.used{opacity:.25}
+.quiz.ok .bld-w{border-color:#28b45a;background:rgba(40,180,90,.15)}
+.quiz.no .bld-w{border-color:var(--warn)}
+@media (max-width:380px){.es-day{grid-template-columns:1fr}}
 .bt-ic{position:absolute;right:10px;top:10px;width:36px;height:36px;color:var(--accent)}
 .bt-ic svg{width:100%;height:100%}
 .bt .in{margin:4px 0 2px;font-size:22px;font-weight:800;padding:4px 8px;min-height:40px;width:100%;position:relative}
@@ -1225,13 +1254,13 @@ const rankOf=l=>RANKS[Math.min(RANKS.length-1,Math.floor((l-1)/5))];
 const BADGES=[['w1','Első edzés','Az első teljesített edzés',s=>s.workouts,1],['w10','10 edzés','',s=>s.workouts,10],['w25','25 edzés','',s=>s.workouts,25],['w50','50 edzés','',s=>s.workouts,50],['w100','100 edzés','',s=>s.workouts,100],
   ['fw1','Teljes hét','Mind a 4 edzés egy héten',s=>s.fullWeeks,1],['fw4','Kihagyás nélkül','4 teljes hét',s=>s.fullWeeks,4],['s100','100 szett','',s=>s.sets,100],['s1000','1000 szett','',s=>s.sets,1000],
   ['pr1','Első rekord','Többet emeltél, mint valaha',s=>s.prs,1],['pr10','10 rekord','',s=>s.prs,10],['pr50','50 rekord','',s=>s.prs,50],['t10','10 tonna','Összes megmozgatott súly',s=>Math.floor(s.vol/1000),10],['t100','100 tonna','',s=>Math.floor(s.vol/1000),100],
-  ['c7','Kreatin hét','7 nap egymás után',s=>s.maxCre,7],['c30','Kreatin hónap','30 nap egymás után',s=>s.maxCre,30],['h7','Hidratált','7 nap teljes vízcél',s=>s.waterDays,7],['ch10','Kihívó','10 napi kihívás',s=>s.ch,10],['m4','Mérlegen','4 súlymérés',s=>s.weighs,4],['f7','Naplóíró','7 nap kajanapló',s=>s.foodDays,7],['f30','Könyvelő','30 nap kajanapló',s=>s.foodDays,30],['p7','Fehérjegép','7 nap meglett a fehérjecél',s=>s.proteinDays,7],['night','Night Shift','Edzés 21:00 után',s=>s.night,1],['early','Early Bird','Edzés reggel 8 előtt',s=>s.early,1],['glacier','Glacier','Edzés fagyos napon',s=>s.glacier,1],['hot','Hot Step','Edzés 27 fok feletti napon',s=>s.hot,1],['fs3','Nonstop','3 teljes hét egymás után',s=>s.fullStreak,3],['es10','¡Hola!','10 spanyol lecke',s=>s.esN,10],['es30','Viajero','A teljes spanyol kurzus',s=>s.esN,30],['rd30','Könyvmoly','30 napi olvasmány',s=>s.rdN,30],['bx1','Első menet','Az első box menet',s=>s.bxR,1],['bx50','Boxer','50 box menet',s=>s.bxR,50],['bxl','Alapok megvannak','Mind a 12 box lecke',s=>s.bxL,12],['l10','Certified','10. szint',s=>s.lvl,10]];
+  ['c7','Kreatin hét','7 nap egymás után',s=>s.maxCre,7],['c30','Kreatin hónap','30 nap egymás után',s=>s.maxCre,30],['h7','Hidratált','7 nap teljes vízcél',s=>s.waterDays,7],['ch10','Kihívó','10 napi kihívás',s=>s.ch,10],['m4','Mérlegen','4 súlymérés',s=>s.weighs,4],['f7','Naplóíró','7 nap kajanapló',s=>s.foodDays,7],['f30','Könyvelő','30 nap kajanapló',s=>s.foodDays,30],['p7','Fehérjegép','7 nap meglett a fehérjecél',s=>s.proteinDays,7],['night','Night Shift','Edzés 21:00 után',s=>s.night,1],['early','Early Bird','Edzés reggel 8 előtt',s=>s.early,1],['glacier','Glacier','Edzés fagyos napon',s=>s.glacier,1],['hot','Hot Step','Edzés 27 fok feletti napon',s=>s.hot,1],['fs3','Nonstop','3 teljes hét egymás után',s=>s.fullStreak,3],['es10','¡Hola!','10 spanyol lecke',s=>s.esN,10],['es2x','Kétszer naponta','7 nap mindkét spanyol alkalom',s=>s.es2,7],['es30','Viajero','A teljes spanyol kurzus',s=>s.esN,30],['rd30','Könyvmoly','30 napi olvasmány',s=>s.rdN,30],['bx1','Első menet','Az első box menet',s=>s.bxR,1],['bx50','Boxer','50 box menet',s=>s.bxR,50],['bxl','Alapok megvannak','Mind a 12 box lecke',s=>s.bxL,12],['l10','Certified','10. szint',s=>s.lvl,10]];
 function rwStats(){const t=dk(),g=S.settings.waterGoal||3000,best={},prDays={};let prs=0,sets=0,vol=0;const prList=[];
   for(const d of Object.keys(S.logs).sort())for(const id in S.logs[d]){const ex=EX[id];if(!ex)continue;const done=S.logs[d][id].filter(s=>s[2]);sets+=done.length;for(const s of done)vol+=setVol(id,s);
     if(!done.length||ex.u==='mp'||ex.u==='testsúly')continue;const m=Math.max(...done.map(s=>s[0]||0));if(best[id]!=null&&m>best[id]){prs++;prDays[d]=(prDays[d]||0)+1;prList.push({d,id,kg:m})}if(best[id]==null||m>best[id])best[id]=m}
   const fd=S.food||{},tp=targets().p,fDays=Object.keys(fd).filter(d=>fd[d].length),pDays=fDays.filter(d=>foodSum(d).p>=tp);
-  const ch=S.chDone||{},days=new Set([...Object.keys((S.box||{}).rounds||{}),...Object.values((S.box||{}).done||{}),...Object.keys((S.learn||{}).read||{}),...Object.values((S.learn||{}).es||{}).map(e=>e.d),...fDays,...Object.keys(S.xdone||{}),...Object.keys(S.logs),...Object.keys(S.sessions),...Object.keys(S.creatine),...Object.keys(S.water),...Object.keys(S.sleep),...Object.keys(S.taskDone),...Object.keys(ch),...S.weights.map(w=>w[0])]);
-  const dayXp=d=>{let x=0;const l=S.logs[d];if(l)for(const id in l)x+=l[id].filter(s=>s[2]).length*5;if(S.sessions[d])x+=100;if(S.xdone&&S.xdone[d])x+=100;if(S.creatine[d])x+=10;if((S.water[d]||0)>=g)x+=20;if(S.sleep[d]!=null&&S.sleep[d]>=7)x+=10;x+=(S.taskDone[d]||[]).length*10;if(S.weights.some(w=>w[0]===d))x+=15;if(ch[d])x+=30;{const lr=S.learn||{};if(lr.read&&lr.read[d]!=null)x+=10;x+=Object.values(lr.es||{}).filter(e=>e.d===d).length*30}{const bx=S.box||{};x+=Object.values(bx.done||{}).filter(v=>v===d).length*20+Math.min(6,(bx.rounds||{})[d]||0)*10}if(fd[d])x+=Math.min(4,fd[d].length)*5;if(pDays.includes(d))x+=20;return x+(prDays[d]||0)*50};
+  const ch=S.chDone||{},days=new Set([...Object.keys((S.box||{}).rounds||{}),...Object.values((S.box||{}).done||{}),...Object.keys((S.learn||{}).read||{}),...Object.values((S.learn||{}).es||{}).map(e=>e.d),...Object.keys((S.learn||{}).rev||{}),...fDays,...Object.keys(S.xdone||{}),...Object.keys(S.logs),...Object.keys(S.sessions),...Object.keys(S.creatine),...Object.keys(S.water),...Object.keys(S.sleep),...Object.keys(S.taskDone),...Object.keys(ch),...S.weights.map(w=>w[0])]);
+  const dayXp=d=>{let x=0;const l=S.logs[d];if(l)for(const id in l)x+=l[id].filter(s=>s[2]).length*5;if(S.sessions[d])x+=100;if(S.xdone&&S.xdone[d])x+=100;if(S.creatine[d])x+=10;if((S.water[d]||0)>=g)x+=20;if(S.sleep[d]!=null&&S.sleep[d]>=7)x+=10;x+=(S.taskDone[d]||[]).length*10;if(S.weights.some(w=>w[0]===d))x+=15;if(ch[d])x+=30;{const lr=S.learn||{};if(lr.read&&lr.read[d]!=null)x+=10;x+=Object.values(lr.es||{}).filter(e=>e.d===d).length*30;if(lr.rev&&lr.rev[d])x+=20}{const bx=S.box||{};x+=Object.values(bx.done||{}).filter(v=>v===d).length*20+Math.min(6,(bx.rounds||{})[d]||0)*10}if(fd[d])x+=Math.min(4,fd[d].length)*5;if(pDays.includes(d))x+=20;return x+(prDays[d]||0)*50};
   let xp=0,today=0;const byDay={};for(const d of days){const x=dayXp(d);xp+=x;byDay[d]=x;if(d===t)today=x}
   const st=S.sessT||{},wl=S.wxLog||{},sd=[...new Set([...Object.keys(S.sessions),...Object.keys(S.xdone||{})])],cnt=f=>sd.filter(f).length;
   const night=cnt(d=>st[d]>=21),early=cnt(d=>st[d]!=null&&st[d]<8),glacier=cnt(d=>wl[d]&&wl[d].mn<=0),hot=cnt(d=>wl[d]&&wl[d].mx>=27);
@@ -1239,7 +1268,7 @@ function rwStats(){const t=dk(),g=S.settings.waterGoal||3000,best={},prDays={};l
   const wk={};for(const d of Object.keys(S.sessions)){const m=dk(monday(parseDk(d)));wk[m]=(wk[m]||0)+1}
   let fullStreak=0,fr=0,pw=null;for(const m of Object.keys(wk).filter(m=>wk[m]>=4).sort()){fr=pw&&Math.round((parseDk(m)-parseDk(pw))/DAY)===7?fr+1:1;fullStreak=Math.max(fullStreak,fr);pw=m}
   const lvl=Math.floor((50+Math.sqrt(2500+200*xp))/100);
-  return{xp,today,lvl,cur:50*lvl*(lvl-1),nxt:50*(lvl+1)*lvl,prs,prList,sets,vol,workouts:Object.keys(S.sessions).length+Object.keys(S.xdone||{}).length,maxCre,waterDays:Object.keys(S.water).filter(d=>S.water[d]>=g).length,ch:Object.keys(ch).length,weighs:S.weights.length,fullWeeks:Object.values(wk).filter(n=>n>=4).length,foodDays:fDays.length,proteinDays:pDays.length,esN:Object.keys((S.learn||{}).es||{}).length,bxL:Object.keys((S.box||{}).done||{}).length,bxR:Object.values((S.box||{}).rounds||{}).reduce((a,b)=>a+b,0),rdN:Object.keys((S.learn||{}).read||{}).length,byDay,night,early,glacier,hot,fullStreak}}
+  return{xp,today,lvl,cur:50*lvl*(lvl-1),nxt:50*(lvl+1)*lvl,prs,prList,sets,vol,workouts:Object.keys(S.sessions).length+Object.keys(S.xdone||{}).length,maxCre,waterDays:Object.keys(S.water).filter(d=>S.water[d]>=g).length,ch:Object.keys(ch).length,weighs:S.weights.length,fullWeeks:Object.values(wk).filter(n=>n>=4).length,foodDays:fDays.length,proteinDays:pDays.length,esN:Object.keys((S.learn||{}).es||{}).length,es2:Object.keys((S.learn||{}).rev||{}).filter(d=>esAm(d)).length,bxL:Object.keys((S.box||{}).done||{}).length,bxR:Object.values((S.box||{}).rounds||{}).reduce((a,b)=>a+b,0),rdN:Object.keys((S.learn||{}).read||{}).length,byDay,night,early,glacier,hot,fullStreak}}
 function badgesOf(s){return BADGES.map(([id,n,d,f,goal])=>({id,n,d:d||n,v:Math.min(goal,f(s)),goal,on:f(s)>=goal}))}
 function lvlCard(s){const pct=Math.round((s.xp-s.cur)/(s.nxt-s.cur)*100);return `<div class="card lvl" data-a="tab" data-t="halad"><div class="row"><div class="lvl-n"><span>Szint</span><b>${s.lvl}</b></div><div class="grow"><div class="row-title">${rankOf(s.lvl)}</div><div class="meta">${s.xp} XP, még ${s.nxt-s.xp} a következő szintig</div></div><div class="lvl-today"><b>+${s.today}</b><span>XP ma</span></div></div><div class="bar-p"><i style="width:${pct}%"></i></div></div>`}
 function checkRewards(){const s=rwStats(),got=badgesOf(s).filter(b=>b.on).map(b=>b.id);
@@ -1541,7 +1570,7 @@ function rHalad(){const ci=cycleInfo(),w=curWeight();let h=bar()+heroBlock('Hala
   const mon=dk(monday(new Date()));const wkSessions=Object.keys(S.sessions).filter(d=>d>=mon).length;const total=Object.keys(S.sessions).length+Object.keys(S.xdone||{}).length;
   const ad=adherence(),allVol=Object.keys(S.logs).reduce((a,d)=>a+dayVol(d),0),gain=Math.round((w-S.settings.weight)*10)/10;
   const rs=rwStats(),bg=badgesOf(rs);
-  h+=`<h2>Jutalmak</h2>`+lvlCard(rs)+`<div class="xp-legend">Szett +5, edzés +100, spanyol lecke +30, box lecke +20, box menet +10, napi olvasmány +10, új rekord +50, napi kihívás +30, meglett fehérjecél +20, teljes vízcél +20, mérés +15, naplózott étkezés +5 (naponta max. 20), kreatin, teendő és 7+ óra alvás +10 XP. Rangok 5 szintenként: ${RANKS.join(', ')}.</div>`;
+  h+=`<h2>Jutalmak</h2>`+lvlCard(rs)+`<div class="xp-legend">Szett +5, edzés +100, spanyol lecke +30, esti ismétlés +20, box lecke +20, box menet +10, napi olvasmány +10, új rekord +50, napi kihívás +30, meglett fehérjecél +20, teljes vízcél +20, mérés +15, naplózott étkezés +5 (naponta max. 20), kreatin, teendő és 7+ óra alvás +10 XP. Rangok 5 szintenként: ${RANKS.join(', ')}.</div>`;
   h+=`<h3>Jelvények, ${bg.filter(b=>b.on).length}/${bg.length}</h3><div class="badges">${bg.map(b=>`<div class="bdg ${b.on?'':'off'}">${MARK}<b>${b.n}</b><span>${b.on?b.d:b.v+' / '+b.goal}</span></div>`).join('')}</div>`;
   h+=`<button class="btn ghost full" data-a="weekOpen" data-v="0">Heti NOCTA összefoglaló kép</button>`;
   h+=`<h2>Összesítés</h2><div class="card"><div class="stats"><div><b>${total}</b><span>edzés</span></div><div><b>${ad.pct==null?'0':ad.pct}%</b><span>betartás</span></div><div><b>${num(Math.round(allVol/100)/10)}</b><span>tonna mozgatva</span></div><div><b>${gain>0?'+':''}${num(gain)}</b><span>kg változás</span></div></div><div class="meta">Kezdés: ${shortDate(S.settings.started||dk())}. ${ad.planned?ad.done+' edzés a '+ad.planned+' tervezettből.':''} Kreatin sorozat: ${streak()} nap.</div></div>`;
@@ -1829,14 +1858,36 @@ const readIdx=d=>dayNo(d)%READS.length;
 const esDone=i=>!!(S.learn&&S.learn.es&&S.learn.es[i]);
 const esNext=()=>{for(let i=0;i<ES.length;i++)if(!esDone(i))return i;return ES.length-1};
 const esToday=()=>{const t=dk(),es=(S.learn&&S.learn.es)||{};const i=Object.keys(es).find(k=>es[k].d===t);return i!=null?Number(i):null};
-function esQuiz(i){const L=ES[i],r=rng(hash(i+'#'+Date.now())),sh=a=>[...a].sort(()=>r()-.5),pool=ES.slice(0,i+1).flatMap(x=>x.v),qs=[];
-  const mc=(item,dir)=>{const right=dir==='es'?item[1]:item[0],others=sh(pool.filter(x=>x!==item)).map(x=>dir==='es'?x[1]:x[0]).filter((x,k,a)=>x!==right&&a.indexOf(x)===k).slice(0,3);return{type:dir==='es'?'es2hu':'hu2es',q:dir==='es'?item[0]:item[1],a:right,opts:sh([right,...others]),say:item[0]}};
-  const v=sh(L.v);v.slice(0,4).forEach(x=>qs.push(mc(x,'es')));v.slice(4,6).forEach(x=>qs.push(mc(x,'hu')));
-  if(v[6]){const m=mc(v[6],'es');m.type='listen';qs.push(m)}
-  const ty=v[7]||v[0];qs.push({type:'type',q:ty[1],a:ty[0],say:ty[0]});
-  if(L.f.length){const ph=sh(L.f)[0],others=sh(ES.flatMap(x=>x.f).filter(x=>x!==ph)).slice(0,2).map(x=>x[0]);qs.push({type:'phrase',q:ph[1],a:ph[0],opts:sh([ph[0],...others]),say:ph[0]})}
-  if(i>0){sh(ES.slice(0,i).flatMap(x=>x.v)).slice(0,2).forEach(x=>{const m=mc(x,'es');m.rev=true;qs.push(m)})}
+// Quiz builder. Types: es2hu, hu2es, listen (multiple choice), type (hu -> es), dict (listen and write),
+// phrase (pick the right sentence), gap (missing word in a sentence), build (put the sentence together from words).
+const esTok=x=>x.split(' ').filter(Boolean);
+const esBare=w=>nrmA(w).replace(/[^a-zñ0-9]/g,'');
+function esMake(vPool,fPool,plan,seed,prio){const r=rng(hash(seed)),sh=a=>[...a].sort(()=>r()-.5),allV=ES.flatMap(x=>x.v),allF=ES.flatMap(x=>x.f),qs=[];
+  const miss=(S.learn&&S.learn.miss)||{};let vs=sh(vPool);if(prio)vs.sort((a,b)=>(miss[b[0]]||0)-(miss[a[0]]||0));let vi=0;const nextV=f=>{for(let k=0;k<vs.length;k++){const x=vs[(vi+k)%vs.length];if(!f||f(x)){vi=(vi+k+1)%vs.length;return x}}return vs[vi++%vs.length]};
+  const fs=sh(fPool);let fi=0;const nextF=()=>fs.length?fs[fi++%fs.length]:null;
+  const mc=(item,dir)=>{const right=dir==='es'?item[1]:item[0],others=sh(allV.filter(x=>x!==item)).map(x=>dir==='es'?x[1]:x[0]).filter((x,k,a)=>x!==right&&a.indexOf(x)===k).slice(0,3);return{type:dir==='es'?'es2hu':'hu2es',q:dir==='es'?item[0]:item[1],a:right,opts:sh([right,...others]),say:item[0],w:item[0]}};
+  for(const[t,n]of plan)for(let k=0;k<n;k++){
+    if(t==='es2hu'||t==='hu2es'||t==='listen'){const m=mc(nextV(),t==='hu2es'?'hu':'es');if(t==='listen')m.type='listen';qs.push(m)}
+    else if(t==='type'){const x=nextV(y=>esTok(y[0]).length<=3);qs.push({type:'type',q:x[1],a:x[0],say:x[0],w:x[0]})}
+    else if(t==='dict'){const x=nextV(y=>esTok(y[0]).length<=2);qs.push({type:'dict',q:x[1],a:x[0],say:x[0],w:x[0]})}
+    else{const ph=nextF();if(!ph)continue;
+      if(t==='phrase'){const others=sh(allF.filter(x=>x!==ph)).slice(0,3).map(x=>x[0]);qs.push({type:'phrase',q:ph[1],a:ph[0],opts:sh([ph[0],...others]),say:ph[0]})}
+      else if(t==='gap'){const tk=esTok(ph[0]),cand=tk.map((w,k)=>[w,k]).filter(([w])=>esBare(w).length>2);if(!cand.length)continue;const[w,k]=cand[Math.floor(r()*cand.length)],right=esBare(w);
+        const others=sh([...new Set(allF.flatMap(x=>esTok(x[0])).map(esBare).filter(x=>x.length>2&&x!==right))]).slice(0,3);
+        qs.push({type:'gap',q:tk.map((x,j)=>j===k?x.replace(/[^¿¡?!.,]+/,'____'):x).join(' '),hu:ph[1],a:right,opts:sh([right,...others]),say:ph[0]})}
+      else if(t==='build'){const tk=esTok(ph[0]);if(tk.length<2)continue;const extra=sh(allF.flatMap(x=>esTok(x[0])).filter(x=>!tk.map(esBare).includes(esBare(x)))).slice(0,2);
+        qs.push({type:'build',q:ph[1],a:ph[0],say:ph[0],tiles:sh([...tk,...extra])})}}}
   return qs}
+function esQuiz(i){const L=ES[i],prev=ES.slice(0,i);
+  const qs=esMake(L.v,L.f,[['es2hu',4],['hu2es',3],['listen',1],['type',2],['dict',1],['phrase',1],['gap',1],['build',1]],i+'#'+Date.now());
+  if(i>0)qs.push(...esMake(prev.flatMap(x=>x.v),prev.flatMap(x=>x.f),[['es2hu',1],['hu2es',1],['build',1]],'r'+i+Date.now(),true).map(q=>({...q,rev:true})));
+  return qs}
+// Evening review: everything learned so far, words you missed before come first.
+function esReview(){const n=Math.max(1,Object.keys(L0().es).length),ls=ES.slice(0,Math.min(ES.length,n));
+  return esMake(ls.flatMap(x=>x.v),ls.flatMap(x=>x.f),[['es2hu',3],['hu2es',3],['listen',2],['type',2],['dict',2],['gap',2],['build',2],['phrase',1]],'rev'+Date.now(),true).sort(()=>Math.random()-.5)}
+const esAm=(t=dk())=>{const lr=L0();return !!(lr.am&&lr.am[t])||Object.values(lr.es).some(e=>e.d===t)};
+const esPm=(t=dk())=>!!(L0().rev&&L0().rev[t]);
+const esCnt=(t=dk())=>(esAm(t)?1:0)+(esPm(t)?1:0);
 function rLearn(){let h=bar()+heroBlock('Tanulás','Napi olvasmány, spanyol és box az alapoktól','LEARN');
   h+=seg('learnSeg',[['olvas','Olvasmány'],['es','Spanyol'],['box','Box']]);const lr=L0(),t=dk();
   if(ui.learnSeg==='olvas'){const i=readIdx(t),[c,lg,ti,body,task]=READS[i],read=lr.read[t]!=null;
@@ -1847,23 +1898,32 @@ function rLearn(){let h=bar()+heroBlock('Tanulás','Napi olvasmány, spanyol és
   else if(ui.learnSeg==='box')h+=rBox();
   else if(ui.es&&ui.es.step)h+=esLesson();
   else{const n=esNext(),done=Object.keys(lr.es).length,td=esToday();
-    h+=`<div class="es-head"><div class="es-flag"><i></i><i></i><i></i></div><div class="grow"><div class="row-title">Spanyol utazáshoz</div><div class="meta">${done}/${ES.length} lecke kész · napi 1 lecke, kb. 10 perc</div></div></div><div class="bar-p"><i style="width:${done/ES.length*100}%"></i></div>`;
-    h+=td!=null?`<div class="pbn up"><b>Mai lecke kész ✓</b><span>${ES[td].t}, ${lr.es[td].s}%. Holnap jön a következő, de ha van kedved, mehetsz tovább.</span></div>`:'';
-    h+=`<button class="btn acc full" data-a="esStart" data-i="${n}">${td!=null?'Következő lecke':'Mai lecke'}: ${n+1}. ${ES[n].t}</button>`;
+    const am=esAm(),pm=esPm(),canRev=done>0;
+    h+=`<div class="es-head"><div class="es-flag"><i></i><i></i><i></i></div><div class="grow"><div class="row-title">Spanyol utazáshoz</div><div class="meta">${done}/${ES.length} lecke kész · naponta 2 alkalom</div></div><div class="es-cnt"><b>${esCnt()}</b><span>/2 ma</span></div></div><div class="bar-p"><i style="width:${done/ES.length*100}%"></i></div>`;
+    h+=`<div class="es-day">
+      <div class="es-ses ${am?'ok':''}"><div class="es-sk">1. alkalom · ${esc(S.settings.esAm||'08:00')}</div><div class="row-title">${td!=null?'Lecke kész ✓':`Lecke: ${n+1}. ${ES[n].t}`}</div><div class="meta">Új szavak, mondatok, kb. 15-17 kérdéses teszt</div><button class="btn ${am?'ghost':'acc'} full" data-a="esStart" data-i="${n}">${am?'Következő lecke':'Kezdés'}</button></div>
+      <div class="es-ses ${pm?'ok':''}"><div class="es-sk">2. alkalom · ${esc(S.settings.esPm||'19:30')}</div><div class="row-title">${pm?`Ismétlés kész ✓ ${lr.rev[dk()].s}%`:'Esti ismétlés'}</div><div class="meta">${canRev?'17 kérdés az eddigi leckékből, a rontott szavak előre jönnek':'Az első kész lecke után nyílik'}</div><button class="btn ${pm||!canRev?'ghost':'acc'} full" data-a="${canRev?'esRev':'esLocked'}">${pm?'Még egy kör':'Ismétlés'}</button></div></div>`;
+    {const on=!!S.settings.esRem,perm=('Notification' in window)?Notification.permission:'na',cal=(tm,lab)=>{const[hh,mm]=String(tm).split(':'),x=new Date();x.setDate(x.getDate()+1);const d0=`${x.getFullYear()}${pad(x.getMonth()+1)}${pad(x.getDate())}`,st=`${d0}T${pad(hh)}${pad(mm)}00`,en=`${d0}T${pad(Math.min(23,Number(hh)+(Number(mm)>=45?1:0)))}${pad((Number(mm)+15)%60)}00`;return 'https://calendar.google.com/calendar/render?'+new URLSearchParams({action:'TEMPLATE',text:'¡Español! '+lab+' (FORMA)',details:'Nyisd meg a FORMA appot: Tanulás → Spanyol.',dates:st+'/'+en,ctz:'Europe/Budapest',recur:'RRULE:FREQ=DAILY'})};
+    h+=`<details class="card es-rem" ${on?'':'open'}><summary><span class="row-title">🔔 Emlékeztető</span><span class="meta">${on&&perm==='granted'?'Bekapcsolva':'Kikapcsolva'}</span></summary>
+      <div class="grid2" style="margin-top:10px"><label class="lbl">1. alkalom<input class="in" type="time" data-set="esAm" value="${esc(S.settings.esAm||'08:00')}"></label><label class="lbl">2. alkalom<input class="in" type="time" data-set="esPm" value="${esc(S.settings.esPm||'19:30')}"></label></div>
+      <button class="btn ${on?'ghost':'acc'} full" data-a="esRemOn">${on&&perm==='granted'?'Értesítések kikapcsolása':'Értesítések bekapcsolása'}</button>
+      <p class="meta">Az app értesít, ha a beállított időpontig nincs kész az alkalom. Telepített appban a telefon a háttérben is ránéz, de ezt az Android ütemezi, ezért késhet. Ha pontos riasztást szeretnél, tedd be a Naptáradba is:</p>
+      <div class="btn-row"><a class="btn ghost" target="_blank" rel="noopener" href="${cal(S.settings.esAm||'08:00','1. lecke')}">Naptár: 1. alkalom</a><a class="btn ghost" target="_blank" rel="noopener" href="${cal(S.settings.esPm||'19:30','esti ismétlés')}">Naptár: 2. alkalom</a></div></details>`}
     h+=`<h2>Leckék</h2><div class="es-map">${ES.map((L,i)=>{const d=lr.es[i],lock=i>n;return `<button class="es-node ${d?'done':''} ${i===n?'cur':''}" data-a="${lock?'esLocked':'esStart'}" data-i="${i}" ${lock?'aria-disabled="true"':''}><b>${i+1}</b><span>${L.t}</span>${d?`<em>${d.s}%</em>`:lock?'<em>🔒</em>':''}</button>`}).join('')}</div>`;
-    h+=`<p class="fine">Spanyolországi spanyol. A kiejtés magyaros átírás, a 🔊 gomb felolvassa (a telefon spanyol hangjával). Ha a teszt legalább 70%, a lecke kész, és jön a következő. A tesztek korábbi leckék szavait is ismétlik.</p>`}
+    h+=`<p class="fine">Spanyolországi spanyol. A kiejtés magyaros átírás, a 🔊 gomb felolvassa (a telefon spanyol hangjával). Naponta két alkalom: egy lecke (szavak, mondatok, kb. 15-17 kérdéses teszt) és egy esti ismétlés 17 kérdéssel. Feladattípusok: fordítás mindkét irányba, hallás utáni értés és írás, hiányzó szó, mondat összerakása szavakból. Ha a teszt legalább 70%, kész. A rontott szavakat az app megjegyzi, és az ismétlésben előre veszi.</p>`}
   return h}
-function esLesson(){const E=ui.es,L=ES[E.i];let h=`<div class="es-top"><button class="link" data-a="esBack">‹ Leckék</button><span class="meta">${E.i+1}. lecke</span></div><h2 class="es-title">${L.t}</h2>`;
-  const steps=['szavak','mondatok','teszt'],si=E.step==='words'?0:E.step==='phrases'?1:2;h+=`<div class="es-steps">${steps.map((s,k)=>`<span class="${k<=si?'on':''}">${s}</span>`).join('')}</div>`;
+function esLesson(){const E=ui.es,L=E.rev?{t:'Esti ismétlés'}:ES[E.i];let h=`<div class="es-top"><button class="link" data-a="esBack">‹ Leckék</button><span class="meta">${E.rev?'2. alkalom':E.i+1+'. lecke'}${E.q?` · ${Math.min(E.qi+1,E.q.length)}/${E.q.length}`:''}</span></div><h2 class="es-title">${L.t}</h2>`;
+  if(!E.rev){const steps=['szavak','mondatok','teszt'],si=E.step==='words'?0:E.step==='phrases'?1:2;h+=`<div class="es-steps">${steps.map((s,k)=>`<span class="${k<=si?'on':''}">${s}</span>`).join('')}</div>`}
   if(E.step==='words')h+=`<p class="meta">Koppints egy kártyára a jelentéséért, a 🔊 felolvassa.</p><div class="flash">${L.v.map(([es,hu,pr],k)=>`<div class="fl ${E.flip&&E.flip[k]?'on':''}" data-a="esFlip" data-k="${k}"><div class="fl-in"><div class="fl-f"><b>${es}</b><span>[${pr}]</span></div><div class="fl-b"><b>${hu}</b><span>${es}</span></div></div><button class="say" data-a="esSay" data-t="${esc(es)}" aria-label="Felolvasás">🔊</button></div>`).join('')}</div><button class="btn acc full" data-a="esStep" data-v="phrases">Tovább a mondatokhoz</button>`;
   else if(E.step==='phrases')h+=`${L.f.map(([es,hu])=>`<div class="phr"><button class="say" data-a="esSay" data-t="${esc(es)}" aria-label="Felolvasás">🔊</button><div class="grow"><b>${es}</b><span>${hu}</span></div></div>`).join('')}<div class="rc-task"><b>Tipp</b><span>${L.tip}</span></div><button class="btn acc full" data-a="esStep" data-v="quiz">Jöhet a teszt</button>`;
   else if(E.step==='quiz'){const q=E.q[E.qi];
-    if(!q){const sc=Math.round(E.ok/E.q.length*100),pass=sc>=70;h+=`<div class="es-res ${pass?'ok':'no'}"><div class="big-n">${sc}%</div><div class="row-title">${pass?'¡Muy bien! A lecke kész.':'Majdnem! 70% kell a továbblépéshez.'}</div><div class="meta">${E.ok}/${E.q.length} helyes válasz${pass?', +30 XP':''}</div></div>${pass?`<button class="btn acc full" data-a="esBack">Vissza a leckékhez</button>`:`<button class="btn acc full" data-a="esStart" data-i="${E.i}">Újrapróbálom</button>`}`}
-    else{h+=`<div class="qprog"><i style="width:${E.qi/E.q.length*100}%"></i></div><div class="quiz ${E.fb||''}"><div class="meta">${q.rev?'Ismétlés · ':''}${q.type==='es2hu'?'Mit jelent?':q.type==='hu2es'?'Hogy mondod spanyolul?':q.type==='listen'?'Hallgasd meg, mit jelent?':q.type==='type'?'Írd be spanyolul':'Melyik a helyes mondat?'}</div>`;
-      h+=q.type==='listen'?`<button class="say big" data-a="esSay" data-t="${esc(q.say)}">🔊 Lejátszás</button>`:`<div class="q-q">${esc(q.q)}</div>`;
-      if(q.type==='type')h+=`<input class="in" id="esIn" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="spanyolul..." value="${esc(E.typed||'')}" ${E.ans!=null?'disabled':''}>${E.ans==null?`<button class="btn acc full" data-a="esType">Ellenőrzés</button>`:''}`;
+    if(!q){const sc=Math.round(E.ok/E.q.length*100),pass=sc>=70;h+=`<div class="es-res ${pass?'ok':'no'}"><div class="big-n">${sc}%</div><div class="row-title">${pass?(E.rev?'¡Perfecto! Mai ismétlés kész.':'¡Muy bien! A lecke kész.'):'Majdnem! 70% kell a teljesítéshez.'}</div><div class="meta">${E.ok}/${E.q.length} helyes válasz${pass?(E.rev?', +20 XP':', +30 XP'):''}</div></div>${E.wrong&&E.wrong.length?`<h3>Ezeket érdemes átnézni</h3><div class="card">${E.wrong.map(q=>`<div class="phr"><button class="say" data-a="esSay" data-t="${esc(q.say)}" aria-label="Felolvasás">🔊</button><div class="grow"><b>${esc(q.say)}</b><span>${esc(q.type==='gap'?q.hu:q.type==='es2hu'||q.type==='listen'?q.a:q.q)}</span></div></div>`).join('')}</div>`:''}${pass?`<button class="btn acc full" data-a="esBack">Vissza a leckékhez</button>`:`<button class="btn acc full" data-a="${E.rev?'esRev':'esStart'}" data-i="${E.i}">Újrapróbálom</button>`}`}
+    else{h+=`<div class="qprog"><i style="width:${E.qi/E.q.length*100}%"></i></div><div class="quiz ${E.fb||''}"><div class="meta">${q.rev?'Ismétlés · ':''}${{es2hu:'Mit jelent?',hu2es:'Hogy mondod spanyolul?',listen:'Hallgasd meg, mit jelent?',type:'Írd be spanyolul',dict:'Hallgasd meg, és írd le spanyolul',phrase:'Melyik a helyes mondat?',gap:'Melyik szó hiányzik?',build:'Rakd össze a mondatot spanyolul'}[q.type]}</div>`;
+      h+=q.type==='listen'||q.type==='dict'?`<button class="say big" data-a="esSay" data-t="${esc(q.say)}">🔊 Lejátszás</button>`:`<div class="q-q">${esc(q.q)}</div>${q.type==='gap'?`<div class="meta">${esc(q.hu)}</div>`:''}`;
+      if(q.type==='build'){const B=E.bw||[];h+=`<div class="bld">${B.map((k,j)=>`<button class="bld-w" data-a="esBw" data-j="${j}" ${E.ans!=null?'disabled':''}>${esc(q.tiles[k])}</button>`).join('')||'<span class="meta">Koppints a szavakra a helyes sorrendben</span>'}</div><div class="bld-pool">${q.tiles.map((w,k)=>`<button class="bld-t ${B.includes(k)?'used':''}" data-a="esBt" data-k="${k}" ${B.includes(k)||E.ans!=null?'disabled':''}>${esc(w)}</button>`).join('')}</div>${E.ans==null?`<button class="btn acc full" data-a="esBuild" ${B.length?'':'disabled'}>Ellenőrzés</button>`:''}`}
+      else if(q.type==='type'||q.type==='dict')h+=`<input class="in" id="esIn" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="spanyolul..." value="${esc(E.typed||'')}" ${E.ans!=null?'disabled':''}>${E.ans==null?`<button class="btn acc full" data-a="esType">Ellenőrzés</button>`:''}`;
       else h+=`<div class="q-opts">${q.opts.map(o=>`<button class="q-o ${E.ans!=null?(o===q.a?'right':o===E.ans?'wrong':''):''}" data-a="esAns" data-v="${esc(o)}" ${E.ans!=null?'disabled':''}>${esc(o)}</button>`).join('')}</div>`;
-      if(E.ans!=null)h+=`<div class="q-fb ${E.fb}"><b>${E.fb==='ok'?'Helyes!':'Nem egészen.'}</b> <span>${esc(q.say)}${q.type!=='es2hu'&&q.type!=='listen'?'':' = '+esc(q.a)}</span><button class="say" data-a="esSay" data-t="${esc(q.say)}">🔊</button></div><button class="btn acc full" data-a="esNextQ">Tovább</button>`;
+      if(E.ans!=null)h+=`<div class="q-fb ${E.fb}"><b>${E.fb==='ok'?'Helyes!':'Nem egészen.'}</b> <span>${esc(q.say)}${q.type==='es2hu'||q.type==='listen'?' = '+esc(q.a):q.type==='dict'?' = '+esc(q.q):''}</span><button class="say" data-a="esSay" data-t="${esc(q.say)}">🔊</button></div><button class="btn acc full" data-a="esNextQ">Tovább</button>`;
       h+='</div>'}}
   return h}
 
@@ -1942,7 +2002,7 @@ function focusCards(now,day,ci){const t=dk(now),out=[],c=customToday(),tg=target
     out.push(card('train'+(done?' done':''),'Mai edzés'+(ci.deload?' · deload':''),day.name,`${pr.done}/${pr.total} gyakorlat${ups&&!done?` · ▲ ${ups}× emelés`:''}`,ring(pr.done,pr.total),`<button class="btn" data-a="goday" data-d="${day.id}">${done?'Megnézem':pr.done?'Folytatás':'Indítás'}</button>`,ICON.edzes))}
   else{const nx=nextTraining(now);out.push(card('train','Pihenőnap','Regeneráció',nx?`Következő: ${WD[nx.wd]}, ${nx.day.name.toLowerCase()}`:'',null,`<button class="btn" data-a="restDay">Mégis edzek</button><button class="btn ghost" data-a="custom">Saját</button>`,ICON.edzes))}
   if(c){const pg=dayProgress(getDay('x'),ci);out.push(card('train','Saját edzés',esc(c.g.join(', ')),`${pg.done}/${pg.total} gyakorlat`,ring(pg.done,pg.total),`<button class="btn" data-a="goday" data-d="x">Folytatás</button>`,ICON.edzes))}
-  {const td=esToday(),n=td!=null?td:esNext(),done=Object.keys((S.learn||{}).es||{}).length;out.push(card('es'+(td!=null?' done':''),'Spanyol · '+(td!=null?'mai lecke kész ✓':'mai lecke'),`${n+1}. ${ES[n].t}`,`${done}/${ES.length} lecke · kb. 10 perc`,`<div class="fc-bar"><i style="width:${done/ES.length*100}%"></i></div>`,`<button class="btn" data-a="goLearn" data-v="es">${td!=null?'Ismétlés':'Kezdés'}</button>`,'<span class="fc-flag"><i></i><i></i><i></i></span>'))}
+  {const n=esNext(),done=Object.keys((S.learn||{}).es||{}).length,am=esAm(),pm=esPm(),c=esCnt();out.push(card('es'+(c===2?' done':''),`Spanyol · ma ${c}/2`,am?(pm?'Mára kész ✓':'Esti ismétlés'):`${n+1}. ${ES[n].t}`,am?(pm?`${done}/${ES.length} lecke kész`:'17 kérdés, a rontott szavak előre'):`Lecke és teszt · kb. 12 perc`,`<div class="fc-bar"><i style="width:${c*50}%"></i></div>`,am&&!pm&&done?`<button class="btn" data-a="esRev">Ismétlés</button>`:`<button class="btn" data-a="goLearn" data-v="es">${c===2?'Megnézem':'Kezdés'}</button>`,'<span class="fc-flag"><i></i><i></i><i></i></span>'))}
   {const r=READS[readIdx(t)],rd=S.learn&&S.learn.read&&S.learn.read[t]!=null;out.push(card('read'+(rd?' done':''),'Napi olvasmány · '+r[0],esc(r[2]),rd?'Elolvasva ✓':'1 perc, +10 XP',null,`<button class="btn" data-a="goLearn" data-v="olvas">${rd?'Újra':'Elolvasom'}</button>`,ICON.learn))}
   {const bx=S.box||{},n=Object.keys(bx.done||{}).length,r=(bx.rounds||{})[t]||0;out.push(card('box','Box · '+n+'/'+BOX.length+' lecke',n<BOX.length?`${n+1}. ${BOX[n][0]}`:'Menetidőzítő',r?`Ma ${r} menet ✓`:'Alapoktól, kombó-bemondóval',null,`<button class="btn" data-a="goLearn" data-v="box">${n?'Folytatás':'Kezdés'}</button>`,'<span style="font-size:96px;line-height:1">🥊</span>'))}
   out.push(card('food','Mai kaja',`${fs.kcal} / ${tg.kcal} kcal`,`${fs.p} / ${tg.p} g fehérje`,`<div class="fc-bar"><i style="width:${Math.min(100,fs.kcal/tg.kcal*100)}%"></i></div>`,`<button class="btn" data-a="foodNew">+ Étkezés</button><button class="btn ghost" data-a="plate">Tányér</button>`,ICON.etel));
@@ -1951,7 +2011,8 @@ function focusCards(now,day,ci){const t=dk(now),out=[],c=customToday(),tg=target
 function bento(now,t,rs){const pct=Math.round((rs.xp-rs.cur)/(rs.nxt-rs.cur)*100),cOn=!!S.creatine[t];let h='<div class="bento">';
   h+=`<button class="bt lvl" data-a="tab" data-t="halad"><span class="bt-k">Szint ${rs.lvl}</span><b>${rankOf(rs.lvl)}</b><span class="bt-m">+${rs.today} XP ma · ${rs.nxt-rs.xp} a következőig</span><i class="bt-bar"><i style="width:${pct}%"></i></i></button>`;
   if(S.settings.water){const ml=S.water[t]||0,g=S.settings.waterGoal||3000,wp=Math.min(100,ml/g*100);h+=`<div class="bt water"><div class="liq" style="height:${wp}%"></div><span class="bt-k">Víz</span><b>${num(ml/1000)} l</b><span class="bt-m">${num(g/1000)} literből</span><div class="bt-btns"><button class="round" data-a="water" data-v="-250" aria-label="250 ml levonása">${ICON.minus}</button><button class="round acc" data-a="water" data-v="250" aria-label="250 ml hozzáadása">${ICON.plus}</button></div></div>`}
-  h+=`<button class="bt cre ${cOn?'on':''}" data-a="creatine" aria-pressed="${cOn}"><span class="bt-k">Kreatin ${num(S.settings.creatine)} g</span><b>${cOn?'Bevéve ✓':'Koppints'}</b><span class="bt-m">${streak()} napos sorozat</span></button>`;
+  {const y=new Date();y.setDate(y.getDate()-1);const y2=new Date();y2.setDate(y2.getDate()-2);const miss=!S.creatine[dk(y)]&&!!S.creatine[dk(y2)];
+  h+=`<div class="bt cre ${cOn?'on':''}" role="button" tabindex="0" data-a="creatine" aria-pressed="${cOn}"><span class="bt-k">Kreatin ${num(S.settings.creatine)} g</span><b>${cOn?'Bevéve ✓':'Koppints'}</b><span class="bt-m">${streak()} napos sorozat</span><button class="bt-fix ${miss?'warn':''}" data-a="creFix">${miss?'Tegnap kimaradt? Pótold':'Elfelejtetted? Pótlás'}</button></div>`}
   if(wx.d){const c=wx.d.current,[txt,ic]=WXC[c.weather_code]||['Változékony','cloud'];h+=`<button class="bt wxt" data-a="wxTip"><span class="bt-k">Óbuda</span><span class="bt-ic">${WXI[ic]}</span><b>${Math.round(c.temperature_2m)}°</b><span class="bt-m">${txt}</span></button>`}
   else h+=`<button class="bt wxt" data-a="wx"><span class="bt-k">Óbuda</span><b>…</b><span class="bt-m">${wx.err?'Újratöltés':'Betöltés'}</span></button>`;
   if(S.settings.sleep)h+=`<div class="bt sleep"><span class="bt-k">Alvás</span><input class="in" inputmode="decimal" data-in="sleep" value="${num(S.sleep[t])}" placeholder="–" aria-label="Alvás órában"><span class="bt-m">óra az éjjel</span></div>`;
@@ -1986,6 +2047,8 @@ recipe(){const r=RI[ui.rs.id],sv=ui.rs.sv,k=sv/r.base,fav=S.fav.includes(r.id),h
   <button class="btn acc full" data-a="ateRecipe">Megettem, 1 adag a mai naplóba</button>
   <button class="btn ghost full" data-a="toShop">Bevásárlólistára (${sv} adag)</button>${r.st!=='fresh'?'<button class="btn ghost full" data-a="toPrep">Meal prep tervezés</button>':''}
   <div class="btn-row"><button class="btn ghost" data-a="fav">${fav?'Kedvenc törlése':'Kedvencnek jelölöm'}</button><button class="btn ghost" data-a="hide">${hid?'Ajánlhatod újra':'Ne ajánld újra'}</button></div>`},
+creFix(){const days=[];for(let k=0;k<14;k++){const x=new Date();x.setDate(x.getDate()-k);days.push(dk(x))}
+  return `${sheetTop('Kreatin pótlás')}<p class="meta">Ha bevetted, csak elfelejtetted beírni, pipáld ki azt a napot. Így a sorozat nem szakad meg.</p><div class="cfx">${days.map(d=>{const on=!!S.creatine[d],x=parseDk(d);return `<button class="cfx-d ${on?'on':''}" data-a="creDay" data-d="${d}" aria-pressed="${on}"><span>${d===dk()?'Ma':WDS[x.getDay()]}</span><b>${x.getDate()}</b><i>${on?'✓':''}</i></button>`}).join('')}</div><p class="meta" style="margin-top:12px">Jelenlegi sorozat: <b>${streak()} nap</b></p><button class="btn acc full" data-a="close">Kész</button>`},
 creatine(){const s=S.settings.creatine;return `${sheetTop('Kreatin')}<div class="info"><p><b>Mennyit?</b> Napi 3-5 g kreatin-monohidrát. Neked ${num(s)} g van beállítva. Töltőfázis nem szükséges, 3-4 hét alatt magától telítődik az izom.</p><p><b>Mikor?</b> Mindegy, a lényeg, hogy minden nap, a pihenőnapokon is. Legegyszerűbb, ha a reggelivel vagy az edzés utáni shake-kel veszed be.</p><p><b>Mire figyelj?</b> Igyál elég vizet. Az első hetekben 1-2 kg súlynövekedés normális, ez főleg az izmokban tárolt víz.</p><p>Egészséges felnőttnek a kutatások alapján biztonságos. Ha vesebetegséged van vagy rendszeresen gyógyszert szedsz, előtte beszélj orvossal.</p></div><button class="btn acc full" data-a="close">Rendben</button>`},
 supps(){return `${sheetTop('Kiegészítők')}<p class="meta">A gyors tömegnövelés 90%-a a kalóriatöbblet, a napi kb. 2 g/ttkg fehérje, a fokozatosan növekvő súlyok és a 7-9 óra alvás. A kiegészítők ehhez csak kis plusszt adnak. Kapcsold be, amit szedsz, és a Ma oldalon kipipálhatod.</p>
   ${SUPS.map(s=>`<div class="sup"><div class="row"><div class="grow"><div class="row-title">${s.n}</div><div class="tags" style="margin:4px 0 0"><span class="tag acc">${s.r}</span></div></div><label class="sw" style="margin:0"><input type="checkbox" data-sup="${s.id}" ${S.settings.supps[s.id]?'checked':''}> Szedem</label></div><p class="meta" style="margin:8px 0 2px"><b>Adag:</b> ${s.dose}</p><p class="meta" style="margin:0">${s.why}</p></div>`).join('')}
@@ -2131,6 +2194,8 @@ case 'close':closeSheet();break;
 case 'goday':ui.tab='edzes';ui.day=d.d;render();break;
 case 'creatine':if(S.creatine[t])delete S.creatine[t];else S.creatine[t]=true;save();render(true);break;
 case 'creatineInfo':openSheet('creatine');break;
+case 'creFix':openSheet('creFix');break;
+case 'creDay':{if(S.creatine[d.d])delete S.creatine[d.d];else S.creatine[d.d]=true;save();renderSheet(true);render(true);break}
 case 'supps':openSheet('supps');break;
 case 'playlist':makePlaylist();break;
 case 'spLogin':spLogin();break;
@@ -2177,14 +2242,18 @@ case 'gymOpen':openSheet('gym');break;
 case 'gymSel':S.gym=S.gym||{};S.gym.sel=d.v;save();renderSheet(true);render(true);toast('Terem: '+GYM_PRESETS[d.v].n);break;
 case 'readDone':{const lr=L0();if(lr.read[t]==null){lr.read[t]=readIdx(t);save();toast('+10 XP')}render(true);break}
 case 'esStart':ui.es={i:Number(d.i),step:'words',flip:{}};render();break;
+case 'esRev':ui.tab='learn';ui.learnSeg='es';ui.es={i:-1,rev:true,step:'quiz',q:esReview(),qi:0,ok:0,ans:null,fb:null,typed:'',wrong:[]};render();window.scrollTo(0,0);break;
+case 'esBt':{const E=ui.es;E.bw=E.bw||[];E.bw.push(Number(d.k));render(true);break}
+case 'esBw':{ui.es.bw.splice(Number(d.j),1);render(true);break}
+case 'esRemOn':esRemToggle();break;
 case 'esLocked':toast('Előbb fejezd be az előző leckét.');break;
 case 'esBack':ui.es=null;render();break;
-case 'esStep':ui.es.step=d.v;if(d.v==='quiz'){ui.es.q=esQuiz(ui.es.i);ui.es.qi=0;ui.es.ok=0;ui.es.ans=null;ui.es.fb=null;ui.es.typed=''}render();break;
+case 'esStep':ui.es.step=d.v;if(d.v==='quiz'){ui.es.q=esQuiz(ui.es.i);ui.es.qi=0;ui.es.ok=0;ui.es.ans=null;ui.es.fb=null;ui.es.typed='';ui.es.wrong=[]}render();break;
 case 'esFlip':ui.es.flip[d.k]=!ui.es.flip[d.k];render(true);break;
 case 'esSay':say(d.t);break;
-case 'esAns':case 'esType':{const E=ui.es,q=E.q[E.qi];if(E.ans!=null)break;const ans=a==='esType'?($('#esIn').value||''):d.v;E.typed=ans;const ok=a==='esType'?nrmA(ans)===nrmA(q.a):ans===q.a;E.ans=ans;E.fb=ok?'ok':'no';if(ok)E.ok++;
+case 'esAns':case 'esType':case 'esBuild':{const E=ui.es,q=E.q[E.qi];if(E.ans!=null)break;const ans=a==='esType'?($('#esIn').value||''):a==='esBuild'?(E.bw||[]).map(k=>q.tiles[k]).join(' '):d.v;E.typed=ans;const ok=a==='esAns'?ans===q.a:nrmA(ans)===nrmA(q.a);E.ans=ans;E.fb=ok?'ok':'no';if(ok)E.ok++;else(E.wrong=E.wrong||[]).push(q);if(q.w){const ms=L0().miss=L0().miss||{};ms[q.w]=Math.max(0,(ms[q.w]||0)+(ok?-1:2));if(!ms[q.w])delete ms[q.w];save()}
   try{navigator.vibrate&&navigator.vibrate(ok?15:[40,40,40])}catch(er){}if(ok||q.type!=='es2hu')say(q.say);render(true);break}
-case 'esNextQ':{const E=ui.es;E.qi++;E.ans=null;E.fb=null;E.typed='';if(E.qi>=E.q.length){const sc=Math.round(E.ok/E.q.length*100);if(sc>=70){const lr=L0(),prev=lr.es[E.i];if(!prev||prev.s<sc)lr.es[E.i]={s:sc,d:prev?prev.d:t};save();setTimeout(()=>celebrate('¡Muy bien!',sc+'%',ES[E.i].t),300)}}render(true);window.scrollTo(0,0);break}
+case 'esNextQ':{const E=ui.es;E.qi++;E.ans=null;E.fb=null;E.typed='';E.bw=[];if(E.qi>=E.q.length){const sc=Math.round(E.ok/E.q.length*100);if(sc>=70&&E.rev){const lr=L0();lr.rev=lr.rev||{};if(!lr.rev[t]||lr.rev[t].s<sc)lr.rev[t]={s:sc};save();remindSync();setTimeout(()=>celebrate('¡Perfecto!',sc+'%','Mai 2/2 spanyol kész'),300)}else if(sc>=70){const lr=L0(),prev=lr.es[E.i];if(!prev||prev.s<sc)lr.es[E.i]={s:sc,d:prev?prev.d:t};lr.am=lr.am||{};lr.am[t]=1;save();remindSync();setTimeout(()=>celebrate('¡Muy bien!',sc+'%',ES[E.i].t),300)}}render(true);window.scrollTo(0,0);break}
 case 'plate':ui.pt={img:null,desc:'',items:[],unknown:[]};openSheet('plate');break;
 case 'ptAdd':{const ta=$('#ptD');ui.pt.desc=(ta.value.trim()?ta.value.trim()+', ':'')+d.v;renderSheet(true);break}
 case 'ptEst':{ui.pt.desc=$('#ptD').value;if(!ui.pt.desc.trim()){toast('Írd le röviden, mi van a tányéron.');break}const r=estimatePlate(ui.pt.desc);ui.pt.items=r.items;ui.pt.unknown=r.unknown;renderSheet(true);break}
@@ -2296,10 +2365,10 @@ document.addEventListener('change',e=>{const el=e.target,t=dk();
   if(el.dataset.set){const k=el.dataset.set,s=S.settings;
     if(k.startsWith('day'))s.days[Number(k.slice(3))]=Number(el.value);
     else if(el.type==='checkbox')s[k]=el.checked;
-    else if(k==='theme'||k==='sex'||k==='name'||k==='spClientId')s[k]=el.value.trim();
+    else if(k==='theme'||k==='sex'||k==='name'||k==='spClientId'||k==='esAm'||k==='esPm')s[k]=el.value.trim();
     else if(k==='goalWeight')s[k]=pnum(el.value);
     else{const v=pnum(el.value);if(v!=null)s[k]=v}
-    save();applyTheme();ui.day=null;render(true);if(k==='spClientId'&&ui.sheet)renderSheet(true)}
+    save();applyTheme();ui.day=null;render(true);if(k==='esAm'||k==='esPm')remindSync();if(k==='spClientId'&&ui.sheet)renderSheet(true)}
   if(el.id==='impFile'&&el.files&&el.files[0])importData(el.files[0]);
   if(el.id==='feImg'&&el.files&&el.files[0])scanFood(el.files[0]);
   if(el.id==='ptImg'&&el.files&&el.files[0]){const P=ui.pt;P.desc=$('#ptD').value;plateImg(el.files[0]).then(img=>{P.img=img;if(ui.pt===P&&ui.sheet==='plate'){P.desc=$('#ptD').value;renderSheet(true)}}).catch(()=>toast('A fotót nem sikerült betölteni.'))}});
@@ -2311,7 +2380,23 @@ document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;if(ui.sheet)c
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&ui.wo)keepAwake(true)});
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&!ui.sheet&&!(document.activeElement&&document.activeElement.matches('input,select')))render(true)});
 
-applyTheme();render();initDb();initMcp();spHandleRedirect();loadWx();
+// Spanish reminders. The page writes today's status to Cache Storage; the service worker reads it on periodic background sync.
+async function remindSync(){try{if(!('caches' in window))return;const c=await caches.open('forma-meta');await c.put('./__remind',new Response(JSON.stringify({on:!!S.settings.esRem,am:S.settings.esAm||'08:00',pm:S.settings.esPm||'19:30',day:dk(),done:{am:esAm(),pm:esPm()},lesson:ES[esNext()].t})))}catch(e){}}
+async function notify(title,body){try{if('serviceWorker' in navigator){const r=await navigator.serviceWorker.getRegistration();if(r){await r.showNotification(title,{body,icon:'icon-192.png',badge:'icon-192.png',tag:'es',data:{go:'es'}});return}}new Notification(title,{body,icon:'icon-192.png'})}catch(e){}}
+async function remindTick(){if(!S.settings.esRem)return;await remindSync();if(!('Notification' in window)||Notification.permission!=='granted')return;
+  const now=new Date(),t=dk(now),hm=pad(now.getHours())+':'+pad(now.getMinutes());let n={};const c=await caches.open('forma-meta').catch(()=>null);if(c){const r=await c.match('./__notified');if(r)n=await r.json().catch(()=>({}))}
+  const due=[['am',S.settings.esAm||'08:00',esAm(),'¡Hola! Jön a mai spanyol',`1. alkalom: ${ES[esNext()].t}. Kb. 12 perc.`],['pm',S.settings.esPm||'19:30',esPm(),'Esti spanyol ismétlés','2. alkalom: 17 kérdés, és mára kész vagy.']];
+  for(const[k,tm,done,ti,bo]of due){if(hm>=tm&&!done&&!n[t+k]){n[t+k]=1;if(document.visibilityState==='visible')toast(ti);else await notify(ti,bo)}}
+  if(c)await c.put('./__notified',new Response(JSON.stringify(n)))}
+async function esRemToggle(){const s=S.settings;if(s.esRem&&('Notification' in window)&&Notification.permission==='granted'){s.esRem=false;save();remindSync();render(true);toast('Értesítések kikapcsolva');return}
+  if(!('Notification' in window)){toast('Ez a böngésző nem tud értesítést küldeni. Használd a Naptár gombokat.');return}
+  const p=await Notification.requestPermission();if(p!=='granted'){toast('Az értesítés nincs engedélyezve. A telefon beállításaiban kapcsolhatod be az appnak.');return}
+  s.esRem=true;save();await remindSync();
+  try{const r=await navigator.serviceWorker.ready;if('periodicSync' in r){const st=await navigator.permissions.query({name:'periodic-background-sync'});if(st.state==='granted')await r.periodicSync.register('es-remind',{minInterval:60*60*1000})}}catch(e){}
+  notify('Értesítések bekapcsolva',`Naponta ${s.esAm||'08:00'}-kor és ${s.esPm||'19:30'}-kor szólok, ha még nincs kész a spanyol.`);render(true)}
+{const go=new URLSearchParams(location.search).get('go');if(go==='es'){ui.tab='learn';ui.learnSeg='es';history.replaceState(null,'',location.pathname)}}
+if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.go==='es'){ui.tab='learn';ui.learnSeg='es';ui.es=null;render()}});
+applyTheme();render();initDb();initMcp();spHandleRedirect();loadWx();remindTick();setInterval(remindTick,60000);
 let lastDay=dk();
 setInterval(()=>{const busy=ui.sheet||(document.activeElement&&document.activeElement.matches('input,select,textarea'));if(busy||document.visibilityState!=='visible')return;loadWx();if(dk()!==lastDay){lastDay=dk();ui.day=null;render(true);return}if(ui.tab==='ma'||ui.tab==='halad')render(true)},60000);
 if('serviceWorker' in navigator&&!window.claude&&location.protocol==='https:'){navigator.serviceWorker.register('sw.js').catch(()=>{})}
