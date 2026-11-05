@@ -788,9 +788,145 @@ main h2::before{counter-increment:sec;content:counter(sec,decimal-leading-zero);
 .pst .meta{font-size:12px}
 .pst .link{padding:6px 0;font-size:10px}
 .lvlup .t3{font-size:16px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;animation:rise .6s .45s both}
+
+/* ===== NOCTA Night 2.0 ===== */
+.aura,.sprog,.glow{display:none}
+:root[data-skin]{--bg:#030303;--surface:rgba(17,16,13,.78);--surface2:rgba(32,29,24,.85);--text:#F3EEE3;--muted:#968F81;--line:rgba(246,181,17,.14);--navbg:rgba(8,8,7,.55);--accent:#F6B511;--ember:#FF5A36;--glacier:#7CC6F2;--sail:#EDE4D0}
+[data-skin] html,html[data-skin]{background:#030303}
+[data-skin] body{background:transparent}
+[data-skin] body::before{background:#030303}
+[data-skin] .aura{display:block;position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;background:#030303}
+[data-skin] .aura i{position:absolute;width:90vmax;height:90vmax;border-radius:50%;will-change:transform}
+[data-skin] .aura i:nth-child(1){left:-45vmax;top:-50vmax;background:radial-gradient(circle,rgba(246,181,17,.24),transparent 60%);animation:drift1 24s ease-in-out infinite alternate}
+[data-skin] .aura i:nth-child(2){right:-55vmax;top:10vh;background:radial-gradient(circle,rgba(255,90,54,.13),transparent 60%);animation:drift2 31s ease-in-out infinite alternate}
+[data-skin] .aura i:nth-child(3){left:-20vmax;bottom:-60vmax;background:radial-gradient(circle,rgba(124,198,242,.11),transparent 60%);animation:drift3 37s ease-in-out infinite alternate}
+[data-skin] .aura b{position:absolute;inset:0;opacity:.55;background-image:radial-gradient(1px 1px at 22px 34px,#fff8,transparent),radial-gradient(1px 1px at 140px 80px,#fff6,transparent),radial-gradient(1.5px 1.5px at 210px 190px,#F6B511aa,transparent),radial-gradient(1px 1px at 60px 210px,#fff5,transparent),radial-gradient(1px 1px at 260px 20px,#fff4,transparent);background-size:300px 300px;animation:twinkle 7s ease-in-out infinite;-webkit-mask-image:linear-gradient(#000,transparent 70%);mask-image:linear-gradient(#000,transparent 70%)}
+@keyframes drift1{to{transform:translate(18vmax,22vmax) scale(1.15)}}
+@keyframes drift2{to{transform:translate(-20vmax,30vmax) scale(.9)}}
+@keyframes drift3{to{transform:translate(25vmax,-25vmax) scale(1.2)}}
+[data-skin] .sprog{display:block;position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);height:2px;z-index:25;background:linear-gradient(90deg,var(--ember),var(--accent),#FFE7A0);transform-origin:0 50%;transform:scaleX(0);box-shadow:0 0 12px var(--accent);pointer-events:none}
+[data-skin] .glow{display:block;position:fixed;left:0;top:0;width:280px;height:280px;margin:-140px 0 0 -140px;border-radius:50%;z-index:15;pointer-events:none;background:radial-gradient(circle,rgba(246,181,17,.16),transparent 62%);mix-blend-mode:screen;opacity:0;transition:opacity .5s}
+[data-skin] .glow.on{opacity:1}
+.rip{position:fixed;z-index:96;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;border:1.5px solid var(--accent);pointer-events:none;animation:rip .55s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes rip{to{transform:scale(9);opacity:0}}
+/* surfaces */
+[data-skin] .card,[data-skin] .hub,[data-skin] .bt,[data-skin] .twp,[data-skin] .es-ses,[data-skin] .lr,[data-skin] .gl{-webkit-backdrop-filter:blur(14px) saturate(130%);backdrop-filter:blur(14px) saturate(130%);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+[data-skin] .card{border-radius:0;background:linear-gradient(180deg,rgba(246,181,17,.045),transparent 38%),var(--surface)}
+[data-skin] .fc{border-color:rgba(246,181,17,.2);box-shadow:0 20px 50px -24px rgba(246,181,17,.35),inset 0 1px 0 rgba(255,255,255,.05)}
+[data-skin] .tw-hero{box-shadow:0 30px 70px -30px rgba(246,181,17,.45),inset 0 1px 0 rgba(255,255,255,.06)}
+/* type */
+[data-skin] .hero{text-shadow:0 0 50px rgba(246,181,17,.18)}
+[data-skin] .hl{display:inline-block;background:linear-gradient(180deg,#FFF7E2 10%,#F3EEE3 45%,#F6B511 140%);-webkit-background-clip:text;background-clip:text;color:transparent}
+[data-skin] main.enter .hl{animation:hlIn .8s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i) * 38ms + 60ms)}
+@keyframes hlIn{from{opacity:0;transform:translateY(55%) rotate(7deg);filter:blur(10px)}}
+[data-skin] h2{background:linear-gradient(100deg,var(--text) 0%,var(--text) 42%,#FFD45C 50%,var(--text) 58%,var(--text) 100%) 0 0/260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 7s linear infinite}
+@keyframes sheen{0%,55%{background-position:100% 0}100%{background-position:-160% 0}}
+[data-skin] .sub{letter-spacing:.14em}
+/* buttons */
+[data-skin] .btn.acc,[data-skin] .fc-act .btn:first-child{background:linear-gradient(110deg,#F6B511 0%,#F6B511 42%,#FFE7A0 50%,#F6B511 58%,#F6B511 100%) 0 0/300% 100%;color:#050505;border-color:#F6B511;box-shadow:0 10px 30px -10px rgba(246,181,17,.7),inset 0 1px 0 rgba(255,255,255,.4);animation:shine 5.5s ease-in-out infinite}
+@keyframes shine{0%,62%{background-position:100% 0}100%{background-position:-50% 0}}
+[data-skin] .btn.ghost{border-color:rgba(243,238,227,.35);background:rgba(255,255,255,.02)}
+[data-skin] .btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
+/* nav */
+[data-skin] nav{left:10px;right:10px;bottom:calc(8px + env(safe-area-inset-bottom,0px));padding:0;border:1px solid rgba(246,181,17,.2);background:rgba(8,8,7,.58);-webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);box-shadow:0 18px 50px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.06);max-width:620px;margin:0 auto}
+[data-skin] .nav-ind{height:2px;box-shadow:0 0 16px 2px var(--accent)}
+[data-skin] .nav-ind::after{content:"";position:absolute;left:8%;right:8%;top:2px;height:52px;background:radial-gradient(60% 100% at 50% 0,rgba(246,181,17,.22),transparent);pointer-events:none}
+[data-skin] nav button.on .ic{color:var(--accent);filter:drop-shadow(0 0 8px rgba(246,181,17,.7))}
+/* page motion */
+[data-skin] main.enter>*{animation:riseB .7s cubic-bezier(.16,1,.3,1) both}
+@keyframes riseB{from{opacity:0;transform:translateY(24px) scale(.985);filter:blur(5px)}}
+[data-skin] .wkd.today{box-shadow:0 0 24px rgba(246,181,17,.45)}
+/* intro */
+.intro{position:fixed;inset:0;z-index:200;background:#030303;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#F6B511;animation:introOut .6s cubic-bezier(.7,0,.84,0) forwards 1.25s}
+.intro svg{width:110px;height:110px;animation:spinIn 1s cubic-bezier(.16,1,.3,1) both,glow 1.6s ease-in-out infinite}
+.intro b{font-size:30px;font-weight:800;font-stretch:125%;letter-spacing:.5em;color:#F3EEE3;margin-right:-.5em}
+.intro b span{display:inline-block;animation:hlIn .7s cubic-bezier(.16,1,.3,1) both}
+@keyframes introOut{to{opacity:0;transform:scale(1.08);visibility:hidden}}
+@media (prefers-reduced-motion:reduce){[data-skin] .aura i,[data-skin] .aura b,[data-skin] h2,[data-skin] .btn.acc{animation:none}.intro{display:none}}
+/* growth */
+.growbar{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.growbar button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:12px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;text-align:left}
+.growbar b{font-size:15px;font-weight:800;font-stretch:125%;text-transform:uppercase}
+.growbar span{font-size:11px;color:var(--muted)}
+.mgoal{display:flex;align-items:center;gap:12px;margin:14px 0 4px;padding:14px;border:1px solid var(--accent);background:linear-gradient(90deg,rgba(246,181,17,.16),transparent)}
+.mgoal .grow b{display:block;font-size:17px}
+.mgoal.done{border-color:var(--line);opacity:.7}
+.mgoal.done .grow b{text-decoration:line-through}
+.fo-presets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.fo-presets button{padding:14px 8px;border:1px solid var(--line);background:var(--surface);color:var(--text);font:inherit;text-align:center}
+.fo-presets b{display:block;font-size:26px;font-weight:800;font-stretch:125%;color:var(--accent)}
+.fo-presets span{font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.fo{position:fixed;inset:0;z-index:66;background:#030303;color:#F3EEE3;display:flex;flex-direction:column;align-items:center;padding:calc(env(safe-area-inset-top,0px) + 14px) 18px calc(env(safe-area-inset-bottom,0px) + 18px);animation:fadeIn .3s ease both}
+.fo-top{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:520px}
+.fo-top .icon-btn{color:#F3EEE3;border:1px solid #2A2823;background:transparent}
+.fo-ring{position:relative;width:min(78vw,340px);aspect-ratio:1;margin:8vh 0 18px}
+.fo-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.fo-ring circle{fill:none;stroke-width:6}
+.fo-ring .bg{stroke:#1d1b17}
+.fo-ring .fg{stroke:#F6B511;stroke-linecap:round;filter:drop-shadow(0 0 10px rgba(246,181,17,.6));transition:stroke-dashoffset .5s linear}
+.fo-mid{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.fo-t{font-size:min(17vw,76px);font-weight:800;font-stretch:125%;font-variant-numeric:tabular-nums;line-height:1}
+.fo-l{font-size:12px;font-weight:800;letter-spacing:.3em;text-transform:uppercase;color:#968F81;margin-top:8px;text-align:center;max-width:70%}
+.fo-in.pause .fo-t{animation:twinkle 1.6s ease-in-out infinite}
+.fo-q{max-width:340px;text-align:center;color:#968F81;font-size:14px}
+.fo-btns{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:520px}
+.fo-btns .btn.ghost{color:#F3EEE3;border-color:#F3EEE3}
+.fo-in{display:flex;flex-direction:column;align-items:center;flex:1;width:100%}
+.gl{padding:14px;margin:8px 0;background:var(--surface)}
+.gl-h{display:flex;align-items:baseline;gap:10px}
+.gl-h .grow b{font-size:17px}
+.gl-v{font-size:22px;font-weight:800;font-stretch:125%;color:var(--accent);white-space:nowrap}
+.gl-bar{height:6px;background:rgba(255,255,255,.06);margin:10px 0 6px;overflow:hidden}
+.gl-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ember),var(--accent,#F6B511));box-shadow:0 0 12px rgba(246,181,17,.6);transition:width .8s cubic-bezier(.16,1,.3,1)}
+.gl-f{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.mood{display:flex;gap:6px;margin:6px 0 10px}
+.mood button{flex:1;padding:10px 0;font-size:22px;border:1px solid var(--line);background:var(--surface);transition:transform .15s}
+.mood.en button{font-size:18px;font-weight:800;color:var(--text)}
+.mood button.on{border-color:var(--accent);background:rgba(246,181,17,.15);transform:translateY(-3px)}
+.wr{width:100%;border-collapse:collapse;font-size:14px}
+.wr td{padding:9px 0;border-bottom:1px solid var(--line)}
+.wr td:nth-child(2),.wr td:nth-child(3){text-align:right;font-weight:800;font-variant-numeric:tabular-nums}
+.wr td:nth-child(3){color:var(--muted);font-weight:600;width:80px}
+.wr .up{color:#3ccf7a}.wr .dn{color:var(--warn)}
+/* long reads */
+.lrs{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.lr{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:4px;padding:14px;min-height:150px;background:var(--surface);color:var(--text);font:inherit;text-align:left;overflow:hidden}
+.lr::after{content:"";position:absolute;right:-40px;bottom:-40px;width:110px;height:110px;background:radial-gradient(circle,rgba(246,181,17,.25),transparent 70%)}
+.lr.done{opacity:.6}
+.lr .lr-c{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.lr b{font-size:16px;font-weight:800;font-stretch:115%;line-height:1.1}
+.lr span{font-size:12px;color:var(--muted)}
+.lr em{margin-top:auto;font-style:normal;font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--muted)}
+.sen{display:flex;align-items:center;gap:14px;width:100%;text-align:left;color:var(--text);font:inherit;padding:16px;margin:10px 0;border:1px solid var(--line);background:linear-gradient(120deg,rgba(124,198,242,.12),transparent 60%),var(--surface)}
+.sen-n{font-size:40px;font-weight:800;font-stretch:125%;color:var(--glacier,#7CC6F2);line-height:1}
+.art{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);color:var(--text);text-decoration:none}
+.art:last-child{border-bottom:0}
+.art svg{width:14px;height:14px;flex:none}
+.rdr{max-width:620px}
+.rdr-top{display:flex;justify-content:space-between;align-items:center;margin:8px 0 4px}
+.rdr-fs{display:flex;gap:6px}
+.rdr-fs button{width:40px;height:36px;border:1px solid var(--line);background:var(--surface);color:var(--text);font-weight:800}
+.rdr-k{font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-top:14px}
+.rdr h1{font-size:clamp(30px,9vw,44px);font-weight:800;font-stretch:125%;line-height:1;text-transform:uppercase;margin:8px 0 6px}
+.rdr .by{color:var(--muted);margin-bottom:18px}
+.rdr-body{font-size:var(--rfs,18px);line-height:1.72;color:#E8E2D4}
+.rdr-body p{margin:0 0 1.05em}
+.rdr-body>p:first-child::first-letter{float:left;font-size:3.4em;line-height:.85;font-weight:800;font-stretch:125%;color:var(--accent);margin:.06em .1em 0 0}
+.rdr-body h3{font-size:1.05em;margin:1.6em 0 .4em;display:flex;gap:10px;align-items:baseline}
+.rdr-body h3 i{font-style:normal;color:var(--accent);font-size:.8em}
+.rdr-act{border-left:2px solid var(--accent);padding:4px 0 4px 14px;margin:1.4em 0}
+.rdr-act li{margin:.4em 0}
+.bk{padding:14px;margin:8px 0;border:1px solid var(--line);background:var(--surface)}
+.bk-h{display:flex;gap:10px;align-items:baseline}
+.bk-h .grow b{font-size:17px}
+.bk .stepper{margin-top:8px}
+.bk.done{border-color:var(--accent)}
+.bk .gl-f .btn-row,.gl-f .btn-row{display:flex;flex-wrap:nowrap;gap:6px}
+.bk .gl-f .btn{padding:8px 12px;min-height:38px;flex:none}
 </style>
 </head>
 <body>
+<div class="aura" aria-hidden="true"><i></i><i></i><i></i><b></b></div><div class="sprog" id="sprog" aria-hidden="true"></div><div class="glow" id="glow" aria-hidden="true"></div>
 <main id="main"></main>
 <div id="rest" class="rest" hidden><div class="grow"><div class="lab">Pihenő</div><div id="restT" class="rest-t">0:00</div></div><button data-a="rest30">+30 mp</button><button data-a="restSkip">Kihagyom</button></div>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
@@ -1026,8 +1162,8 @@ function groupOf(n){const s=n.toLowerCase();for(const g of ['egyeb','hus','szenh
 
 /* ---------- state ---------- */
 const KEY='forma_state_v1';
-function defaults(){return{v:3,updatedAt:0,settings:{age:21,sex:'m',height:180,weight:60,activity:1.55,surplus:400,creatine:5,days:[1,2,4,5],theme:'gold',ncv:2,water:true,waterGoal:3000,sleep:true,planStart:dk(monday(new Date())),name:'Balázs',goalWeight:null,supps:{},started:dk(),spClientId:''},logs:{},sessions:{},creatine:{},tasks:[],taskDone:{},water:{},sleep:{},weights:[],fav:[],hidden:[],reroll:{},plan:{},supTaken:{},playlists:{},inventory:[],shop:[],swaps:{},chDone:{},plHist:[],rw:null,food:{}}}
-function migrate(s){const d=defaults();const o=Object.assign(d,s||{});o.settings=Object.assign(defaults().settings,(s&&s.settings)||{});if(s&&s.settings&&(s.settings.ncv||0)<2){o.settings.ncv=2;o.settings.theme='gold'}if(!o.v||o.v<2){o.v=2;o.settings.planStart=dk(monday(new Date()));o.hidden=o.hidden.filter(x=>RI[x]);o.fav=o.fav.filter(x=>RI[x])}o.inventory=o.inventory.filter(x=>RI[x.r]);if(o.v<3){o.v=3;const ds=Object.keys(o.sessions).concat(Object.keys(o.logs)).sort();o.settings.started=ds[0]||dk()}return o}
+function defaults(){return{v:3,updatedAt:0,settings:{age:21,sex:'m',height:180,weight:60,activity:1.55,surplus:400,creatine:5,days:[1,2,4,5],theme:'nocta',ncv:3,water:true,waterGoal:3000,sleep:true,planStart:dk(monday(new Date())),name:'Balázs',goalWeight:null,supps:{},started:dk(),spClientId:''},logs:{},sessions:{},creatine:{},tasks:[],taskDone:{},water:{},sleep:{},weights:[],fav:[],hidden:[],reroll:{},plan:{},supTaken:{},playlists:{},inventory:[],shop:[],swaps:{},chDone:{},plHist:[],rw:null,food:{}}}
+function migrate(s){const d=defaults();const o=Object.assign(d,s||{});o.settings=Object.assign(defaults().settings,(s&&s.settings)||{});if(s&&s.settings&&(s.settings.ncv||0)<3){o.settings.ncv=3;o.settings.theme='nocta'}if(s&&s.settings&&(s.settings.ncv||0)<2){o.settings.ncv=2;o.settings.theme='gold'}if(!o.v||o.v<2){o.v=2;o.settings.planStart=dk(monday(new Date()));o.hidden=o.hidden.filter(x=>RI[x]);o.fav=o.fav.filter(x=>RI[x])}o.inventory=o.inventory.filter(x=>RI[x.r]);if(o.v<3){o.v=3;const ds=Object.keys(o.sessions).concat(Object.keys(o.logs)).sort();o.settings.started=ds[0]||dk()}return o}
 let S;try{S=migrate(JSON.parse(localStorage.getItem(KEY)||'null'))}catch(e){S=defaults()}
 if(!S.settings.spClientId)S.settings.spClientId='593a6265a62a48298451321d0a1f0e69';
 let dbRef=null,sync='local',pushT=null;
@@ -1052,8 +1188,8 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 const ui={learnSeg:'olvas',gearSeg:'ruha',freeSeg:'randi',tab:'ma',day:null,guide:{},foodSeg:'het',prepSeg:'plan',prep:{r:null,days:5,per:1},exChart:null,sheet:null,rs:null,te:null,resetArm:false};
 
 /* ---------- helpers ---------- */
-function applyTheme(){const t=S.settings.theme,h=document.documentElement;if(t==='system')h.removeAttribute('data-theme');else h.setAttribute('data-theme',t);
-  const dark=t==='dark'||(t==='system'&&matchMedia('(prefers-color-scheme: dark)').matches),m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',t==='gold'?'#050505':t==='blue'?'#AED8FD':dark?'#000000':'#EFEDE8')}
+function applyTheme(){const t=S.settings.theme,h=document.documentElement;if(t==='system')h.removeAttribute('data-theme');else h.setAttribute('data-theme',t==='nocta'?'gold':t);h.toggleAttribute('data-skin',t==='nocta');
+  const dark=t==='dark'||(t==='system'&&matchMedia('(prefers-color-scheme: dark)').matches),m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',t==='gold'||t==='nocta'?(t==='nocta'?'#030303':'#050505'):t==='blue'?'#AED8FD':dark?'#000000':'#EFEDE8')}
 function curWeight(){const w=S.weights;return w.length?w[w.length-1][1]:S.settings.weight}
 function targets(){const st=S.settings,w=curWeight();const bmr=10*w+6.25*st.height-5*st.age+(st.sex==='m'?5:-161);const kcal=Math.round((bmr*Number(st.activity)+Number(st.surplus)+Number(st.calAdj||0))/10)*10;const p=Math.round(w*2);const f=Math.round(kcal*0.25/9);const c=Math.max(0,Math.round((kcal-p*4-f*9)/4));return{kcal,p,f,c}}
 function cycleInfo(d=new Date()){const start=parseDk(S.settings.planStart);let weeks=Math.round((monday(d)-start)/(7*DAY));if(weeks<0)weeks=0;const cycle=Math.floor(weeks/6)+1,week=weeks%6+1;return{cycle,week,deload:week===6,variant:(cycle-1)%2?'B':'A'}}
@@ -1227,7 +1363,8 @@ let toastT;function toast(m){const el=$('#toast');el.textContent=m;el.classList.
 function seg(key,opts){return `<div class="seg" role="tablist">${opts.map(([v,l])=>`<button role="tab" class="${ui[key]===v?'on':''}" data-a="seg" data-k="${key}" data-v="${v}" aria-selected="${ui[key]===v}">${l}</button>`).join('')}</div>`}
 function stepper(a,v,id){return `<div class="stepper"><button class="round" data-a="${a}" data-v="-1" ${id?`data-id="${id}"`:''} aria-label="Kevesebb">${ICON.minus}</button><b>${v}</b><button class="round" data-a="${a}" data-v="1" ${id?`data-id="${id}"`:''} aria-label="Több">${ICON.plus}</button></div>`}
 function bar(){return `<header class="bar"><div class="brand">${MARK}<span class="wm">NOCTA</span>${CL}<span class="tm">FORMA</span></div><button class="icon-btn" data-a="settings" aria-label="Beállítások">${ICON.gear}</button></header>`}
-function heroBlock(big,sub,ghost,mark){const L=String(big).length,fs=L>5?`style="font-size:min(${(92/(L*1.02)).toFixed(1)}vw,${Math.round(600/(L*1.02))}px)"`:'';return `<div class="heroWrap">${mark?`<div class="heroMark">${MARK}</div>`:`<div class="heroGhost" aria-hidden="true">${esc(ghost)}</div>`}<div class="hero" ${fs}>${big}</div>${sub?`<div class="sub">${sub}</div>`:''}${mark?`<div class="slogan">${SLOGAN}</div><div class="cl-row"><span>C.L</span><span>A.W.R</span></div>`:''}</div>`}
+const heroLetters=b=>REDUCED||!document.documentElement.hasAttribute('data-skin')?b:[...String(b)].map((c,i)=>`<span class="hl" style="--i:${i}">${c===' '?'&nbsp;':esc(c)}</span>`).join('');
+function heroBlock(big,sub,ghost,mark){const L=String(big).length,fs=L>5?`style="font-size:min(${(92/(L*1.02)).toFixed(1)}vw,${Math.round(600/(L*1.02))}px)"`:'';return `<div class="heroWrap">${mark?`<div class="heroMark">${MARK}</div>`:`<div class="heroGhost" aria-hidden="true">${esc(ghost)}</div>`}<div class="hero" ${fs}>${heroLetters(big)}</div>${sub?`<div class="sub">${sub}</div>`:''}${mark?`<div class="slogan">${SLOGAN}</div><div class="cl-row"><span>C.L</span><span>A.W.R</span></div>`:''}</div>`}
 function ticker(){const t=['NOCTA','GYM TIME','C.L','A.W.R',SLOGAN.toUpperCase(),'IN ASSOCIATION WITH FORMA'].join(' ✦ ')+' ✦ ';return `<div class="ticker" aria-hidden="true"><div>${t}${t}</div></div>`}
 function exImg(id,cls){return `<div class="exi ${cls||''}"><img src="ex/${id}-0.jpg" alt="" loading="lazy" decoding="async"><img src="ex/${id}-1.jpg" alt="" loading="lazy" decoding="async"></div>`}
 function ring(done,total){const r=30,c=2*Math.PI*r,p=total?done/total:0;return `<svg class="ring" viewBox="0 0 76 76" aria-label="${done} / ${total} gyakorlat kész"><circle class="bgc" cx="38" cy="38" r="${r}"/><circle class="fgc" cx="38" cy="38" r="${r}" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${(c*(1-p)).toFixed(1)}" transform="rotate(-90 38 38)"/><text x="38" y="46" text-anchor="middle">${done}/${total}</text></svg>`}
@@ -1254,13 +1391,13 @@ const rankOf=l=>RANKS[Math.min(RANKS.length-1,Math.floor((l-1)/5))];
 const BADGES=[['w1','Első edzés','Az első teljesített edzés',s=>s.workouts,1],['w10','10 edzés','',s=>s.workouts,10],['w25','25 edzés','',s=>s.workouts,25],['w50','50 edzés','',s=>s.workouts,50],['w100','100 edzés','',s=>s.workouts,100],
   ['fw1','Teljes hét','Mind a 4 edzés egy héten',s=>s.fullWeeks,1],['fw4','Kihagyás nélkül','4 teljes hét',s=>s.fullWeeks,4],['s100','100 szett','',s=>s.sets,100],['s1000','1000 szett','',s=>s.sets,1000],
   ['pr1','Első rekord','Többet emeltél, mint valaha',s=>s.prs,1],['pr10','10 rekord','',s=>s.prs,10],['pr50','50 rekord','',s=>s.prs,50],['t10','10 tonna','Összes megmozgatott súly',s=>Math.floor(s.vol/1000),10],['t100','100 tonna','',s=>Math.floor(s.vol/1000),100],
-  ['c7','Kreatin hét','7 nap egymás után',s=>s.maxCre,7],['c30','Kreatin hónap','30 nap egymás után',s=>s.maxCre,30],['h7','Hidratált','7 nap teljes vízcél',s=>s.waterDays,7],['ch10','Kihívó','10 napi kihívás',s=>s.ch,10],['m4','Mérlegen','4 súlymérés',s=>s.weighs,4],['f7','Naplóíró','7 nap kajanapló',s=>s.foodDays,7],['f30','Könyvelő','30 nap kajanapló',s=>s.foodDays,30],['p7','Fehérjegép','7 nap meglett a fehérjecél',s=>s.proteinDays,7],['night','Night Shift','Edzés 21:00 után',s=>s.night,1],['early','Early Bird','Edzés reggel 8 előtt',s=>s.early,1],['glacier','Glacier','Edzés fagyos napon',s=>s.glacier,1],['hot','Hot Step','Edzés 27 fok feletti napon',s=>s.hot,1],['fs3','Nonstop','3 teljes hét egymás után',s=>s.fullStreak,3],['es10','¡Hola!','10 spanyol lecke',s=>s.esN,10],['es2x','Kétszer naponta','7 nap mindkét spanyol alkalom',s=>s.es2,7],['es30','Viajero','A teljes spanyol kurzus',s=>s.esN,30],['rd30','Könyvmoly','30 napi olvasmány',s=>s.rdN,30],['bx1','Első menet','Az első box menet',s=>s.bxR,1],['bx50','Boxer','50 box menet',s=>s.bxR,50],['bxl','Alapok megvannak','Mind a 12 box lecke',s=>s.bxL,12],['l10','Certified','10. szint',s=>s.lvl,10]];
+  ['c7','Kreatin hét','7 nap egymás után',s=>s.maxCre,7],['c30','Kreatin hónap','30 nap egymás után',s=>s.maxCre,30],['h7','Hidratált','7 nap teljes vízcél',s=>s.waterDays,7],['ch10','Kihívó','10 napi kihívás',s=>s.ch,10],['m4','Mérlegen','4 súlymérés',s=>s.weighs,4],['f7','Naplóíró','7 nap kajanapló',s=>s.foodDays,7],['f30','Könyvelő','30 nap kajanapló',s=>s.foodDays,30],['p7','Fehérjegép','7 nap meglett a fehérjecél',s=>s.proteinDays,7],['night','Night Shift','Edzés 21:00 után',s=>s.night,1],['early','Early Bird','Edzés reggel 8 előtt',s=>s.early,1],['glacier','Glacier','Edzés fagyos napon',s=>s.glacier,1],['hot','Hot Step','Edzés 27 fok feletti napon',s=>s.hot,1],['fs3','Nonstop','3 teljes hét egymás után',s=>s.fullStreak,3],['es10','¡Hola!','10 spanyol lecke',s=>s.esN,10],['lr5','Mélyre ás','5 hosszú olvasmány',s=>s.lrN,5],['sen30','Sztoikus','30 Seneca levél',s=>s.senN,30],['fo10','Flow','10 óra fókusz',s=>s.foH,10],['jr14','Önismeret','14 napló',s=>s.jrN,14],['bk1','Az első könyv','Egy befejezett könyv',s=>s.bkN,1],['goal1','Célba ért','Az első teljesített cél',s=>s.goalN,1],['es2x','Kétszer naponta','7 nap mindkét spanyol alkalom',s=>s.es2,7],['es30','Viajero','A teljes spanyol kurzus',s=>s.esN,30],['rd30','Könyvmoly','30 napi olvasmány',s=>s.rdN,30],['bx1','Első menet','Az első box menet',s=>s.bxR,1],['bx50','Boxer','50 box menet',s=>s.bxR,50],['bxl','Alapok megvannak','Mind a 12 box lecke',s=>s.bxL,12],['l10','Certified','10. szint',s=>s.lvl,10]];
 function rwStats(){const t=dk(),g=S.settings.waterGoal||3000,best={},prDays={};let prs=0,sets=0,vol=0;const prList=[];
   for(const d of Object.keys(S.logs).sort())for(const id in S.logs[d]){const ex=EX[id];if(!ex)continue;const done=S.logs[d][id].filter(s=>s[2]);sets+=done.length;for(const s of done)vol+=setVol(id,s);
     if(!done.length||ex.u==='mp'||ex.u==='testsúly')continue;const m=Math.max(...done.map(s=>s[0]||0));if(best[id]!=null&&m>best[id]){prs++;prDays[d]=(prDays[d]||0)+1;prList.push({d,id,kg:m})}if(best[id]==null||m>best[id])best[id]=m}
   const fd=S.food||{},tp=targets().p,fDays=Object.keys(fd).filter(d=>fd[d].length),pDays=fDays.filter(d=>foodSum(d).p>=tp);
-  const ch=S.chDone||{},days=new Set([...Object.keys((S.box||{}).rounds||{}),...Object.values((S.box||{}).done||{}),...Object.keys((S.learn||{}).read||{}),...Object.values((S.learn||{}).es||{}).map(e=>e.d),...Object.keys((S.learn||{}).rev||{}),...fDays,...Object.keys(S.xdone||{}),...Object.keys(S.logs),...Object.keys(S.sessions),...Object.keys(S.creatine),...Object.keys(S.water),...Object.keys(S.sleep),...Object.keys(S.taskDone),...Object.keys(ch),...S.weights.map(w=>w[0])]);
-  const dayXp=d=>{let x=0;const l=S.logs[d];if(l)for(const id in l)x+=l[id].filter(s=>s[2]).length*5;if(S.sessions[d])x+=100;if(S.xdone&&S.xdone[d])x+=100;if(S.creatine[d])x+=10;if((S.water[d]||0)>=g)x+=20;if(S.sleep[d]!=null&&S.sleep[d]>=7)x+=10;x+=(S.taskDone[d]||[]).length*10;if(S.weights.some(w=>w[0]===d))x+=15;if(ch[d])x+=30;{const lr=S.learn||{};if(lr.read&&lr.read[d]!=null)x+=10;x+=Object.values(lr.es||{}).filter(e=>e.d===d).length*30;if(lr.rev&&lr.rev[d])x+=20}{const bx=S.box||{};x+=Object.values(bx.done||{}).filter(v=>v===d).length*20+Math.min(6,(bx.rounds||{})[d]||0)*10}if(fd[d])x+=Math.min(4,fd[d].length)*5;if(pDays.includes(d))x+=20;return x+(prDays[d]||0)*50};
+  const ch=S.chDone||{},days=new Set([...Object.keys((S.box||{}).rounds||{}),...Object.values((S.box||{}).done||{}),...Object.keys((S.learn||{}).read||{}),...Object.values((S.learn||{}).es||{}).map(e=>e.d),...Object.keys((S.learn||{}).rev||{}),...Object.values((S.learn||{}).long||{}),...Object.values((S.learn||{}).sen||{}),...Object.keys(S.focus||{}),...Object.keys(S.journal||{}),...Object.keys(S.mgDone||{}),...(S.books||[]).flatMap(b=>Object.keys(b.log||{})),...fDays,...Object.keys(S.xdone||{}),...Object.keys(S.logs),...Object.keys(S.sessions),...Object.keys(S.creatine),...Object.keys(S.water),...Object.keys(S.sleep),...Object.keys(S.taskDone),...Object.keys(ch),...S.weights.map(w=>w[0])]);
+  const dayXp=d=>{let x=0;const l=S.logs[d];if(l)for(const id in l)x+=l[id].filter(s=>s[2]).length*5;if(S.sessions[d])x+=100;if(S.xdone&&S.xdone[d])x+=100;if(S.creatine[d])x+=10;if((S.water[d]||0)>=g)x+=20;if(S.sleep[d]!=null&&S.sleep[d]>=7)x+=10;x+=(S.taskDone[d]||[]).length*10;if(S.weights.some(w=>w[0]===d))x+=15;if(ch[d])x+=30;{const lr=S.learn||{};if(lr.read&&lr.read[d]!=null)x+=10;x+=Object.values(lr.es||{}).filter(e=>e.d===d).length*30;if(lr.rev&&lr.rev[d])x+=20;x+=(Object.values(lr.long||{}).filter(v=>v===d).length+Object.values(lr.sen||{}).filter(v=>v===d).length)*25}x+=Math.min(60,Math.floor(((S.focus||{})[d]||0)/25)*10);if(S.journal&&S.journal[d]&&S.journal[d].saved)x+=15;if(S.mgDone&&S.mgDone[d])x+=10;for(const b of S.books||[]){if((b.log||{})[d])x+=10;if(b.done===d)x+=100}{const bx=S.box||{};x+=Object.values(bx.done||{}).filter(v=>v===d).length*20+Math.min(6,(bx.rounds||{})[d]||0)*10}if(fd[d])x+=Math.min(4,fd[d].length)*5;if(pDays.includes(d))x+=20;return x+(prDays[d]||0)*50};
   let xp=0,today=0;const byDay={};for(const d of days){const x=dayXp(d);xp+=x;byDay[d]=x;if(d===t)today=x}
   const st=S.sessT||{},wl=S.wxLog||{},sd=[...new Set([...Object.keys(S.sessions),...Object.keys(S.xdone||{})])],cnt=f=>sd.filter(f).length;
   const night=cnt(d=>st[d]>=21),early=cnt(d=>st[d]!=null&&st[d]<8),glacier=cnt(d=>wl[d]&&wl[d].mn<=0),hot=cnt(d=>wl[d]&&wl[d].mx>=27);
@@ -1268,7 +1405,7 @@ function rwStats(){const t=dk(),g=S.settings.waterGoal||3000,best={},prDays={};l
   const wk={};for(const d of Object.keys(S.sessions)){const m=dk(monday(parseDk(d)));wk[m]=(wk[m]||0)+1}
   let fullStreak=0,fr=0,pw=null;for(const m of Object.keys(wk).filter(m=>wk[m]>=4).sort()){fr=pw&&Math.round((parseDk(m)-parseDk(pw))/DAY)===7?fr+1:1;fullStreak=Math.max(fullStreak,fr);pw=m}
   const lvl=Math.floor((50+Math.sqrt(2500+200*xp))/100);
-  return{xp,today,lvl,cur:50*lvl*(lvl-1),nxt:50*(lvl+1)*lvl,prs,prList,sets,vol,workouts:Object.keys(S.sessions).length+Object.keys(S.xdone||{}).length,maxCre,waterDays:Object.keys(S.water).filter(d=>S.water[d]>=g).length,ch:Object.keys(ch).length,weighs:S.weights.length,fullWeeks:Object.values(wk).filter(n=>n>=4).length,foodDays:fDays.length,proteinDays:pDays.length,esN:Object.keys((S.learn||{}).es||{}).length,es2:Object.keys((S.learn||{}).rev||{}).filter(d=>esAm(d)).length,bxL:Object.keys((S.box||{}).done||{}).length,bxR:Object.values((S.box||{}).rounds||{}).reduce((a,b)=>a+b,0),rdN:Object.keys((S.learn||{}).read||{}).length,byDay,night,early,glacier,hot,fullStreak}}
+  return{xp,today,lvl,cur:50*lvl*(lvl-1),nxt:50*(lvl+1)*lvl,prs,prList,sets,vol,workouts:Object.keys(S.sessions).length+Object.keys(S.xdone||{}).length,maxCre,waterDays:Object.keys(S.water).filter(d=>S.water[d]>=g).length,ch:Object.keys(ch).length,weighs:S.weights.length,fullWeeks:Object.values(wk).filter(n=>n>=4).length,foodDays:fDays.length,proteinDays:pDays.length,esN:Object.keys((S.learn||{}).es||{}).length,es2:Object.keys((S.learn||{}).rev||{}).filter(d=>esAm(d)).length,lrN:Object.keys((S.learn||{}).long||{}).length,senN:Object.keys((S.learn||{}).sen||{}).length,foH:Object.values(S.focus||{}).reduce((a,b)=>a+b,0)/60,jrN:Object.values(S.journal||{}).filter(j=>j.saved).length,bkN:(S.books||[]).filter(b=>b.done).length,goalN:(S.goals||[]).filter(g=>goalInfo(g).done).length,bxL:Object.keys((S.box||{}).done||{}).length,bxR:Object.values((S.box||{}).rounds||{}).reduce((a,b)=>a+b,0),rdN:Object.keys((S.learn||{}).read||{}).length,byDay,night,early,glacier,hot,fullStreak}}
 function badgesOf(s){return BADGES.map(([id,n,d,f,goal])=>({id,n,d:d||n,v:Math.min(goal,f(s)),goal,on:f(s)>=goal}))}
 function lvlCard(s){const pct=Math.round((s.xp-s.cur)/(s.nxt-s.cur)*100);return `<div class="card lvl" data-a="tab" data-t="halad"><div class="row"><div class="lvl-n"><span>Szint</span><b>${s.lvl}</b></div><div class="grow"><div class="row-title">${rankOf(s.lvl)}</div><div class="meta">${s.xp} XP, még ${s.nxt-s.xp} a következő szintig</div></div><div class="lvl-today"><b>+${s.today}</b><span>XP ma</span></div></div><div class="bar-p"><i style="width:${pct}%"></i></div></div>`}
 function checkRewards(){const s=rwStats(),got=badgesOf(s).filter(b=>b.on).map(b=>b.id);
@@ -1462,9 +1599,10 @@ function importData(file){const fr=new FileReader();fr.onload=()=>{try{const o=J
 function weekStrip(){const m=monday(new Date()),t=dk();let h='<div class="wk">';for(let i=0;i<7;i++){const d=new Date(m);d.setDate(m.getDate()+i);const k=dk(d),day=S.sessions[k]?getDay(S.sessions[k]):k===t?planDay():null;h+=`<div class="wkd ${k===t?'today':''} ${day?'train':''} ${trained(k)?'done':''}" title="${day?day.name:''}"><span>${WDS[d.getDay()]}</span><b>${d.getDate()}</b><i></i></div>`}return h+'</div>'}
 function rMa(){const now=new Date(),t=dk(now),wd=now.getDay(),ci=cycleInfo(),day=planDay(now),tg=targets();
   let h=bar()+ticker()+heroBlock(WD[wd],greet(now.getHours())+(S.settings.name?', '+esc(S.settings.name):'')+'. '+MON[now.getMonth()]+' '+now.getDate()+'.',null,true)+weekStrip();
-  const rs=rwStats();h+=calCard();
+  const rs=rwStats();h+=mainGoalCard()+calCard();
   h+=`<div class="fcar-wrap"><div class="fcar" id="fcar">${focusCards(now,day,ci)}</div><div class="fdots" id="fdots"></div></div>`;
   h+=bento(now,t,rs);
+  h+=`<div class="growbar"><button data-a="foStart" data-v="25"><b>Fókusz</b><span>${(S.focus||{})[t]||0} perc ma</span></button><button data-a="tab" data-t="grow"><b>Napló</b><span>${(S.journal||{})[t]&&S.journal[t].saved?'Kész ✓':'Este 2 perc'}</span></button><button data-a="tab" data-t="grow"><b>Célok</b><span>${(S.goals||[]).length} aktív</span></button></div>`;
   if(wd===0||wd===1)h+=`<button class="btn ghost full" data-a="weekOpen" data-v="${wd===1?-1:0}">Heti NOCTA összefoglaló kép</button>`;
   h+=dailyCard(t,mealPlan(now));
 
@@ -1570,7 +1708,7 @@ function rHalad(){const ci=cycleInfo(),w=curWeight();let h=bar()+heroBlock('Hala
   const mon=dk(monday(new Date()));const wkSessions=Object.keys(S.sessions).filter(d=>d>=mon).length;const total=Object.keys(S.sessions).length+Object.keys(S.xdone||{}).length;
   const ad=adherence(),allVol=Object.keys(S.logs).reduce((a,d)=>a+dayVol(d),0),gain=Math.round((w-S.settings.weight)*10)/10;
   const rs=rwStats(),bg=badgesOf(rs);
-  h+=`<h2>Jutalmak</h2>`+lvlCard(rs)+`<div class="xp-legend">Szett +5, edzés +100, spanyol lecke +30, esti ismétlés +20, box lecke +20, box menet +10, napi olvasmány +10, új rekord +50, napi kihívás +30, meglett fehérjecél +20, teljes vízcél +20, mérés +15, naplózott étkezés +5 (naponta max. 20), kreatin, teendő és 7+ óra alvás +10 XP. Rangok 5 szintenként: ${RANKS.join(', ')}.</div>`;
+  h+=`<h2>Jutalmak</h2>`+lvlCard(rs)+`<div class="xp-legend">Szett +5, edzés +100, spanyol lecke +30, esti ismétlés +20, hosszú olvasmány +25, 25 perc fókusz +10, napló +15, fő cél +10, befejezett könyv +100, box lecke +20, box menet +10, napi olvasmány +10, új rekord +50, napi kihívás +30, meglett fehérjecél +20, teljes vízcél +20, mérés +15, naplózott étkezés +5 (naponta max. 20), kreatin, teendő és 7+ óra alvás +10 XP. Rangok 5 szintenként: ${RANKS.join(', ')}.</div>`;
   h+=`<h3>Jelvények, ${bg.filter(b=>b.on).length}/${bg.length}</h3><div class="badges">${bg.map(b=>`<div class="bdg ${b.on?'':'off'}">${MARK}<b>${b.n}</b><span>${b.on?b.d:b.v+' / '+b.goal}</span></div>`).join('')}</div>`;
   h+=`<button class="btn ghost full" data-a="weekOpen" data-v="0">Heti NOCTA összefoglaló kép</button>`;
   h+=`<h2>Összesítés</h2><div class="card"><div class="stats"><div><b>${total}</b><span>edzés</span></div><div><b>${ad.pct==null?'0':ad.pct}%</b><span>betartás</span></div><div><b>${num(Math.round(allVol/100)/10)}</b><span>tonna mozgatva</span></div><div><b>${gain>0?'+':''}${num(gain)}</b><span>kg változás</span></div></div><div class="meta">Kezdés: ${shortDate(S.settings.started||dk())}. ${ad.planned?ad.done+' edzés a '+ad.planned+' tervezettből.':''} Kreatin sorozat: ${streak()} nap.</div></div>`;
@@ -1780,6 +1918,116 @@ function rGear(){let h=bar()+heroBlock('Gear','Ruha, felszerelés és kiegészí
 
 /* ---------- Learn: one short daily read + Spanish from zero (travel and basic conversation) ---------- */
 // [category, language, title, text, today's task]
+// Long reads: key ideas of practical books, written in our own words (not excerpts). [id, book, author, category, minutes, intro, points[[title,text]], actions[], who]
+const LONG=[
+['atomic','Atomic Habits','James Clear','Szokások',6,'A könyv egyetlen állítás köré épül: nem a céljaid szintjére emelkedsz, hanem a rendszereid szintjére süllyedsz. A nagy változás sok apró, naponta ismételt döntésből áll össze, és a szokásokat úgy lehet tervezni, mint egy gépet.',
+[['Az 1%-os kamatos kamat','Ha minden nap csak egy százalékkal leszel jobb valamiben, egy év alatt nagyjából harminchétszer jobb leszel. Ha ugyanennyivel romlasz, szinte nullára fogysz. Az apró szokások hatása az első hetekben láthatatlan, ezért a legtöbben épp akkor adják fel, amikor a görbe elkezdene felfelé fordulni. A szerző ezt a „lappangó lehetőségek fennsíkjának” hívja: a munka nem vész el, csak még nem látszik.'],
+['Identitás, nem eredmény','A legtartósabb változás nem az, hogy „le akarok adni 5 kilót”, hanem az, hogy „olyan ember vagyok, aki edz”. Minden elvégzett ismétlés egy szavazat arra, hogy ki vagy. Nem kell minden szavazatot megnyerned, csak a többséget. Ezért ér többet egy rövid, de megtartott edzés, mint egy tökéletes, ami elmarad.'],
+['A szokás négy lépése','Minden szokás egy jelből, egy vágyból, egy válaszból és egy jutalomból áll. Ha jó szokást akarsz, tedd a jelet láthatóvá, a vágyat vonzóvá, a választ könnyűvé, a jutalmat azonnalivá. Rossz szokásnál mindent fordítva: rejtsd el a jelet, tedd vonzatlanná, nehézzé és kielégítetlenné.'],
+['Környezet a motiváció helyett','Az emberek többsége nem akaraterőből tartja a szokásait, hanem azért, mert a környezete könnyűvé teszi. Ha a kreatin a fogkefe mellett van, beveszed. Ha a telefon a másik szobában töltődik, kevesebbet görgetsz. Ne a saját fegyelmedre építs, hanem rendezd át a teret úgy, hogy a jó döntés legyen a legrövidebb út.'],
+['Szokás-halmozás és a két perc','Kösd az új szokást egy meglévőhöz: „miután megittam a reggeli kávét, megcsinálom a spanyol leckét”. És kezdd nevetségesen kicsiben: két perc. Előbb azt kell megtanulni, hogyan jelenj meg, a teljesítményt később lehet emelni. A kihagyott napnál pedig egy szabály számít: soha ne hagyj ki kétszer egymás után.']],
+['Írd le: „Miután ____, azután ____.” Kösd így a spanyolt és a kreatint egy meglévő reggeli rutinhoz.','Válassz egy rossz szokást, és tegyél elé egy plusz lépést (például jelentkezz ki az appból, amit túl sokat nyitsz meg).','Ha kimarad egy nap, másnap a minimális változatot csináld meg, csak hogy ne legyen két nulla egymás után.'],
+'Annak, aki sokszor nekifutott valaminek, de nem tartott ki. Gyors, gyakorlatias olvasmány.'],
+['money','The Psychology of Money','Morgan Housel','Pénzügy',6,'Housel szerint a pénzügyi siker kevésbé múlik azon, mennyire vagy okos, és sokkal inkább azon, hogyan viselkedsz. A könyv rövid történeteken keresztül mutatja meg, miért hozunk rossz döntéseket a pénzzel, és mi az, ami tényleg számít.',
+[['Senki sem őrült','Mindenki a saját tapasztalatai alapján dönt a pénzről. Aki inflációban nőtt fel, másképp gondolkodik, mint aki tőzsdei fellendülésben. Ezért nincs „egyetlen helyes” pénzügyi döntés, csak olyan, ami a te helyzetedben és a te idegeiddel tartható.'],
+['A kamatos kamat türelme','Warren Buffett vagyonának döntő része azután keletkezett, hogy elmúlt hatvanéves. Nem azért, mert ő volt a legjobb befektető, hanem mert nagyon fiatalon kezdte, és nagyon sokáig nem hagyta abba. A legnagyobb előnyöd most az idő: amit 21 évesen félreteszel, annak évtizedei vannak nőni.'],
+['A gazdagság az, amit nem látsz','A drága autó azt mutatja meg, mennyit költöttél el, nem azt, mennyid van. A valódi vagyon az el nem költött pénz: a lehetőség, hogy később szabadon dönts. Ezt kívülről senki nem látja, ezért könnyű alábecsülni.'],
+['Elég','A legveszélyesebb pénzügyi készség az, ha nem tudod, mikor elég. Aki mindig a következő szintet hajszolja, könnyen olyan kockázatot vállal, ami mindent elvihet. Határozd meg előre, mire van szükséged, és ne kockáztasd azt, ami megvan, azért, ami nem kell.'],
+['Hagyj hibahatárt','A tervek ritkán úgy alakulnak, ahogy elképzeled. Legyen tartalékod (3-6 havi kiadás), ne vegyél fel hitelt arra, ami nem fontos, és fektess be úgy, hogy egy rossz évben se kelljen eladnod. Aki talpon marad, az nyer: a túlélés a legfontosabb befektetési stratégia.']],
+['Számold ki, mennyi a havi kiadásod, és szorozd meg hárommal: ez az első tartalék-célod.','Állíts be egy automatikus havi befektetést (például állampapír vagy globális indexalap), és ne nézd naponta.','Írd le egy mondatban, mennyi lenne számodra „elég” öt év múlva.'],
+'Mindenkinek. Ez az egyik legjobb első pénzügyi könyv, rövid fejezetekkel.'],
+['deep','Deep Work','Cal Newport','Fókusz',6,'Newport szerint a mély munka, vagyis a zavartalan, teljes figyelmet igénylő koncentráció egyre ritkább és egyre értékesebb képesség. Aki képes rá, gyorsabban tanul és jobb munkát ad ki a kezéből, mint aki folyamatosan értesítések között ugrál.',
+[['Figyelem-maradék','Ha egy feladatról a másikra váltasz, a figyelmed egy része az előzőnél ragad. Egy gyors üzenet-ellenőrzés után még percekig rosszabbul gondolkodsz. Ezért a sok apró megszakítás sokkal drágább, mint amilyennek tűnik.'],
+['Blokkokban dolgozz','Tervezd be előre a mély munka idejét, ugyanúgy, mint egy edzést. 60-90 perces blokkok, telefon másik szobában, egy feladat. Kezdetben egy blokk is sok lesz, de ez edzhető képesség, mint az erő: fokozatosan nő.'],
+['Unatkozni is tudni kell','Ha minden üres pillanatot a telefonnal töltesz ki, az agyad hozzászokik az állandó újdonsághoz, és a koncentráció szenvedéssé válik. Állj sorban, utazz, sétálj néha telefon nélkül. Ez az alapja annak, hogy később fókuszálni tudj.'],
+['Ritual és lezárás','A mély munka könnyebb, ha van rituáléja: ugyanaz a hely, ugyanaz az idő, ugyanaz a kezdés. A nap végén pedig zárd le tudatosan: írd fel, mi maradt nyitva, és mondd ki, hogy vége. Így pihenés közben nem pörög tovább az agyad.'],
+['Válassz a hálózatok közül','Nem minden eszköz éri meg, csak mert valami haszna van. Kérdezd meg: ez a legfontosabb céljaimat szolgálja, vagy csak elveszi az időt? Ami nem segít érdemben, azt nyugodtan elhagyhatod.']],
+['Holnapra jelölj ki egy 50 perces fókuszblokkot a Fókusz időzítővel, egyetlen feladattal.','Kapcsold ki a nem fontos appok értesítéseit.','Este írd fel a napló „holnap a legfontosabb” mezőjébe az első mély munka feladatot.'],
+'Ha tanulsz vagy tudásmunkát végzel. Az első fele elmélet, a második a gyakorlati szabályok.'],
+['mindset','Mindset','Carol Dweck','Gondolkodás',5,'Dweck kutatásai szerint két alapvető hozzáállás létezik a képességekhez. A rögzült szemlélet szerint a tehetség adott, a fejlődési szemlélet szerint fejleszthető. Hogy melyiket hiszed, az meghatározza, hogyan reagálsz a kihívásra és a kudarcra.',
+[['A kudarc jelentése','Rögzült szemléletben a kudarc ítélet: azt bizonyítja, hogy nem vagy jó. Fejlődési szemléletben információ: megmutatja, min kell dolgozni. Ugyanaz a rossz edzés vagy elrontott teszt egészen mást jelent attól függően, melyik szemüvegen át nézed.'],
+['Az erőfeszítés nem szégyen','Aki szerint a tehetség minden, annak az erőfeszítés gyanús: „ha tehetséges lennék, nem kellene ennyit dolgoznom”. A fejlődési szemléletben épp az erőfeszítés a fejlődés útja. A spanyolnál és a boksznál ez különösen igaz: az elején mindenki ügyetlen.'],
+['A „még” ereje','Egy apró nyelvi trükk: ne azt mondd, hogy „nem tudok spanyolul”, hanem azt, hogy „még nem tudok”. A „még” szó a kudarcot átmeneti állapottá alakítja, és nyitva hagyja az utat.'],
+['Dicséret: a folyamatot','A kutatásokban azok a gyerekek, akiket az okosságukért dicsértek, később kerülték a nehéz feladatokat. Akiket az erőfeszítésükért, azok keresték a kihívást. Magadat is így dicsérd: ne azt mondd, hogy „tehetséges vagyok”, hanem hogy „jól csináltam, mert gyakoroltam”.'],
+['Mindkettő benned van','Senki sem tisztán egyik vagy másik. Bizonyos helyzetekben (például ha valaki jobb nálad az edzőteremben) előjön a rögzült hang. A cél nem az, hogy soha ne halld, hanem hogy észrevedd, és tudatosan válassz.']],
+['Írd le, melyik területen gondolod magadról, hogy „nem vagyok benne jó”, és fogalmazd át „még nem”-mel.','A következő elrontott spanyol tesztnél nézd meg a hibás szavakat, mielőtt újrapróbálod.','Kérdezd meg magadtól a mai edzés után: mit tanultam ma?'],
+'Rövid összefoglalóból is sokat ad, a könyv sok példát hoz sportból és üzletből.'],
+['stick','Make It Stick','Peter C. Brown, Henry Roediger, Mark McDaniel','Tanulás',6,'Három kutató arról ír, hogyan tanulunk valójában. A legtöbb népszerű tanulási módszer, mint az újraolvasás vagy a kiemelés, alig működik. Ami működik, az elsőre nehezebbnek tűnik.',
+[['Felidézés olvasás helyett','Ha valamit újraolvasol, ismerősnek tűnik, és azt hiszed, tudod. Ha viszont fejből próbálod felidézni, kiderül, mi ragadt meg igazán, és maga a felidézés erősíti az emléket. Ezért van a spanyol leckék végén teszt: a teszt maga a tanulás.'],
+['Szétosztott gyakorlás','Egy nagy tömbben tanulni (magolás) rövid távon jól érzed magad tőle, de gyorsan felejtesz. Ha ugyanazt több napra elosztva ismétled, kicsit már elfelejtve, sokkal tartósabb lesz. Ezért van naponta két alkalom, és ezért jönnek vissza a régi szavak.'],
+['Keverés','Ha egymás után sokszor ugyanazt a típusú feladatot gyakorlod, könnyűnek tűnik. Ha összekevered a típusokat, nehezebb, de jobban megtanulod felismerni, mikor mit kell használni. Ez igaz a boksz kombókra és a nyelvtani szerkezetekre is.'],
+['A hasznos nehézség','A tanulásnak kicsit nehéznek kell lennie. Ha minden azonnal megy, valószínűleg nem tanulsz. A hibázás nem kudarc, hanem jel, hogy az agyad dolgozik. A legjobb, ha a válasz előtt megpróbálsz rájönni, még akkor is, ha tévedsz.'],
+['Kapcsolj hozzá valamit','Az új tudás akkor marad meg, ha kötöd a meglévőhöz. Mondj példát, magyarázd el saját szavaiddal, képzeld el, hol használnád. Egy spanyol szó jobban megmarad, ha elképzeled, ahogy egy madridi kávézóban kéred.']],
+['A mai spanyol szavakból hármat mondj ki fejből este, mielőtt megnyitod az esti ismétlést.','Egy olvasmány után csukd be az appot, és mondd el magadnak 30 másodpercben, miről szólt.','Box edzésen keverd a kombókat, ne ugyanazt ismételd egy egész menetben.'],
+'Bárkinek, aki tanul. Az egyik leghasznosabb könyv, mert minden tanulási helyzetben használható.'],
+['naval','The Almanack of Naval Ravikant','Eric Jorgenson','Gazdagság és boldogság',6,'Naval Ravikant befektető gondolatainak gyűjteménye két témáról: hogyan építs vagyont úgy, hogy ne az idődet add el, és hogyan legyél nyugodtabb, boldogabb ember. A könyv ingyen is elérhető a szerző oldalán.',
+[['Specifikus tudás','Az a tudás a legértékesebb, amit nem lehet könnyen betanítani, mert a kíváncsiságodból és a tapasztalataidból nő ki. Ezt nem tanfolyamon szerzed, hanem úgy, hogy azzal foglalkozol, ami tényleg érdekel, és közben egyre jobb leszel benne.'],
+['Tőkeáttétel','Ha csak az idődet adod el, a jövedelmed korlátos. A tőkeáttétel az, ami megsokszorozza a munkádat: a kód, a tartalom, a tőke és a csapat. Egy jól megírt program vagy videó akkor is dolgozik, amikor alszol.'],
+['Hosszú távú játékok','A legjobb dolgok az életben, a vagyon, a kapcsolatok és a tudás, kamatos kamattal nőnek. Ehhez hosszú ideig kell ugyanazokkal az emberekkel és ugyanazon a területen dolgozni. Válassz olyan embereket és célokat, akikkel évtizedekig szívesen játszanál.'],
+['A boldogság készség','Naval szerint a boldogság nem jutalom, ami egyszer megérkezik, hanem gyakorolható állapot. Kevesebb vágy, több jelenlét. Minden vágy egy szerződés önmagaddal, hogy addig nem leszel elégedett, amíg meg nem kapod. Válogasd meg, melyiket kötöd meg.'],
+['Olvass sokat','Majdnem minden, amit tudni érdemes, le van írva valahol. Olvass olyat, amit szeretsz, amíg meg nem szereted az olvasást. Az alapokat (matematika, logika, meggyőzés) érdemes jól megtanulni, mert mindenre ráépül.']],
+['Írj le három dolgot, amiben a barátaid szerint jobb vagy az átlagnál. Ezek a specifikus tudásod csírái.','Gondold végig: van olyan dolog, amit csak egyszer kellene megcsinálnod, és utána magától dolgozna?','Vegyél fel egy könyvet a Könyveim listára, és olvass belőle napi 10 oldalt.'],
+'Ha a pénz és az értelmes élet egyszerre érdekel. Rövid, idézetszerű gondolatokból áll.'],
+['babylon','The Richest Man in Babylon','George S. Clason','Pénzügy',5,'Egy 1926-os könyv ókori babiloni történetekben mondja el a pénzügyi alapelveket. A stílusa régies, de az elvei ma is pontosan működnek, és meglepően egyszerűek.',
+[['Tizedet magadnak','Abból, amit keresel, legalább egy tizedet tarts meg magadnak. Nem a boltosnak, nem a szórakozásnak, hanem a jövőbeli énednek. Aki ezt nem teszi meg, az egész életében csak átengedi magán a pénzt.'],
+['Költs tervszerűen','A kiadások mindig hajlamosak nőni a bevétellel együtt. Ha nem tervezed meg, mire mennyi megy, a fizetésemelés is elfolyik. Különítsd el a szükségleteket a vágyaktól, és csak a maradékra vonatkozzanak a vágyak.'],
+['Dolgoztasd a pénzt','A félretett pénz akkor nő, ha munkába állítod. Minden forint, amit befektetsz, egy kis munkás, aki neked dolgozik, és a gyermekei (a hozam) is neked dolgoznak tovább.'],
+['Védd a tőkédet','Ne fektess olyan dologba, amit nem értesz, és ne hallgass olyan emberekre, akik nem értenek hozzá. A gyors meggazdagodás ígérete a legbiztosabb út a veszteséghez. Előbb a biztonság, aztán a hozam.'],
+['Fektess magadba','Minél többet tudsz, annál többet tudsz keresni. A tanulás, a készségek és az egészség a legjobb hosszú távú befektetések, mert senki nem veheti el őket.']],
+['Nézd meg a múlt havi kiadásaidat, és válassz ki egy tételt, amit a felére tudsz csökkenteni.','Döntsd el, mennyi lesz a „tized” a következő fizetésedből, és tedd félre az első napon.','Írd fel, milyen készséget fejlesztesz idén, ami később pénzt hozhat.'],
+'Egy este alatt elolvasható. Ha unalmasnak érzed a modern pénzügyi könyveket, ezzel kezdd.'],
+['goggins','Can\'t Hurt Me','David Goggins','Mentális keménység',6,'Goggins nehéz gyerekkorból jutott el a Navy SEAL kiképzésig és ultramaratonokig. A könyv arról szól, hogyan lehet a kényelmetlenséget eszközként használni, és miért adjuk fel sokkal hamarabb, mint ahol a valódi határunk van.',
+[['A 40%-os szabály','Goggins szerint amikor azt érzed, hogy teljesen kész vagy, valójában csak a képességeid kb. 40%-át használtad ki. Ez nem tudományos szám, hanem szemlélet: az agyad jóval a valódi határ előtt szól, hogy állj meg. A kérdés az, hogy meghallod-e, és mégis megcsinálsz-e még egy ismétlést.'],
+['A sütisdoboz','Gyűjtsd össze fejben azokat a pillanatokat, amikor nehéz helyzetben helytálltál. Amikor legközelebb fel akarod adni, vegyél elő egyet: „ezt is megcsináltam, ezt is meg fogom”. A korábbi győzelmeid üzemanyagot adnak a mostani küzdelemhez.'],
+['A felelősség tükre','Goggins post-it cetliket ragasztott a tükrére a céljaival és a hibáival. Kendőzetlen őszinteség önmagaddal: hol vagy most, és mit kell tenned. Nem önostorozásként, hanem kiindulópontként.'],
+['Keresd a kényelmetlent','Minden nap tegyél valamit, ami nem esik jól: hideg zuhany, korai kelés, egy kör a zsákon, amikor nincs kedved. A kis, önként vállalt kényelmetlenségek edzik az elmét arra, hogy a nagy nehézségekben is kitarts.'],
+['Óvatosan vele','Goggins módszere szélsőséges, és ő maga is sérüléseket szerzett a túlhajtással. Az edzésben a pihenés és a fokozatosság továbbra is fontos. A gondolkodásmódot érdemes átvenni, a sérülésen való átfutást nem.']],
+['A következő edzés utolsó gyakorlatánál csináld meg az utolsó szettet tisztán, de az utolsó lehetséges ismétlésig.','Írj fel három nehéz helyzetet, amit már túléltél. Ez a sütisdobozod.','Válassz egy apró napi kényelmetlenséget erre a hétre (például 30 mp hideg víz a zuhany végén).'],
+'Ha motivációs löketre van szükséged. Nyers és erős, nem finomkodik.'],
+['essential','Essentialism','Greg McKeown','Fókusz',5,'A könyv fő gondolata: ne próbálj meg mindent csinálni, hanem válaszd ki a kevés lényeges dolgot, és azokat csináld nagyon jól. Aki mindenre igent mond, az a saját prioritásait adja oda másoknak.',
+[['Kevesebb, de jobban','Ha tíz irányba teszel egy-egy lépést, sehova nem jutsz el. Ha egy irányba teszel tíz lépést, messzire jutsz. A választás nem korlátozás, hanem erő: eldönteni, mi nem fontos.'],
+['Ha nem egyértelmű igen, akkor nem','Ha egy lehetőségre nem tudsz lelkesen igent mondani, mondj nemet. Így marad helyed azokra a ritka alkalmakra, amelyek tényleg számítanak. A nemet lehet udvariasan és határozottan mondani.'],
+['Teret kell hagyni','A legjobb ötletek nem a zsúfolt napokban születnek. Kell idő gondolkodni, unatkozni, átnézni a dolgokat. Tervezz be heti egy órát, amikor semmit nem csinálsz, csak átgondolod, jó irányba mész-e.'],
+['Alvás és játék','Az alvást gyakran elsőként áldozzuk fel, pedig ez a teljesítmény alapja. Ugyanígy a játék, a szórakozás sem időpocsékolás: frissíti az agyat. A lényegre koncentráló ember védi a saját energiáját.'],
+['A rendszer szerepe','A fontos dolgokat érdemes rutinná tenni, hogy ne kelljen minden nap újra dönteni róluk. A napi két spanyol alkalom vagy a heti edzéscél pontosan ilyen: egyszer eldöntöd, utána csak csinálod.']],
+['Írd le a három legfontosabb dolgot az életedben most. Minden más ezek után jön.','Mondj nemet egy dologra ezen a héten, ami nem fér bele ebbe a háromba.','Vasárnap este nézd meg a heti visszatekintést, és döntsd el, mi a jövő hét egy fő célja.'],
+'Ha túl sok minden van a tányérodon. Könnyen olvasható, sok példával.'],
+['kahneman','Thinking, Fast and Slow','Daniel Kahneman','Döntések',6,'A Nobel-díjas pszichológus két gondolkodási rendszert ír le. Az egyes rendszer gyors, automatikus és érzelmi, a kettes lassú, tudatos és fárasztó. A legtöbb döntésünket az egyes hozza, és ez gyakran hibákhoz vezet.',
+[['Ami látszik, az minden','Az agy abból épít történetet, ami előtte van, és nem gondol arra, ami hiányzik. Ha csak egy oldalt hallasz egy vitában, meggyőzőnek tűnik. Döntés előtt kérdezd meg: milyen információ hiányzik még?'],
+['A horgonyhatás','Az első szám, amit hallasz, befolyásolja a becslésedet, még akkor is, ha teljesen véletlen. Ezért drága az első ár egy boltban, és ezért érdemes tárgyaláskor neked mondani az első számot.'],
+['Veszteségkerülés','Egy veszteség kb. kétszer annyira fáj, mint amennyire egy ugyanakkora nyereség örömet okoz. Ezért ragaszkodunk a rossz befektetésekhez és a rossz döntésekhez: nem akarjuk elismerni a veszteséget.'],
+['A tervezési tévedés','Szinte mindig alábecsüljük, mennyi idő és pénz kell valamihez. A megoldás: nézd meg, hasonló dolgok másoknál vagy neked korábban mennyi ideig tartottak, és abból indulj ki, ne a tökéletes forgatókönyvből.'],
+['Lassíts le a fontos döntéseknél','Az egyes rendszert nem lehet kikapcsolni, de a nagy döntéseknél tudatosan bekapcsolhatod a kettest: aludj rá egyet, írd le az érveket, kérdezz meg valakit, aki másképp gondolja. A kis döntéseknél bízz az ösztönödben, a nagyoknál ne.']],
+['A következő nagyobb vásárlás előtt várj 48 órát.','Ha tervezel valamit (projekt, utazás), szorozd meg a becsült időt másfélszeresre.','Figyeld meg ma, mikor hoztál gyors, érzelmi döntést, és jó volt-e.'],
+'Hosszú és helyenként nehéz könyv, de alapmű. Ha sok, kezdd az első két résszel.'],
+['marcus','Elmélkedések (Meditations)','Marcus Aurelius','Sztoicizmus',5,'Egy római császár személyes jegyzetei, amelyeket nem kiadásra szánt. Önmagát emlékeztette arra, hogyan maradjon nyugodt, igazságos és fegyelmezett a hatalom és a nehézségek közepette. Közel kétezer év után is meglepően modern.',
+[['Ami rajtad múlik','A sztoikusok szerint a dolgok két csoportra oszlanak: amire hatással vagy (a döntéseid, a reakcióid) és amire nem (az időjárás, mások véleménye, a múlt). Az energiád az elsőre fordítsd, a másodikat fogadd el.'],
+['A reggeli felkészülés','Marcus reggelente arra készült, hogy aznap találkozni fog hálátlan, türelmetlen, bosszantó emberekkel. Nem azért, hogy keserű legyen, hanem hogy ne érje váratlanul, és nyugodtan tudjon reagálni.'],
+['Az akadály az út','Ami az utadba áll, az is az út része lesz. Minden nehézség lehetőség valamilyen erény gyakorlására: türelemre, bátorságra, kitartásra. Egy sérülés megtanít jobban pihenni, egy rossz nap alázatra.'],
+['A pillanat elég','Senki sem veszít mást, csak a jelen pillanatot, mert csak az van neki. A múlt elmúlt, a jövő még nem jött el. Ha a mostani feladatot jól csinálod meg, az elég.'],
+['Tégy jót csendben','Ne várj elismerést azért, amit jól csináltál, ahogy a szőlő sem vár köszönetet azért, hogy termést hoz. A jó cselekedet önmagában a jutalom.']],
+['Reggel gondold végig egy percig: mi az, ami ma rajtam múlik, és mi az, ami nem?','Ha ma bosszant valami, kérdezd meg: egy év múlva számítani fog?','Olvass el egy Seneca levelet az Olvasmány fül alján.'],
+'Mindenkinek. Lassan érdemes olvasni, naponta néhány bekezdést.'],
+['peak','Peak','Anders Ericsson, Robert Pool','Gyakorlás',6,'Ericsson az a kutató, akinek a munkájából a „tízezer órás szabály” lett, bár ő maga szerint ez félreértés. A könyv lényege: nem a gyakorlás mennyisége számít, hanem a minősége. A tudatos gyakorlás szinte bármiben kiemelkedő szintre vihet.',
+[['Naiv gyakorlás','A legtöbben csak ismétlik ugyanazt, és csodálkoznak, hogy nem fejlődnek. Aki tíz évig ugyanúgy vezet autót, nem lesz jobb sofőr. Az ismétlés önmagában fenntart, de nem fejleszt.'],
+['Tudatos gyakorlás','A fejlődéshez konkrét, szűk cél kell, teljes figyelem, azonnali visszajelzés, és olyan feladat, ami kicsit a komfortzónán túl van. Nem azt gyakorlod, hogy „bokszolok”, hanem azt, hogy „a jab után visszahúzom a kezem az arcomhoz”.'],
+['Mentális reprezentációk','A szakértők fejében részletes belső kép van arról, milyen a jó mozdulat, a jó mondat vagy a jó lépés. Minél pontosabb ez a kép, annál jobban észreveszed a hibát. Ezért segít a videó a technikáról: pontosabb belső képet ad.'],
+['Visszajelzés nélkül nincs fejlődés','Ha nem tudod, hogy jól csinálod-e, csak találgatsz. Mérj: súly és ismétlés az edzésnaplóban, százalék a spanyol teszten, videó magadról a zsák előtt. A számok mutatják meg, mit kell javítani.'],
+['A tehetség túlértékelt','A kutatások szerint a születési adottság sokkal kevésbé számít, mint hisszük, főleg hosszú távon. A legtöbb kiemelkedő ember mögött évek tudatos, jól irányított gyakorlása áll.']],
+['A következő box alkalomnál válassz egyetlen technikai részletet, és csak arra figyelj egész menetben.','Vedd fel videóra magad egy gyakorlat közben, és hasonlítsd össze a technikai videóval.','A spanyol esti ismétlésben a rontott szavakat mondd ki hangosan háromszor.'],
+'Ha valamiben igazán jó akarsz lenni. Sok érdekes történet sakkból, zenéből, sportból.']
+];
+
+const ARTS=[['How to Do Great Work','Paul Graham','http://paulgraham.com/greatwork.html','Hogyan találd meg, miben lehetsz kiemelkedő'],
+['The Tail End','Wait But Why','https://waitbutwhy.com/2015/12/the-tail-end.html','Mennyi időd van még valójában a fontos emberekkel'],
+['Continuous Improvement','James Clear','https://jamesclear.com/continuous-improvement','Az 1%-os javulás matematikája'],
+['The Psychology of Money (eredeti esszé)','Morgan Housel','https://collabfund.com/blog/the-psychology-of-money/','20 rövid tanulság a pénzről'],
+['How to Get Rich (without getting lucky)','Naval Ravikant','https://nav.al/rich','Specifikus tudás, tőkeáttétel, hosszú távú játékok'],
+['Mental Models','Farnam Street','https://fs.blog/mental-models/','A legjobb gondolkodási eszközök gyűjteménye'],
+['First Principles','Farnam Street','https://fs.blog/first-principles/','Hogyan bonts le egy problémát az alapjaira'],
+['Deliberate Practice','James Clear','https://jamesclear.com/deliberate-practice-theory','Hogyan gyakorolnak a legjobbak'],
+['The Hypertrophy Range: Fact or Fiction?','Stronger by Science','https://www.strongerbyscience.com/hypertrophy-range-fact-fiction/','Hány ismétlés kell az izomnövekedéshez'],
+['How to Work Hard','Paul Graham','https://paulgraham.com/hwh.html','Mit jelent valójában keményen dolgozni']];
 const READS=[
 ['Pénzügy','hu','Fizesd ki először magad','A legtöbben azt takarítják meg, ami a hónap végén megmarad. Ez általában semmi. Fordítsd meg: fizetésnapon automatikusan menjen át egy fix összeg (akár a fizetésed 10%-a) egy külön számlára, és csak a maradékból élj. Amit nem látsz, azt nem költöd el.','Állíts be ma egy automatikus átutalást fizetésnapra, akár csak 10 000 Ft-ról.'],
 ['Mindset','hu','A 2 perces szabály','Ha valami 2 percnél rövidebb, csináld meg most. Ha új szokást akarsz, kezdd 2 perces változattal: nem „edzek egy órát”, hanem „felveszem az edzőcipőt”. Az elkezdés a legnehezebb, a folytatás már megy magától.','Válassz egy halogatott dolgot, és csináld meg az első 2 percét.'],
@@ -1890,11 +2138,12 @@ const esPm=(t=dk())=>!!(L0().rev&&L0().rev[t]);
 const esCnt=(t=dk())=>(esAm(t)?1:0)+(esPm(t)?1:0);
 function rLearn(){let h=bar()+heroBlock('Tanulás','Napi olvasmány, spanyol és box az alapoktól','LEARN');
   h+=seg('learnSeg',[['olvas','Olvasmány'],['es','Spanyol'],['box','Box']]);const lr=L0(),t=dk();
-  if(ui.learnSeg==='olvas'){const i=readIdx(t),[c,lg,ti,body,task]=READS[i],read=lr.read[t]!=null;
+  if(ui.learnSeg==='olvas'&&ui.rd)h+=rReader();
+  else if(ui.learnSeg==='olvas'){const i=readIdx(t),[c,lg,ti,body,task]=READS[i],read=lr.read[t]!=null;
     h+=`<div class="read-card ${read?'done':''}"><div class="rc-top"><span class="tag acc">${c}</span><span class="meta">${lg==='en'?'English':'Magyar'} · kb. 1 perc</span></div><h3 class="rc-t">${esc(ti)}</h3><p class="rc-b">${esc(body)}</p><div class="rc-task"><b>Mai feladat</b><span>${esc(task)}</span></div>
       <button class="btn ${read?'ghost':'acc'} full" data-a="readDone">${read?'Elolvasva ✓':'Elolvastam, +10 XP'}</button></div>`;
     const past=[];for(let k=1;k<=6;k++){const x=new Date();x.setDate(x.getDate()-k);past.push([dk(x),READS[readIdx(dk(x))]])}
-    h+=`<h2>Az elmúlt napok</h2><div class="card">${past.map(([d,r])=>`<details class="rd-old"><summary><span class="meta">${shortDate(d)} · ${r[0]}</span><span class="row-title">${esc(r[2])}</span>${lr.read[d]!=null?'<span class="tag">✓</span>':''}</summary><p>${esc(r[3])}</p></details>`).join('')}</div>`}
+    h+=`<h2>Az elmúlt napok</h2><div class="card">${past.map(([d,r])=>`<details class="rd-old"><summary><span class="meta">${shortDate(d)} · ${r[0]}</span><span class="row-title">${esc(r[2])}</span>${lr.read[d]!=null?'<span class="tag">✓</span>':''}</summary><p>${esc(r[3])}</p></details>`).join('')}</div>`;h+=longSection()}
   else if(ui.learnSeg==='box')h+=rBox();
   else if(ui.es&&ui.es.step)h+=esLesson();
   else{const n=esNext(),done=Object.keys(lr.es).length,td=esToday();
@@ -1912,6 +2161,34 @@ function rLearn(){let h=bar()+heroBlock('Tanulás','Napi olvasmány, spanyol és
     h+=`<h2>Leckék</h2><div class="es-map">${ES.map((L,i)=>{const d=lr.es[i],lock=i>n;return `<button class="es-node ${d?'done':''} ${i===n?'cur':''}" data-a="${lock?'esLocked':'esStart'}" data-i="${i}" ${lock?'aria-disabled="true"':''}><b>${i+1}</b><span>${L.t}</span>${d?`<em>${d.s}%</em>`:lock?'<em>🔒</em>':''}</button>`}).join('')}</div>`;
     h+=`<p class="fine">Spanyolországi spanyol. A kiejtés magyaros átírás, a 🔊 gomb felolvassa (a telefon spanyol hangjával). Naponta két alkalom: egy lecke (szavak, mondatok, kb. 15-17 kérdéses teszt) és egy esti ismétlés 17 kérdéssel. Feladattípusok: fordítás mindkét irányba, hallás utáni értés és írás, hiányzó szó, mondat összerakása szavakból. Ha a teszt legalább 70%, kész. A rontott szavakat az app megjegyzi, és az ismétlésben előre veszi.</p>`}
   return h}
+// ---------- long reads, Seneca, books ----------
+const lrDone=id=>!!((S.learn||{}).long||{})[id];
+const senNext=()=>{const sn=(S.learn||{}).sen||{};for(let n=1;n<=124;n++)if(!sn[n])return n;return 124};
+function longSection(){const lr=L0(),n=senNext(),sn=lr.sen||{},nd=Object.keys(lr.long||{}).length;let h=`<h2>Hosszú olvasmány</h2><p class="meta">5-8 perces olvasmányok: híres könyvek fő gondolatai saját összefoglalóban, és Seneca leveleinek teljes szövege. +25 XP darabonként.</p>`;
+  h+=`<button class="sen" data-a="rdOpen" data-k="sen" data-n="${n}"><div class="sen-n">${n}</div><div class="grow"><div class="fc-k" style="color:var(--glacier,#7CC6F2)">Seneca levelei Luciliushoz · angol</div><div class="row-title">Ma: a ${n}. levél</div><div class="meta">${Object.keys(sn).length}/124 elolvasva · teljes szöveg, kb. 5-10 perc</div></div></button>`;
+  h+=`<h3>Könyvek dióhéjban <span class="meta">${nd}/${LONG.length}</span></h3><div class="lrs">${LONG.map(([id,b,a,c,m])=>`<button class="lr ${lrDone(id)?'done':''}" data-a="rdOpen" data-k="${id}"><span class="lr-c">${c}</span><b>${b}</b><span>${a}</span><em>${lrDone(id)?'✓ elolvasva':m+' perc'}</em></button>`).join('')}</div>`;
+  h+=`<h3>Cikkek a weben</h3><div class="card">${ARTS.map(([ti,au,u,d])=>`<a class="art" href="${u}" target="_blank" rel="noopener"><div class="grow"><div class="row-title">${ti}</div><div class="meta">${au} · ${d}</div></div>${ICON.ext}</a>`).join('')}</div>`;
+  h+=booksSection();return h}
+function rReader(){const R=ui.rd,fs=S.settings.rdFs||18;let h=`<div class="rdr" style="--rfs:${fs}px"><div class="rdr-top"><button class="link" data-a="rdBack">‹ Olvasmányok</button><div class="rdr-fs"><button data-a="rdFs" data-v="-1" aria-label="Kisebb betű">A-</button><button data-a="rdFs" data-v="1" aria-label="Nagyobb betű">A+</button></div></div>`;
+  if(R.k==='sen'){const c=senCache(R.n),done=!!(L0().sen||{})[R.n];h+=`<div class="rdr-k" style="color:var(--glacier,#7CC6F2)">Seneca · Erkölcsi levelek Luciliushoz</div><h1>${R.n}. levél</h1><div class="by">${c&&c.t?esc(c.t)+' · ':''}Richard M. Gummere angol fordítása (1917), Wikisource</div>`;
+    if(!c){h+=`<p class="meta">Betöltés...</p>`;senLoad(R.n)}else if(c.err)h+=`<p class="meta">Most nem sikerült betölteni (nincs internet?). <a class="link" target="_blank" rel="noopener" href="https://en.wikisource.org/wiki/Moral_letters_to_Lucilius/Letter_${R.n}">Megnyitás a Wikisource-on</a></p>`;
+    else{h+=`<div class="rdr-body">${c.p.map(x=>`<p>${esc(x)}</p>`).join('')}</div>`;h+=`<div class="btn-row"><button class="btn ${done?'ghost':'acc'}" data-a="rdDone">${done?'Elolvasva ✓':'Elolvastam, +25 XP'}</button>${R.n<124?`<button class="btn ghost" data-a="rdOpen" data-k="sen" data-n="${R.n+1}">Következő levél ›</button>`:''}</div>`}}
+  else{const L=LONG.find(x=>x[0]===R.k);if(!L){ui.rd=null;return ''}const[id,b,a,c,m,intro,pts,acts,who]=L,done=lrDone(id);
+    h+=`<div class="rdr-k">${c} · ${m} perc</div><h1>${b}</h1><div class="by">${a} · a könyv fő gondolatai saját összefoglalóban</div><div class="rdr-body"><p>${intro}</p>${pts.map(([ti,tx],k)=>`<h3><i>${pad(k+1)}</i>${ti}</h3><p>${tx}</p>`).join('')}<div class="rdr-act"><b>Próbáld ki ezen a héten</b><ol>${acts.map(x=>`<li>${x}</li>`).join('')}</ol></div><p class="meta">${who}</p></div><button class="btn ${done?'ghost':'acc'} full" data-a="rdDone">${done?'Elolvasva ✓':'Elolvastam, +25 XP'}</button>`}
+  return h+'</div>'}
+function senCache(n){if(ui.senMem&&ui.senMem[n])return ui.senMem[n];try{const j=localStorage.getItem('forma_sen_'+n);return j?JSON.parse(j):null}catch(e){return null}}
+async function senLoad(n){ui.senMem=ui.senMem||{};if(ui.senMem[n]&&!ui.senMem[n].err)return;
+  try{const r=await fetch(`https://en.wikisource.org/w/api.php?action=parse&page=Moral_letters_to_Lucilius/Letter_${n}&prop=text&format=json&formatversion=2&origin=*`);const j=await r.json();
+    const doc=new DOMParser().parseFromString(j.parse.text,'text/html');doc.querySelectorAll('style,sup,.ws-noexport,table').forEach(x=>x.remove());
+    let ps=[...doc.querySelectorAll('p')].map(x=>x.textContent.replace(/\s+/g,' ').trim()).filter(x=>x.length>30),t='';
+    if(ps[0]&&/^[IVXLC]+\.\s/.test(ps[0])){t=ps[0].replace(/^[IVXLC]+\.\s*/,'');t=t.charAt(0)+t.slice(1).toLowerCase();ps=ps.slice(1)}
+    if(!ps.length)throw 0;const c={t,p:ps};ui.senMem[n]=c;try{localStorage.setItem('forma_sen_'+n,JSON.stringify(c))}catch(e){}}
+  catch(e){ui.senMem[n]={err:1}}if(ui.rd&&ui.rd.k==='sen'&&ui.rd.n===n&&ui.tab==='learn')render(true)}
+function booksSection(){const B=S.books||[];let h=`<h2>Könyveim</h2><p class="meta">Amit most olvasol. Naponta jelöld, hány oldalt olvastál, és az app kiszámolja, mikor végzel.</p>`;
+  h+=B.map(b=>{const rec=Object.entries(b.log||{}).filter(([d])=>d>=dk(new Date(Date.now()-14*DAY))),avg=rec.reduce((a,[,v])=>a+v,0)/14,left=b.p-b.r,eta=b.done?null:avg>0?Math.ceil(left/avg):null,today=(b.log||{})[dk()]||0;
+    return `<div class="bk ${b.done?'done':''}"><div class="bk-h"><div class="grow"><b>${esc(b.t)}</b><div class="meta">${esc(b.a||'')}${b.a?' · ':''}${b.r}/${b.p} oldal${b.done?' · befejezve '+shortDate(b.done)+' ✓':eta!=null?` · ebben a tempóban kb. ${eta} nap`:''}</div></div><button class="icon-btn" data-a="bkDel" data-id="${b.id}" aria-label="Törlés">${ICON.x}</button></div><div class="gl-bar"><i style="width:${Math.min(100,b.r/b.p*100)}%"></i></div>${b.done?'':`<div class="gl-f"><span class="meta">Ma: ${today} oldal</span><div class="btn-row" style="margin:0"><button class="btn ghost" data-a="bkAdd" data-id="${b.id}" data-v="5">+5</button><button class="btn ghost" data-a="bkAdd" data-id="${b.id}" data-v="10">+10</button><button class="btn ghost" data-a="bkAdd" data-id="${b.id}" data-v="25">+25</button></div></div>`}</div>`}).join('');
+  return h+`<button class="btn ghost full" data-a="bkNew">+ Könyv hozzáadása</button>`}
+
 function esLesson(){const E=ui.es,L=E.rev?{t:'Esti ismétlés'}:ES[E.i];let h=`<div class="es-top"><button class="link" data-a="esBack">‹ Leckék</button><span class="meta">${E.rev?'2. alkalom':E.i+1+'. lecke'}${E.q?` · ${Math.min(E.qi+1,E.q.length)}/${E.q.length}`:''}</span></div><h2 class="es-title">${L.t}</h2>`;
   if(!E.rev){const steps=['szavak','mondatok','teszt'],si=E.step==='words'?0:E.step==='phrases'?1:2;h+=`<div class="es-steps">${steps.map((s,k)=>`<span class="${k<=si?'on':''}">${s}</span>`).join('')}</div>`}
   if(E.step==='words')h+=`<p class="meta">Koppints egy kártyára a jelentéséért, a 🔊 felolvassa.</p><div class="flash">${L.v.map(([es,hu,pr],k)=>`<div class="fl ${E.flip&&E.flip[k]?'on':''}" data-a="esFlip" data-k="${k}"><div class="fl-in"><div class="fl-f"><b>${es}</b><span>[${pr}]</span></div><div class="fl-b"><b>${hu}</b><span>${es}</span></div></div><button class="say" data-a="esSay" data-t="${esc(es)}" aria-label="Felolvasás">🔊</button></div>`).join('')}</div><button class="btn acc full" data-a="esStep" data-v="phrases">Tovább a mondatokhoz</button>`;
@@ -2022,9 +2299,46 @@ function fcarFx(){const c=$('#fcar');if(!c)return;if(ui.fcx)c.scrollLeft=ui.fcx;
   const upd=()=>{const r=c.getBoundingClientRect(),mid=r.left+r.width/2;let best=0,bd=1e9;[...c.children].forEach((el,i)=>{const b=el.getBoundingClientRect(),dd=Math.abs((b.left+b.width/2-mid)/r.width);if(!REDUCED){el.style.transform=`scale(${1-Math.min(.08,dd*.12)})`;el.style.opacity=String(1-Math.min(.5,dd*.7))}if(dd<bd){bd=dd;best=i}});
     const dots=$('#fdots');if(dots)dots.innerHTML=[...c.children].map((_,i)=>`<i class="${i===best?'on':''}"></i>`).join('')};
   c.addEventListener('scroll',()=>{ui.fcx=c.scrollLeft;requestAnimationFrame(upd)},{passive:true});upd()}
+// ---------- growth: main goal, focus timer, goals, journal, weekly review ----------
+const GT={weight:['Testsúly','kg'],lift:['Erő (munkasúly)','kg'],es:['Spanyol leckék','lecke'],books:['Elolvasott könyvek','könyv'],focus:['Fókusz órák','óra'],custom:['Saját cél','']};
+function bestKg(id){let b=0;for(const d in S.logs){const l=S.logs[d][id];if(l)for(const x of l)if(x[2]&&x[0])b=Math.max(b,x[0])}return b}
+function goalCur(g){return g.type==='weight'?curWeight():g.type==='lift'?bestKg(g.ex):g.type==='es'?Object.keys(L0().es).length:g.type==='books'?(S.books||[]).filter(b=>b.done).length:g.type==='focus'?Math.round(Object.values(S.focus||{}).reduce((a,b)=>a+b,0)/6)/10:(g.val||0)}
+function goalInfo(g){const cur=goalCur(g),span=g.target-g.start,pct=span?Math.max(0,Math.min(1,(cur-g.start)/span)):cur>=g.target?1:0,days=Math.max(1,(parseDk(dk())-parseDk(g.created))/DAY),rate=(cur-g.start)/days;
+  let eta=null;if(pct<1&&rate&&Math.sign(rate)===Math.sign(span)&&days>=3)eta=Math.ceil((g.target-cur)/rate);return{cur,pct,eta,done:pct>=1}}
+function mainGoal(t=dk()){const y=new Date(parseDk(t));y.setDate(y.getDate()-1);const J=S.journal||{};return(J[t]&&J[t].main)||(J[dk(y)]&&J[dk(y)].next)||''}
+function mainGoalCard(){const g=mainGoal();if(!g)return '';const done=!!(S.mgDone||{})[dk()];return `<div class="mgoal ${done?'done':''}"><button class="chk ${done?'on':''}" data-a="mgDone" aria-pressed="${done}" aria-label="Kész">${ICON.check}</button><div class="grow"><span class="fc-k">Mai fő cél</span><b>${esc(g)}</b></div></div>`}
+function wkSum(m){const o={tr:0,vol:0,es:0,rd:0,fo:0,mood:[],cr:0,pg:0};for(let i=0;i<7;i++){const d=new Date(m);d.setDate(m.getDate()+i);const k=dk(d);if(k>dk())break;
+  if(trained(k))o.tr++;o.vol+=dayVol(k);o.es+=esCnt(k);const lr=S.learn||{};if(lr.read&&lr.read[k]!=null)o.rd++;o.rd+=Object.values(lr.long||{}).filter(x=>x===k).length+Object.values(lr.sen||{}).filter(x=>x===k).length;
+  o.fo+=(S.focus||{})[k]||0;const j=(S.journal||{})[k];if(j&&j.m)o.mood.push(j.m);if(S.creatine[k])o.cr++;for(const b of S.books||[])o.pg+=(b.log||{})[k]||0}
+  o.md=o.mood.length?Math.round(o.mood.reduce((a,b)=>a+b,0)/o.mood.length*10)/10:null;return o}
+const MOODS=['😫','😕','😐','🙂','🔥'];
+function rGrow(){const t=dk(),J=(S.journal=S.journal||{}),j=J[t]||{},fm=(S.focus||{})[t]||0,m=monday(new Date()),pm=new Date(m);pm.setDate(m.getDate()-7);const a=wkSum(m),b=wkSum(pm);
+  let h=bar()+heroBlock('Fejlődés','Célok, fókusz, napló, heti visszatekintés','GROW');
+  h+=mainGoalCard()||`<p class="meta" style="margin-top:14px">Este a naplóban add meg a holnapi fő célt, és reggel itt vár.</p>`;
+  h+=`<h2>Fókusz</h2><div class="card"><div class="row"><div class="grow"><div class="row-title">Ma ${fm} perc mély munka</div><div class="meta">E héten ${a.fo} perc · 25 percenként +10 XP</div></div></div><input class="in" id="foLabel" placeholder="Min dolgozol? (nem kötelező)" value="${esc(ui.foLabel||'')}"><div class="fo-presets">${[[25,'Pomodoro'],[50,'Mély munka'],[90,'Flow blokk']].map(([n,l])=>`<button data-a="foStart" data-v="${n}"><b>${n}</b><span>${l}</span></button>`).join('')}</div></div>`;
+  h+=`<div class="sec-head"><h2>Célok</h2><button class="link" data-a="glNew">+ Új cél</button></div>`;
+  const G=S.goals||[];h+=G.length?G.map(g=>{const I=goalInfo(g),u=GT[g.type][1];return `<div class="gl ${I.done?'done':''}"><div class="gl-h"><div class="grow"><b>${esc(g.title)}</b><div class="meta">${GT[g.type][0]}${g.due?' · határidő: '+shortDate(g.due):''}</div></div><div class="gl-v">${num(I.cur)} <span class="meta">/ ${num(g.target)} ${u}</span></div></div><div class="gl-bar"><i style="width:${I.pct*100}%"></i></div><div class="gl-f"><span class="meta">${I.done?'Teljesítve ✓':I.eta!=null?`${Math.round(I.pct*100)}% · ebben a tempóban kb. ${I.eta} nap${g.due?(dk(new Date(Date.now()+I.eta*DAY))<=g.due?', belefér a határidőbe':', ez a határidő után van'):''}`:Math.round(I.pct*100)+'%'}</span><div class="btn-row" style="margin:0">${g.type==='custom'&&!I.done?`<button class="btn ghost" data-a="glVal" data-id="${g.id}" data-v="1">+1</button>`:''}<button class="icon-btn" data-a="glDel" data-id="${g.id}" aria-label="Cél törlése">${ICON.x}</button></div></div></div>`}).join(''):`<p class="empty">Még nincs célod. Adj meg egyet: testsúly, egy gyakorlat munkasúlya, spanyol leckék, könyvek vagy bármi saját.</p>`;
+  h+=`<h2>Napló</h2><div class="card"><div class="lbl">Hangulat</div><div class="mood">${MOODS.map((e,i)=>`<button class="${j.m===i+1?'on':''}" data-a="jrSet" data-k="m" data-v="${i+1}" aria-label="Hangulat ${i+1}">${e}</button>`).join('')}</div>
+    <div class="lbl">Energia (1-5)</div><div class="mood en">${[1,2,3,4,5].map(i=>`<button class="${j.e===i?'on':''}" data-a="jrSet" data-k="e" data-v="${i}" aria-label="Energia ${i}">${i}</button>`).join('')}</div>
+    <label class="lbl">Mi ment ma jól?<textarea class="in" id="jrGood" rows="2">${esc(j.good||'')}</textarea></label>
+    <label class="lbl">Mit tanultam ma?<textarea class="in" id="jrLearn" rows="2">${esc(j.learn||'')}</textarea></label>
+    <label class="lbl">Holnap a legfontosabb (ez lesz a holnapi fő cél)<input class="in" id="jrNext" value="${esc(j.next||'')}"></label>
+    <button class="btn acc full" data-a="jrSave">${j.saved?'Napló frissítése':'Napló mentése, +15 XP'}</button></div>`;
+  const row=(l,x,y,f)=>{const d=x-y;return `<tr><td>${l}</td><td>${f?f(x):x}</td><td class="${d>0?'up':d<0?'dn':''}">${y==null?'':(d>0?'▲ ':d<0?'▼ ':'= ')+(f?f(Math.abs(d)):Math.abs(d))}</td></tr>`};
+  h+=`<h2>Heti visszatekintés</h2><div class="card"><p class="meta" style="margin-top:0">E hét (hétfőtől) a múlt héthez képest.</p><table class="wr">${row('Edzés',a.tr,b.tr)}${row('Megmozgatott súly (t)',Math.round(a.vol/100)/10,Math.round(b.vol/100)/10,num)}${row('Spanyol alkalom',a.es,b.es)}${row('Olvasás',a.rd,b.rd)}${row('Fókusz (perc)',a.fo,b.fo)}${row('Könyv oldal',a.pg,b.pg)}${row('Kreatin nap',a.cr,b.cr)}<tr><td>Átlagos hangulat</td><td>${a.md==null?'–':MOODS[Math.round(a.md)-1]+' '+num(a.md)}</td><td>${b.md==null?'':MOODS[Math.round(b.md)-1]}</td></tr></table>
+    <p class="meta">${a.tr>=(S.settings.weekGoal||5)?'A heti edzéscél megvan. 💪':'Még '+((S.settings.weekGoal||5)-a.tr)+' edzés a heti célig.'} ${a.es>=14?'A spanyol minden nap megvolt kétszer. ':''}${a.fo>b.fo&&b.fo?'Többet fókuszáltál, mint múlt héten. ':''}</p></div>`;
+  return h}
+function rFocus(){const F=ui.fo;if(!F){$('#foWrap')&&$('#foWrap').remove();return}let el=$('#foWrap');if(!el){el=document.createElement('div');el.id='foWrap';el.className='fo';document.body.appendChild(el);document.body.classList.add('lock')}
+  const left=F.paused?F.left:Math.max(0,F.end-Date.now()),tot=F.min*60000,C=2*Math.PI*150,done=left<=0,mm=Math.floor(left/60000),ss=Math.floor(left/1000)%60;
+  const key=(F.paused?'p':'r')+(done?'d':'');if(el.dataset.k===key){if(!done){$('.fo-t',el).textContent=`${mm}:${pad(ss)}`;$('.fg',el).style.strokeDashoffset=(C*(left/tot)).toFixed(1)}return}el.dataset.k=key;
+  el.innerHTML=`<div class="fo-top"><button class="icon-btn" data-a="foStop" aria-label="Kilépés">${ICON.x}</button><span class="bx-r">${F.min} perc fókusz</span><span style="width:44px"></span></div><div class="fo-in ${F.paused?'pause':''}"><div class="fo-ring"><svg viewBox="0 0 320 320"><circle class="bg" cx="160" cy="160" r="150"/><circle class="fg" cx="160" cy="160" r="150" stroke-dasharray="${C.toFixed(1)}" style="stroke-dashoffset:${(C*(left/tot)).toFixed(1)}"/></svg><div class="fo-mid"><div class="fo-t">${done?'Kész':`${mm}:${pad(ss)}`}</div><div class="fo-l">${esc(F.label||'Mély munka')}</div></div></div><p class="fo-q">${done?'Szép munka. Állj fel, igyál egy pohár vizet, és tarts 5 perc szünetet.':'Egy feladat. A telefon képernyővel lefelé. Ha eszedbe jut valami más, írd fel, és térj vissza.'}</p>
+    <div class="fo-btns">${done?`<button class="btn acc full" style="grid-column:1/-1" data-a="foStop">Bezárás</button>`:`<button class="btn ghost" data-a="foPause">${F.paused?'Folytatás':'Szünet'}</button><button class="btn acc" data-a="foStop">Befejezem</button>`}</div></div>`}
+function foTick(){const F=ui.fo;if(!F||F.paused||F.fin)return rFocus();if(Date.now()>=F.end){F.fin=true;foLog(F.min);gong(3);try{navigator.vibrate&&navigator.vibrate([300,120,300])}catch(e){}keepAwake(false);setTimeout(()=>celebrate('Flow',F.min+' perc','Fókusz blokk kész'),400)}rFocus()}
+function foLog(min){if(min<1)return;S.focus=S.focus||{};const t=dk();S.focus[t]=(S.focus[t]||0)+min;save()}
+let foTimer=null;
 function rMore(){const rs=rwStats(),di=dateIdeas(),bg=badgesOf(rs).filter(b=>b.on).length;let h=bar()+heroBlock('Több','Minden más egy helyen','MORE');
   const tile=(cls,t,k,title,meta,ic)=>`<button class="hub ${cls}" data-a="tab" data-t="${t}"><span class="hub-ic">${ic}</span><span class="bt-k">${k}</span><b>${title}</b><span class="bt-m">${meta}</span></button>`;
-  h+=`<div class="hubgrid">${tile('big','halad','Haladás',`${rs.lvl}. szint · ${rankOf(rs.lvl)}`,`${rs.workouts} edzés · ${bg} jelvény · erőszint és grafikonok`,ICON.halad)}
+  h+=`<div class="hubgrid">${tile('big gr','grow','Fejlődés',mainGoal()||'Célok és fókusz',`${(S.goals||[]).length} cél · ma ${(S.focus||{})[dk()]||0} perc fókusz · napló, heti visszatekintés`,ICON.learn)}${tile('big','halad','Haladás',`${rs.lvl}. szint · ${rankOf(rs.lvl)}`,`${rs.workouts} edzés · ${bg} jelvény · erőszint és grafikonok`,ICON.halad)}
   ${tile('','free','Freetime','Randi és programok',`${(di.fri.find(x=>x[1])||[,{n:''}])[1].n}`,ICON.free)}
   ${tile('','shop','Gear','Ruha és kiegészítők','Friss drop-ok, boltok',ICON.shop)}
   ${tile('','prep','Meal prep','Főzz előre',`${invCount()} adag a készletben`,ICON.prep)}
@@ -2047,6 +2361,14 @@ recipe(){const r=RI[ui.rs.id],sv=ui.rs.sv,k=sv/r.base,fav=S.fav.includes(r.id),h
   <button class="btn acc full" data-a="ateRecipe">Megettem, 1 adag a mai naplóba</button>
   <button class="btn ghost full" data-a="toShop">Bevásárlólistára (${sv} adag)</button>${r.st!=='fresh'?'<button class="btn ghost full" data-a="toPrep">Meal prep tervezés</button>':''}
   <div class="btn-row"><button class="btn ghost" data-a="fav">${fav?'Kedvenc törlése':'Kedvencnek jelölöm'}</button><button class="btn ghost" data-a="hide">${hid?'Ajánlhatod újra':'Ne ajánld újra'}</button></div>`},
+goal(){const G=ui.gl,ex=Object.keys(EX).sort((a,b)=>EX[a].n.localeCompare(EX[b].n,'hu'));return `${sheetTop('Új cél')}
+  <label class="lbl">Típus<select class="in" id="glType">${Object.entries(GT).map(([k,[l]])=>`<option value="${k}" ${G.type===k?'selected':''}>${l}</option>`).join('')}</select></label>
+  ${G.type==='lift'?`<label class="lbl">Gyakorlat<select class="in" id="glEx">${ex.map(id=>`<option value="${id}" ${G.ex===id?'selected':''}>${EX[id].n}</option>`).join('')}</select></label>`:''}
+  ${G.type==='custom'?`<label class="lbl">Megnevezés<input class="in" id="glTitle" placeholder="pl. 50 húzódzkodás egy edzésen"></label>`:''}
+  <label class="lbl">Cél${GT[G.type][1]?' ('+GT[G.type][1]+')':''}<input class="in" id="glTarget" inputmode="decimal" placeholder="${G.type==='weight'?'pl. 68':G.type==='lift'?'pl. 80':G.type==='es'?'30':G.type==='books'?'5':G.type==='focus'?'20':'pl. 50'}"></label>
+  <label class="lbl">Határidő (nem kötelező)<input class="in" id="glDue" type="date"></label>
+  <p class="meta">${G.type==='custom'?'A saját célnál a +1 gombbal léptetheted a számlálót.':'A haladást az app magától számolja a naplóidból.'}</p><button class="btn acc full" data-a="glSave">Cél mentése</button>`},
+book(){return `${sheetTop('Új könyv')}<label class="lbl">Cím<input class="in" id="bkT" placeholder="pl. Atomic Habits"></label><label class="lbl">Szerző<input class="in" id="bkA"></label><label class="lbl">Oldalszám<input class="in" id="bkP" inputmode="numeric" placeholder="320"></label><label class="lbl">Hol tartasz most? (oldal)<input class="in" id="bkR" inputmode="numeric" value="0"></label><button class="btn acc full" data-a="bkSave">Hozzáadás</button>`},
 creFix(){const days=[];for(let k=0;k<14;k++){const x=new Date();x.setDate(x.getDate()-k);days.push(dk(x))}
   return `${sheetTop('Kreatin pótlás')}<p class="meta">Ha bevetted, csak elfelejtetted beírni, pipáld ki azt a napot. Így a sorozat nem szakad meg.</p><div class="cfx">${days.map(d=>{const on=!!S.creatine[d],x=parseDk(d);return `<button class="cfx-d ${on?'on':''}" data-a="creDay" data-d="${d}" aria-pressed="${on}"><span>${d===dk()?'Ma':WDS[x.getDay()]}</span><b>${x.getDate()}</b><i>${on?'✓':''}</i></button>`}).join('')}</div><p class="meta" style="margin-top:12px">Jelenlegi sorozat: <b>${streak()} nap</b></p><button class="btn acc full" data-a="close">Kész</button>`},
 creatine(){const s=S.settings.creatine;return `${sheetTop('Kreatin')}<div class="info"><p><b>Mennyit?</b> Napi 3-5 g kreatin-monohidrát. Neked ${num(s)} g van beállítva. Töltőfázis nem szükséges, 3-4 hét alatt magától telítődik az izom.</p><p><b>Mikor?</b> Mindegy, a lényeg, hogy minden nap, a pihenőnapokon is. Legegyszerűbb, ha a reggelivel vagy az edzés utáni shake-kel veszed be.</p><p><b>Mire figyelj?</b> Igyál elég vizet. Az első hetekben 1-2 kg súlynövekedés normális, ez főleg az izmokban tárolt víz.</p><p>Egészséges felnőttnek a kutatások alapján biztonságos. Ha vesebetegséged van vagy rendszeresen gyógyszert szedsz, előtte beszélj orvossal.</p></div><button class="btn acc full" data-a="close">Rendben</button>`},
@@ -2129,7 +2451,7 @@ settings(){const s=S.settings;const sel=(key,opts)=>`<select class="in" data-set
   <label class="sw"><input type="checkbox" data-set="water" ${s.water?'checked':''}> Vízfogyasztás követése</label>
   <label class="lbl">Napi vízcél (ml)<input class="in" inputmode="numeric" data-set="waterGoal" value="${s.waterGoal}"></label>
   <label class="sw"><input type="checkbox" data-set="sleep" ${s.sleep?'checked':''}> Alvás követése</label>
-  <h3>Megjelenés</h3>${sel('theme',[['gold','NOCTA Night (fekete-arany)'],['blue','NOCTA kék'],['dark','NOCTA fekete-fehér'],['light','Világos'],['system','A telefon beállítása szerint']])}
+  <h3>Megjelenés</h3>${sel('theme',[['nocta','NOCTA Night 2.0 (animált)'],['gold','NOCTA klasszikus (fekete-arany)'],['blue','NOCTA kék'],['dark','NOCTA fekete-fehér'],['light','Világos'],['system','A telefon beállítása szerint']])}
   ${STANDALONE?`<h3>Spotify</h3><p class="meta">A napi playlisthez egyszer létre kell hoznod egy ingyenes Spotify Developer appot (developer.spotify.com/dashboard). Ott a Redirect URI legyen pontosan ez:</p><div class="last" style="user-select:all;word-break:break-all">${esc(redirectUri())}</div><label class="lbl">Client ID<input class="in" data-set="spClientId" value="${esc(s.spClientId||'')}" placeholder="a Developer app Client ID-ja" autocomplete="off"></label>${spLinked()?'<p class="meta">Összekötve.</p><button class="btn ghost full" data-a="spLogout">Spotify leválasztása</button>':(s.spClientId?'<button class="btn acc full" data-a="spLogin">Spotify összekötése</button>':'')}`:''}
   <h3>Adatok</h3><p class="meta">${sync==='cloud'?'Az adataid a claude.ai fiókodba is mentődnek, így másik eszközön is megmaradnak.':'Az adataid ezen az eszközön tárolódnak. Készíts néha mentést fájlba.'} A mentéssel át tudod vinni az adataidat a claude.ai-os és a telepített verzió között.</p>
   <div class="btn-row"><button class="btn ghost" data-a="export">Mentés fájlba</button><button class="btn ghost" data-a="importPick">Visszatöltés</button></div><input type="file" id="impFile" accept=".json,application/json" hidden>
@@ -2146,7 +2468,7 @@ function renderSheet(keep){const w=$('#sheetWrap');if(!ui.sheet){w.hidden=true;w
 /* ---------- render ---------- */
 const TABS=[['ma','Ma'],['edzes','Edzés'],['etel','Étel'],['learn','Tanulás'],['more','Több']];
 const navKey=t=>TABS.some(x=>x[0]===t)?t:'more';
-const VIEWS={ma:rMa,edzes:rEdzes,etel:rEtel,prep:rPrep,halad:rHalad,free:rFree,shop:rGear,learn:rLearn,more:rMore};
+const VIEWS={grow:rGrow,ma:rMa,edzes:rEdzes,etel:rEtel,prep:rPrep,halad:rHalad,free:rFree,shop:rGear,learn:rLearn,more:rMore};
 function render(keep){applyExCfg();checkRewards();const y=window.scrollY,m=$('#main');m.innerHTML=VIEWS[ui.tab]();
   if(!keep){m.classList.remove('enter','sl','sr');void m.offsetWidth;m.classList.add('enter');if(ui.dir)m.classList.add(ui.dir);ui.dir=null}
   $('#nav').innerHTML=TABS.map(([k,l])=>`<button class="${navKey(ui.tab)===k?'on':''}" data-a="tab" data-t="${k}" aria-current="${navKey(ui.tab)===k?'page':'false'}"><span class="ic">${ICON[k]}</span><span>${l}</span></button>`).join('');
@@ -2187,7 +2509,7 @@ let actx;function beep(){try{navigator.vibrate&&navigator.vibrate([200,100,200])
 function readTE(){const t=ui.te,a=$('#teTitle'),b=$('#teDate'),c=$('#teTime');if(a)t.title=a.value;if(b)t.date=b.value;if(c)t.time=c.value}
 function act(a,b){const t=dk(),d=b.dataset;
 switch(a){
-case 'tab':{const i=TABS.findIndex(x=>x[0]===navKey(ui.tab)),j=TABS.findIndex(x=>x[0]===navKey(d.t));if(d.t==='learn')ui.es=null;ui.dir=j>i?'sl':j<i?'sr':null;ui.tab=d.t;if(d.s)ui.prepSeg=d.s;render();break}
+case 'tab':{const i=TABS.findIndex(x=>x[0]===navKey(ui.tab)),j=TABS.findIndex(x=>x[0]===navKey(d.t));if(d.t==='learn'){ui.es=null;ui.rd=null}ui.dir=j>i?'sl':j<i?'sr':null;ui.tab=d.t;if(d.s)ui.prepSeg=d.s;render();break}
 case 'seg':ui[d.k]=d.v;render(true);break;
 case 'settings':openSheet('settings');break;
 case 'close':closeSheet();break;
@@ -2229,7 +2551,7 @@ case 'bxCall':ui.bx.call=!ui.bx.call;if(!ui.bx.call)ui.bx.combo='';renderBx();br
 case 'bxOpen':{const i=Number(d.i);if(i>Object.keys((S.box||{}).done||{}).length){toast('Előbb tanuld meg az előző leckét.');break}ui.bxOpen=ui.bxOpen===i?null:i;render(true);break}
 case 'bxDone':{S.box=S.box||{};S.box.done=S.box.done||{};S.box.done[d.i]=t;save();ui.bxOpen=Number(d.i)+1<BOX.length?Number(d.i)+1:null;render(true);toast('+20 XP, jöhet a következő');break}
 case 'bxR':case 'bxW':case 'bxP':{S.box=S.box||{};const c=S.box.cfg=S.box.cfg||{r:3,w:120,p:60,call:true},v=Number(d.v);if(a==='bxR')c.r=Math.max(1,Math.min(12,c.r+v));else if(a==='bxW')c.w=Math.max(30,Math.min(300,c.w+30*v));else c.p=Math.max(15,Math.min(120,c.p+15*v));save();render(true);break}
-case 'goLearn':ui.dir='sl';ui.tab='learn';ui.learnSeg=d.v;ui.es=null;render();break;
+case 'goLearn':ui.dir='sl';ui.tab='learn';ui.learnSeg=d.v;ui.es=null;ui.rd=null;render();break;
 case 'wxTip':toast(wx.d?wxTip(wx.d,planDay()):'Időjárás betöltése...');break;
 case 'exo':ui.exo={id:d.id,o:d.o||d.id,k:d.k||''};openSheet('exo');break;
 case 'exoS':case 'exoR':case 'exoT':case 'exoReset':{const id=ui.exo.id,ex=EX[id],v=Number(d.v||0);S.exCfg=S.exCfg||{};const c=S.exCfg[id]=S.exCfg[id]||{};
@@ -2240,6 +2562,27 @@ case 'exoSkip':{const{id,k}=ui.exo;closeSheet();if(k){act('rmEx',{dataset:{id,k}
 case 'unskip':if(S.skip&&S.skip[t])delete S.skip[t][ui.day];save();render(true);break;
 case 'gymOpen':openSheet('gym');break;
 case 'gymSel':S.gym=S.gym||{};S.gym.sel=d.v;save();renderSheet(true);render(true);toast('Terem: '+GYM_PRESETS[d.v].n);break;
+case 'rdOpen':ui.tab='learn';ui.learnSeg='olvas';ui.rd={k:d.k,n:Number(d.n)||0};render();window.scrollTo(0,0);break;
+case 'rdBack':ui.rd=null;render();break;
+case 'rdFs':S.settings.rdFs=Math.max(15,Math.min(24,(S.settings.rdFs||18)+Number(d.v)));save();render(true);break;
+case 'rdDone':{const lr=L0(),R=ui.rd;if(R.k==='sen'){lr.sen=lr.sen||{};if(!lr.sen[R.n]){lr.sen[R.n]=t;toast('+25 XP · Vale!')}}else{lr.long=lr.long||{};if(!lr.long[R.k]){lr.long[R.k]=t;toast('+25 XP')}}save();render(true);break}
+case 'bkNew':openSheet('book');break;
+case 'bkSave':{const ti=$('#bkT').value.trim(),pg=parseInt($('#bkP').value,10),rd=parseInt($('#bkR').value,10)||0;if(!ti||!(pg>0)){toast('Add meg a címet és az oldalszámot.');break}S.books=S.books||[];S.books.push({id:uid(),t:ti,a:$('#bkA').value.trim(),p:pg,r:Math.min(rd,pg),log:{},done:null});save();closeSheet();render(true);break}
+case 'bkAdd':{const bk=(S.books||[]).find(x=>x.id===d.id);if(!bk)break;const v=Math.min(Number(d.v),bk.p-bk.r);bk.r+=v;bk.log=bk.log||{};bk.log[t]=(bk.log[t]||0)+v;if(bk.r>=bk.p&&!bk.done){bk.done=t;setTimeout(()=>celebrate('Kiolvasva',esc(bk.t),'+100 XP'),200)}save();render(true);break}
+case 'bkDel':{if(ui.bkArm!==d.id){ui.bkArm=d.id;toast('Koppints még egyszer a törléshez');setTimeout(()=>{ui.bkArm=null},2500);break}S.books=(S.books||[]).filter(x=>x.id!==d.id);save();render(true);break}
+case 'glNew':ui.gl={type:'weight'};openSheet('goal');break;
+case 'glSave':{const G=ui.gl,tg=pnum($('#glTarget').value);if(tg==null){toast('Add meg a célértéket.');break}const g={id:uid(),type:G.type,target:tg,created:t,due:$('#glDue').value||null};
+  if(G.type==='lift')g.ex=$('#glEx').value;if(G.type==='custom'){g.title=$('#glTitle').value.trim()||'Saját cél';g.val=0}g.start=G.type==='custom'?0:goalCur(g);
+  if(!g.title)g.title=G.type==='lift'?EX[g.ex].n+': '+num(tg)+' kg':G.type==='weight'?'Testsúly: '+num(tg)+' kg':GT[G.type][0]+': '+num(tg);
+  if(G.type!=='custom'&&g.start===tg){toast('Ez már megvan. Adj meg nagyobb célt.');break}S.goals=S.goals||[];S.goals.push(g);save();closeSheet();render(true);break}
+case 'glVal':{const g=(S.goals||[]).find(x=>x.id===d.id);if(g){g.val=(g.val||0)+Number(d.v);if(goalInfo(g).done)setTimeout(()=>celebrate('Célba értél',esc(g.title),'+50 XP'),200);save();render(true)}break}
+case 'glDel':{if(ui.glArm!==d.id){ui.glArm=d.id;toast('Koppints még egyszer a törléshez');setTimeout(()=>{ui.glArm=null},2500);break}S.goals=(S.goals||[]).filter(x=>x.id!==d.id);save();render(true);break}
+case 'jrSet':{const J=S.journal=S.journal||{};J[t]=J[t]||{};const jg=$('#jrGood');if(jg)Object.assign(J[t],{good:jg.value,learn:$('#jrLearn').value,next:$('#jrNext').value});J[t][d.k]=Number(d.v);save();render(true);break}
+case 'jrSave':{const J=S.journal=S.journal||{};J[t]=J[t]||{};Object.assign(J[t],{good:$('#jrGood').value.trim(),learn:$('#jrLearn').value.trim(),next:$('#jrNext').value.trim()});const first=!J[t].saved;J[t].saved=1;save();toast(first?'Napló mentve, +15 XP':'Napló frissítve');render(true);break}
+case 'mgDone':{S.mgDone=S.mgDone||{};if(S.mgDone[t])delete S.mgDone[t];else{S.mgDone[t]=1;toast('Mai fő cél kész, +10 XP')}save();render(true);break}
+case 'foStart':{const lb=$('#foLabel');ui.foLabel=lb?lb.value.trim():ui.foLabel||'';const n=Number(d.v);ui.fo={min:n,label:ui.foLabel,end:Date.now()+n*60000,paused:false,left:0};keepAwake(true);clearInterval(foTimer);foTimer=setInterval(foTick,500);rFocus();break}
+case 'foPause':{const F=ui.fo;if(F.paused){F.end=Date.now()+F.left;F.paused=false}else{F.left=Math.max(0,F.end-Date.now());F.paused=true}rFocus();break}
+case 'foStop':{const F=ui.fo;if(F&&!F.fin){const el=Math.floor((F.min*60000-(F.paused?F.left:Math.max(0,F.end-Date.now())))/60000);foLog(el);if(el>=1)toast(el+' perc fókusz mentve')}ui.fo=null;clearInterval(foTimer);keepAwake(false);document.body.classList.remove('lock');rFocus();render(true);break}
 case 'readDone':{const lr=L0();if(lr.read[t]==null){lr.read[t]=readIdx(t);save();toast('+10 XP')}render(true);break}
 case 'esStart':ui.es={i:Number(d.i),step:'words',flip:{}};render();break;
 case 'esRev':ui.tab='learn';ui.learnSeg='es';ui.es={i:-1,rev:true,step:'quiz',q:esReview(),qi:0,ok:0,ans:null,fb:null,typed:'',wrong:[]};render();window.scrollTo(0,0);break;
@@ -2369,6 +2712,7 @@ document.addEventListener('change',e=>{const el=e.target,t=dk();
     else if(k==='goalWeight')s[k]=pnum(el.value);
     else{const v=pnum(el.value);if(v!=null)s[k]=v}
     save();applyTheme();ui.day=null;render(true);if(k==='esAm'||k==='esPm')remindSync();if(k==='spClientId'&&ui.sheet)renderSheet(true)}
+  if(el.id==='glType'){ui.gl.type=el.value;renderSheet(true)}
   if(el.id==='impFile'&&el.files&&el.files[0])importData(el.files[0]);
   if(el.id==='feImg'&&el.files&&el.files[0])scanFood(el.files[0]);
   if(el.id==='ptImg'&&el.files&&el.files[0]){const P=ui.pt;P.desc=$('#ptD').value;plateImg(el.files[0]).then(img=>{P.img=img;if(ui.pt===P&&ui.sheet==='plate'){P.desc=$('#ptD').value;renderSheet(true)}}).catch(()=>toast('A fotót nem sikerült betölteni.'))}});
@@ -2396,6 +2740,14 @@ async function esRemToggle(){const s=S.settings;if(s.esRem&&('Notification' in w
   notify('Értesítések bekapcsolva',`Naponta ${s.esAm||'08:00'}-kor és ${s.esPm||'19:30'}-kor szólok, ha még nincs kész a spanyol.`);render(true)}
 {const go=new URLSearchParams(location.search).get('go');if(go==='es'){ui.tab='learn';ui.learnSeg='es';history.replaceState(null,'',location.pathname)}}
 if('serviceWorker' in navigator)navigator.serviceWorker.addEventListener('message',e=>{if(e.data&&e.data.go==='es'){ui.tab='learn';ui.learnSeg='es';ui.es=null;render()}});
+// NOCTA 2.0 motion: launch intro, touch glow, tap ripple, scroll progress.
+(function(){const skin=()=>document.documentElement.hasAttribute('data-skin');
+  try{if(skin()&&!REDUCED&&!sessionStorage.getItem('forma_intro')){sessionStorage.setItem('forma_intro','1');const el=document.createElement('div');el.className='intro';el.innerHTML=MARK+`<b>${[...'NOCTA'].map((c,i)=>`<span style="animation-delay:${.25+i*.07}s">${c}</span>`).join('')}</b>`;document.body.appendChild(el);setTimeout(()=>el.remove(),2000)}}catch(e){}
+  const g=$('#glow'),sp=$('#sprog');let gt;
+  const mv=e=>{if(!skin()||REDUCED)return;g.style.transform=`translate(${e.clientX}px,${e.clientY}px)`;g.classList.add('on');clearTimeout(gt);gt=setTimeout(()=>g.classList.remove('on'),e.pointerType==='mouse'?1500:700)};
+  addEventListener('pointermove',mv,{passive:true});
+  addEventListener('pointerdown',e=>{mv(e);if(!skin()||REDUCED||!e.target.closest('button,.btn,a'))return;const r=document.createElement('i');r.className='rip';r.style.left=e.clientX+'px';r.style.top=e.clientY+'px';document.body.appendChild(r);setTimeout(()=>r.remove(),600)},{passive:true});
+  const sc=()=>{const h=document.documentElement.scrollHeight-innerHeight;sp.style.transform=`scaleX(${h>0?Math.min(1,scrollY/h):0})`};addEventListener('scroll',sc,{passive:true});addEventListener('resize',sc)})();
 applyTheme();render();initDb();initMcp();spHandleRedirect();loadWx();remindTick();setInterval(remindTick,60000);
 let lastDay=dk();
 setInterval(()=>{const busy=ui.sheet||(document.activeElement&&document.activeElement.matches('input,select,textarea'));if(busy||document.visibilityState!=='visible')return;loadWx();if(dk()!==lastDay){lastDay=dk();ui.day=null;render(true);return}if(ui.tab==='ma'||ui.tab==='halad')render(true)},60000);
